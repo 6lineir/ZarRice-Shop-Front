@@ -61,13 +61,14 @@ export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isPrinting, setIsPrinting] = useState(false);
   const invoiceRef = useRef(null);
+  const dialogInvoiceRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownloadPdf = async () => {
-      if (!invoiceRef.current || !selectedOrder) return;
+      if (!dialogInvoiceRef.current || !selectedOrder) return;
       setIsDownloading(true);
       try {
-        const canvas = await html2canvas(invoiceRef.current, { scale: 2 });
+        const canvas = await html2canvas(dialogInvoiceRef.current, { scale: 2 });
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF({
             orientation: 'p',
@@ -176,25 +177,25 @@ export default function OrdersPage() {
       {selectedOrder && (
           <div className={`printable-content ${isPrinting ? 'visible' : 'hidden'}`}>
             <div ref={invoiceRef} className="p-8">
-                <DialogHeader>
-                    <DialogTitle className="text-2xl mb-2">فاکتور سفارش {selectedOrder.id}</DialogTitle>
-                    <DialogDescription>
+                <div className="text-center mb-6">
+                    <h2 className="text-2xl font-bold mb-2">فاکتور سفارش {selectedOrder.id}</h2>
+                    <p className="text-sm text-gray-600">
                         تاریخ سفارش: {selectedOrder.date}
-                    </DialogDescription>
-                </DialogHeader>
+                    </p>
+                </div>
                 <div className="py-4 space-y-6">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                             <h3 className="font-semibold mb-2">ارسال به:</h3>
-                            <address className="not-italic text-muted-foreground">
+                            <address className="not-italic text-gray-700">
                                 {selectedOrder.customer.name}<br />
                                 {selectedOrder.customer.address}<br />
                                 {selectedOrder.customer.phone}
                             </address>
                         </div>
-                        <div>
+                        <div className='text-left'>
                             <h3 className="font-semibold mb-2">وضعیت سفارش:</h3>
-                            <Badge variant={getStatusVariant(selectedOrder.status)}>{selectedOrder.status}</Badge>
+                            <span className="px-2 py-1 text-xs rounded-full bg-gray-200 text-gray-800">{selectedOrder.status}</span>
                         </div>
                     </div>
                     <Separator />
@@ -221,11 +222,11 @@ export default function OrdersPage() {
                     <Separator />
                     <div className="space-y-2 text-sm pt-4">
                         <div className="flex justify-between">
-                            <span className="text-muted-foreground">جمع جزء:</span>
+                            <span className="text-gray-600">جمع جزء:</span>
                             <span>{selectedOrder.items.reduce((acc: number, i: any) => acc + i.price * i.quantity, 0).toLocaleString()} تومان</span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="text-muted-foreground">هزینه ارسال:</span>
+                            <span className="text-gray-600">هزینه ارسال:</span>
                             <span>{(selectedOrder.total - selectedOrder.items.reduce((acc: number, i: any) => acc + i.price * i.quantity, 0)).toLocaleString()} تومان</span>
                         </div>
                         <div className="flex justify-between font-bold text-base">
@@ -242,7 +243,7 @@ export default function OrdersPage() {
         <DialogContent className="sm:max-w-3xl">
             {selectedOrder && (
                 <>
-                <div ref={invoiceRef} className="p-8">
+                <div ref={dialogInvoiceRef} className="p-8">
                     <DialogHeader>
                         <DialogTitle className="text-2xl mb-2">فاکتور سفارش {selectedOrder.id}</DialogTitle>
                         <DialogDescription>
