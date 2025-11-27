@@ -77,6 +77,12 @@
       "description": "An elegant desk with a phone, laptop, and a cup of tea.",
       "imageUrl": "https://images.unsplash.com/photo-1713947506367-b639b30230d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb250YWN0JTIwZGVza3xlbnwwfHx8fDE3NjQyNjE5ODh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "contact desk"
+    },
+    {
+      "id": "zarinpal-logo",
+      "description": "Zarinpal payment gateway logo",
+      "imageUrl": "https://cdn.zarinpal.com/badges/guild/png/badge-sm.png",
+      "imageHint": "zarinpal logo"
     }
   ]
 }

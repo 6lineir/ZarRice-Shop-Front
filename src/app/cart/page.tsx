@@ -9,8 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/componen
 import { Separator } from '@/components/ui/separator';
 
 export default function CartPage() {
-  const { items, updateItemQuantity, removeItem, clearCart } = useCart();
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const { items, updateItemQuantity, removeItem, clearCart, subtotal } = useCart();
   const shipping = items.length > 0 ? 50000 : 0;
   const total = subtotal + shipping;
 
@@ -91,7 +90,9 @@ export default function CartPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex-col gap-2">
-                  <Button size="lg" className="w-full">ادامه جهت تسویه حساب</Button>
+                  <Button size="lg" className="w-full" asChild>
+                    <Link href="/checkout">ادامه جهت تسویه حساب</Link>
+                  </Button>
                   <Button variant="link" asChild>
                     <Link href="/products">ادامه خرید</Link>
                   </Button>

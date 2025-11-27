@@ -52,6 +52,9 @@ export default function AdminSettingsPage() {
                 <Label htmlFor="site-description">توضیحات متا سایت (SEO)</Label>
                 <Textarea id="site-description" defaultValue="بهترین انتخاب برنج ممتاز ایرانی، مستقیم تا درب منزل شما." />
               </div>
+              <div className="flex justify-end pt-4">
+                  <Button>ذخیره تغییرات</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -87,6 +90,9 @@ export default function AdminSettingsPage() {
                         <Input id="behpardakht-pass" type="password" placeholder="رمز عبور به پرداخت" dir="ltr" />
                     </div>
                 </div>
+                <div className="flex justify-end pt-4">
+                  <Button>ذخیره تغییرات</Button>
+                </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -112,15 +118,13 @@ export default function AdminSettingsPage() {
                   <Label htmlFor="sms-sender">شماره فرستنده</Label>
                   <Input id="sms-sender" placeholder="مثلا: 50001234" dir="ltr" />
               </div>
+              <div className="flex justify-end pt-4">
+                  <Button>ذخیره تغییرات</Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-      
-      <div className="flex justify-end">
-          <Button>ذخیره تغییرات</Button>
-      </div>
-
     </div>
   );
 }

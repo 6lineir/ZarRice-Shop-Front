@@ -9,8 +9,8 @@ export default function RegisterPage() {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-secondary p-4">
       <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-           <Link href="/" className="mb-4 inline-block mx-auto">
+        <CardHeader className="text-center items-center">
+           <Link href="/" className="mb-4 inline-block">
             <Logo />
           </Link>
           <CardTitle className="font-headline text-2xl">ایجاد حساب کاربری</CardTitle>

@@ -14,20 +14,21 @@ export default function PublicLayout({
   const pathname = usePathname();
 
   const isAdminRoute = pathname.startsWith('/admin');
-  const isAuthRoute = pathname.startsWith('/login') || pathname.startsWith('/register');
+  const isAuthRoute = ['/login', '/register'].includes(pathname);
+  const isCheckoutRoute = pathname.startsWith('/checkout');
 
-  if (isAdminRoute || isAuthRoute) {
+  if (isAdminRoute || isAuthRoute || isCheckoutRoute) {
     return <>{children}</>;
   }
 
   return (
-      <CartProvider>
-        <div className="relative flex min-h-dvh flex-col bg-background">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-        <Toaster />
-      </CartProvider>
+    <CartProvider>
+      <div className="relative flex min-h-dvh flex-col bg-background">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </div>
+      <Toaster />
+    </CartProvider>
   );
 }

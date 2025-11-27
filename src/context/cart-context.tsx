@@ -1,7 +1,7 @@
 // src/context/cart-context.tsx
 'use client';
 
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, ReactNode, useMemo } from 'react';
 import type { CartItem } from '@/lib/types';
 
 interface CartContextType {
@@ -10,6 +10,7 @@ interface CartContextType {
   removeItem: (itemId: string) => void;
   updateItemQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
+  subtotal: number;
 }
 
 export const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -57,10 +58,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const clearCart = () => {
     setItems([]);
   };
+  
+  const subtotal = useMemo(() => {
+    return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }, [items]);
+
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateItemQuantity, clearCart }}
+      value={{ items, addItem, removeItem, updateItemQuantity, clearCart, subtotal }}
     >
       {children}
     </CartContext.Provider>
