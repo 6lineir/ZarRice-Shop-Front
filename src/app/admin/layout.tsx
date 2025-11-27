@@ -12,17 +12,30 @@ import {
   SidebarHeader,
   SidebarFooter,
   SidebarInset,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem
 } from '@/components/ui/sidebar';
-import { Home, ShoppingBag, ListOrdered, Users, LogOut, Settings, LayoutGrid, Sparkles, TicketPercent, FileText } from 'lucide-react';
+import { Home, ShoppingBag, ListOrdered, Users, LogOut, Settings, LayoutGrid, Sparkles, TicketPercent, FileText, PlusCircle } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
+
 
 const adminNavLinks = [
   { href: '/admin', label: 'داشبورد', icon: Home },
-  { href: '/admin/products', label: 'محصولات', icon: ShoppingBag },
-  { href: '/admin/categories', label: 'دسته‌بندی‌ها', icon: LayoutGrid },
+  { 
+    href: '/admin/products', 
+    label: 'محصولات', 
+    icon: ShoppingBag,
+    subLinks: [
+        { href: '/admin/products', label: 'همه محصولات' },
+        { href: '/admin/products/new', label: 'افزودن جدید', icon: PlusCircle },
+        { href: '/admin/categories', label: 'دسته‌بندی‌ها' },
+    ]
+  },
   { href: '/admin/orders', label: 'سفارشات', icon: ListOrdered },
   { href: '/admin/customers', label: 'مشتریان', icon: Users },
   { href: '/admin/blog', label: 'وبلاگ', icon: FileText },
@@ -50,17 +63,47 @@ export default function AdminLayout({
           </SidebarHeader>
           <SidebarMenu>
             {adminNavLinks.map((link) => (
-              <SidebarMenuItem key={link.href}>
-                <Link href={link.href}>
-                  <SidebarMenuButton
-                    isActive={pathname.startsWith(link.href) && (link.href !== '/admin' || pathname === '/admin')}
-                    tooltip={{ children: link.label }}
-                  >
-                    <link.icon />
-                    <span>{link.label}</span>
-                  </SidebarMenuButton>
-                </Link>
+                link.subLinks ? (
+                <Collapsible key={link.href} asChild>
+                    <SidebarMenuItem>
+                        <CollapsibleTrigger asChild>
+                        <SidebarMenuButton
+                            isActive={pathname.startsWith(link.href)}
+                            tooltip={{ children: link.label }}
+                        >
+                            <link.icon />
+                            <span>{link.label}</span>
+                        </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent asChild>
+                            <SidebarMenuSub>
+                                {link.subLinks.map((subLink) => (
+                                    <SidebarMenuSubItem key={subLink.href}>
+                                        <Link href={subLink.href}>
+                                            <SidebarMenuSubButton isActive={pathname === subLink.href}>
+                                                 {subLink.icon && <subLink.icon />}
+                                                {subLink.label}
+                                            </SidebarMenuSubButton>
+                                        </Link>
+                                    </SidebarMenuSubItem>
+                                ))}
+                            </SidebarMenuSub>
+                        </CollapsibleContent>
+                    </SidebarMenuItem>
+                </Collapsible>
+                ) : (
+                <SidebarMenuItem key={link.href}>
+                    <Link href={link.href}>
+                    <SidebarMenuButton
+                        isActive={pathname === link.href}
+                        tooltip={{ children: link.label }}
+                    >
+                        <link.icon />
+                        <span>{link.label}</span>
+                    </SidebarMenuButton>
+                    </Link>
               </SidebarMenuItem>
+                )
             ))}
           </SidebarMenu>
           <SidebarFooter>

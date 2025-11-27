@@ -155,11 +155,6 @@ export default function AdminProductsPage() {
     setIsDialogOpen(true);
   }
 
-  const handleAddNew = () => {
-    setEditingProduct(undefined);
-    setIsDialogOpen(true);
-  }
-
   const handleSaveProduct = (productData: any) => {
     console.log("Saving product:", productData);
     // Here you would typically call an API to save the product
@@ -173,9 +168,11 @@ export default function AdminProductsPage() {
             <h1 className="text-2xl font-bold">محصولات</h1>
             <p className="text-muted-foreground">لیست تمام محصولات فروشگاه شما.</p>
         </div>
-        <Button onClick={handleAddNew}>
-            <PlusCircle className="ml-2 h-4 w-4" />
-            افزودن محصول
+        <Button asChild>
+            <Link href="/admin/products/new">
+                <PlusCircle className="ml-2 h-4 w-4" />
+                افزودن محصول
+            </Link>
         </Button>
       </div>
       <Card>

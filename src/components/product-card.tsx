@@ -1,7 +1,8 @@
+
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Files } from 'lucide-react';
 
 import {
   Card,
@@ -76,15 +77,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </CardTitle>
         </Link>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-4">
-        <div className="text-lg font-bold text-primary text-right sm:text-left">
+      <CardFooter className="p-4 pt-0 flex-col items-stretch gap-2">
+        <div className="text-lg font-bold text-primary text-right sm:text-center w-full mb-2">
           {product.weightOptions[0].price.toLocaleString()} تومان
           <span className="text-sm font-normal text-muted-foreground">/{product.weightOptions[0].weight}</span>
         </div>
-        <Button size="sm" onClick={handleAddToCart} className="w-full sm:w-auto">
-          <ShoppingCart className="ml-2 h-4 w-4" />
-           افزودن 
-        </Button>
+        <div className='flex gap-2 w-full'>
+            <Button size="sm" onClick={handleAddToCart} className="w-full">
+            <ShoppingCart className="ml-2 h-4 w-4" />
+            افزودن 
+            </Button>
+            <Button size="sm" variant="outline" className="px-3">
+                <Files className="h-4 w-4" />
+            </Button>
+        </div>
       </CardFooter>
     </Card>
   );
