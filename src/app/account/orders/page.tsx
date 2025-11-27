@@ -5,15 +5,19 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ListOrdered, User, LogOut, Printer, FileDown, Loader2 } from 'lucide-react';
+import { ListOrdered, User, LogOut, Printer, FileDown, Loader2, PackageSearch, Package, PackageCheck, ThumbsUp, XCircle, Copy } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { Order, OrderStatus } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
-const orders = [
+
+const initialOrders: Order[] = [
     { 
         id: 'ZR-1701', 
         date: '۱۴۰۲/۰۸/۰۳', 
@@ -30,6 +34,7 @@ const orders = [
         date: '۱۴۰۲/۰۸/۲۱', 
         status: 'ارسال شده', 
         total: 1100000,
+        trackingCode: '12345678901234567890',
         customer: { name: 'علی رضایی', address: 'تهران، خیابان آزادی، کوچه اول، پلاک ۲', phone: '09123456789' },
         items: [
             { name: 'برنج هاشمی کلاسیک (۱۰ کیلوگرم)', quantity: 1, price: 999900 },
@@ -48,18 +53,28 @@ const orders = [
     },
 ];
 
-const getStatusVariant = (status: string) => {
+const getStatusVariant = (status: OrderStatus) => {
     switch(status) {
         case 'تحویل داده شد': return 'default';
         case 'ارسال شده': return 'secondary';
         case 'در حال پردازش': return 'outline';
+        case 'لغو شده': return 'destructive';
         default: return 'outline';
     }
 }
 
+const statusSteps: { status: OrderStatus, icon: React.ElementType, label: string }[] = [
+    { status: 'در حال پردازش', icon: PackageSearch, label: 'ثبت و پردازش' },
+    { status: 'ارسال شده', icon: Package, label: 'ارسال شده' },
+    { status: 'تحویل داده شد', icon: PackageCheck, label: 'تحویل داده شد' },
+];
+
 export default function OrdersPage() {
-  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const { toast } = useToast();
+  const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isPrinting, setIsPrinting] = useState(false);
+  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const invoiceRef = useRef(null);
   const dialogInvoiceRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -88,6 +103,13 @@ export default function OrdersPage() {
     setIsPrinting(true);
   };
 
+  const handleCopyTrackingCode = () => {
+    if(selectedOrder?.trackingCode) {
+        navigator.clipboard.writeText(selectedOrder.trackingCode);
+        toast({ title: "کد رهگیری کپی شد!", description: "می‌توانید از این کد در سایت شرکت پست استفاده کنید." });
+    }
+  }
+
   useEffect(() => {
     if (isPrinting) {
       setTimeout(() => {
@@ -104,6 +126,8 @@ export default function OrdersPage() {
     window.addEventListener('afterprint', afterPrint);
     return () => window.removeEventListener('afterprint', afterPrint);
   }, []);
+
+  const currentStatusIndex = selectedOrder ? statusSteps.findIndex(step => step.status === selectedOrder.status) : -1;
 
   return (
     <div className={`bg-secondary ${isPrinting ? 'print-active' : ''}`}>
@@ -147,6 +171,7 @@ export default function OrdersPage() {
                                 <TableHead>شناسه سفارش</TableHead>
                                 <TableHead>تاریخ</TableHead>
                                 <TableHead>وضعیت</TableHead>
+                                <TableHead>رهگیری</TableHead>
                                 <TableHead className="text-left">مجموع</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -154,19 +179,22 @@ export default function OrdersPage() {
                             {orders.map(order => (
                                 <TableRow key={order.id}>
                                     <TableCell className="font-medium">
-                                        <Dialog onOpenChange={(open) => !open && setSelectedOrder(null)}>
-                                            <DialogTrigger asChild>
-                                                <button className="text-primary hover:underline" onClick={() => setSelectedOrder(order)}>
-                                                    {order.id}
-                                                </button>
-                                            </DialogTrigger>
-                                        </Dialog>
+                                        <button className="text-primary hover:underline" onClick={() => setSelectedOrder(order)}>
+                                            {order.id}
+                                        </button>
                                     </TableCell>
                                     <TableCell className="whitespace-nowrap">{order.date}</TableCell>
                                     <TableCell>
                                         <Badge variant={getStatusVariant(order.status)}>
                                             {order.status}
                                         </Badge>
+                                    </TableCell>
+                                    <TableCell>
+                                        {order.status !== 'در حال پردازش' && order.status !== 'لغو شده' && (
+                                            <Button variant="link" size="sm" onClick={() => { setSelectedOrder(order); setIsTrackingOpen(true); }}>
+                                                رهگیری
+                                            </Button>
+                                        )}
                                     </TableCell>
                                     <TableCell className="text-left whitespace-nowrap">{order.total.toLocaleString()} تومان</TableCell>
                                 </TableRow>
@@ -245,7 +273,7 @@ export default function OrdersPage() {
           </div>
         )}
 
-      <Dialog open={!!selectedOrder && !isPrinting} onOpenChange={(open) => !open && setSelectedOrder(null)}>
+      <Dialog open={!!selectedOrder && !isPrinting && !isTrackingOpen} onOpenChange={(open) => !open && setSelectedOrder(null)}>
         <DialogContent className="sm:max-w-3xl">
             {selectedOrder && (
                 <>
@@ -309,22 +337,82 @@ export default function OrdersPage() {
                         </div>
                     </div>
                 </div>
-                <DialogFooter className="border-t p-6 gap-2 sm:space-x-reverse">
-                    <Button variant="outline" onClick={handlePrint}>
-                        <Printer className="ml-2 h-4 w-4" />
-                        چاپ فاکتور
-                    </Button>
-                    <Button onClick={handleDownloadPdf} disabled={isDownloading}>
-                        {isDownloading ? (
-                            <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                        ) : (
-                            <FileDown className="ml-2 h-4 w-4" />
-                        )}
-                        دانلود PDF
-                    </Button>
+                <DialogFooter className="border-t p-6 gap-2 sm:justify-between sm:flex-row-reverse">
+                    <div className='flex gap-2 justify-end'>
+                        <Button variant="outline" onClick={handlePrint}>
+                            <Printer className="ml-2 h-4 w-4" />
+                            چاپ فاکتور
+                        </Button>
+                        <Button onClick={handleDownloadPdf} disabled={isDownloading}>
+                            {isDownloading ? (
+                                <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                            ) : (
+                                <FileDown className="ml-2 h-4 w-4" />
+                            )}
+                            دانلود PDF
+                        </Button>
+                    </div>
                 </DialogFooter>
                 </>
             )}
+        </DialogContent>
+      </Dialog>
+      
+      <Dialog open={isTrackingOpen} onOpenChange={(open) => { if(!open) { setIsTrackingOpen(false); setSelectedOrder(null); } }}>
+        <DialogContent className="sm:max-w-md">
+           {selectedOrder && (
+               <>
+                <DialogHeader>
+                    <DialogTitle>رهگیری سفارش {selectedOrder.id}</DialogTitle>
+                    <DialogDescription>وضعیت لحظه‌ای سفارش خود را مشاهده کنید.</DialogDescription>
+                </DialogHeader>
+                <div className="py-4">
+                    {selectedOrder.status === 'لغو شده' ? (
+                        <div className='text-center flex flex-col items-center gap-4 py-8'>
+                            <XCircle className='h-16 w-16 text-destructive' />
+                            <p className='font-semibold text-lg'>این سفارش لغو شده است.</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-8">
+                             <div className="flex justify-between items-start">
+                                {statusSteps.map((step, index) => (
+                                <div key={step.status} className="flex flex-col items-center relative flex-1">
+                                    <div className={cn(
+                                        "w-full h-1 bg-muted absolute top-5",
+                                        index === 0 ? "right-1/2" : (index === statusSteps.length - 1 ? "left-1/2" : ""),
+                                        currentStatusIndex >= index && "bg-primary"
+                                    )}></div>
+                                    <div className={cn("h-10 w-10 rounded-full flex items-center justify-center z-10", currentStatusIndex >= index ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
+                                        <step.icon className="h-6 w-6" />
+                                    </div>
+                                    <p className={cn("mt-2 text-xs text-center", currentStatusIndex >= index ? "font-semibold text-primary" : "text-muted-foreground")}>{step.label}</p>
+                                </div>
+                                ))}
+                            </div>
+                            {selectedOrder.trackingCode && selectedOrder.status === 'ارسال شده' && (
+                                <Card className='bg-secondary'>
+                                    <CardContent className='p-4 text-center space-y-3'>
+                                        <p className='text-sm text-muted-foreground'>کد رهگیری پستی شما:</p>
+                                        <div className='flex items-center justify-center gap-2'>
+                                            <Button variant='ghost' size='icon' onClick={handleCopyTrackingCode}>
+                                                <Copy className='h-4 w-4' />
+                                            </Button>
+                                            <p className='font-mono font-bold text-lg tracking-widest' dir='ltr'>{selectedOrder.trackingCode}</p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            )}
+                             {selectedOrder.status === 'تحویل داده شد' && (
+                                 <div className='text-center flex flex-col items-center gap-2 py-4'>
+                                    <ThumbsUp className='h-12 w-12 text-green-500' />
+                                    <p className='font-semibold'>از خرید شما متشکریم!</p>
+                                </div>
+                             )}
+                        </div>
+                    )}
+                </div>
+               </>
+           )}
         </DialogContent>
       </Dialog>
     </div>

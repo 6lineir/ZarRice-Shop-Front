@@ -43,3 +43,23 @@ export type CartItem = {
     quantity: number;
     image?: string;
 }
+
+export type OrderStatus = 'در حال پردازش' | 'ارسال شده' | 'تحویل داده شد' | 'لغو شده';
+
+export type Order = {
+  id: string;
+  date: string;
+  status: OrderStatus;
+  total: number;
+  trackingCode?: string;
+  customer: {
+    name: string;
+    address: string;
+    phone: string;
+  };
+  items: {
+    name: string;
+    quantity: number;
+    price: number;
+  }[];
+};
