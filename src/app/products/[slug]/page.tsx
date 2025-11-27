@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, use } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { products } from '@/lib/data';
@@ -13,13 +13,14 @@ import { Minus, Plus, ShoppingCart, CheckCircle } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
 
 type ProductPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export default function ProductPage({ params }: ProductPageProps) {
-  const product = products.find((p) => p.slug === params.slug);
+  const resolvedParams = use(params);
+  const product = products.find((p) => p.slug === resolvedParams.slug);
   
   if (!product) {
     notFound();

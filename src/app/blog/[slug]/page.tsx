@@ -6,11 +6,12 @@ import { placeholderImages } from '@/lib/placeholder-images';
 import { Calendar, User, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { use } from 'react';
 
 type BlogPostPageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 export async function generateStaticParams() {
@@ -20,7 +21,8 @@ export async function generateStaticParams() {
 }
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const post = blogPosts.find((p) => p.slug === params.slug);
+  const resolvedParams = use(params);
+  const post = blogPosts.find((p) => p.slug === resolvedParams.slug);
 
   if (!post) {
     notFound();
