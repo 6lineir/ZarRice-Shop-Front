@@ -8,7 +8,7 @@ const Footer = () => {
     { href: '/products', label: 'محصولات' },
     { href: '/blog', label: 'وبلاگ' },
     { href: '/contact', label: 'تماس با ما' },
-    { href: '/account', label: 'حساب کاربری من' },
+    { href: '/account', label: 'حساب کاربری' },
   ];
 
   const socialLinks = [
@@ -20,12 +20,12 @@ const Footer = () => {
   return (
     <footer className="bg-secondary text-secondary-foreground border-t">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8 text-right">
-          <div className="lg:col-span-2 pl-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 text-right">
+          <div className="sm:col-span-2 lg:col-span-2">
             <Link href="/" className="mb-4 inline-block">
               <Logo />
             </Link>
-            <p className="text-sm text-muted-foreground max-w-sm">
+            <p className="text-sm text-muted-foreground max-w-sm mt-2">
               عرضه بهترین و با کیفیت‌ترین برنج ایرانی از شالیزارهای سرسبز ایران به سفره شما.
             </p>
           </div>
@@ -45,7 +45,7 @@ const Footer = () => {
 
           <div>
             <h3 className="font-headline font-semibold mb-4">ما را دنبال کنید</h3>
-            <div className="flex space-x-4 space-x-reverse justify-end">
+            <div className="flex space-x-4 space-x-reverse justify-end md:justify-start">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -61,20 +61,22 @@ const Footer = () => {
             </div>
           </div>
           
-          <div>
+          <div className="sm:col-span-2 md:col-span-1">
             <h3 className="font-headline font-semibold mb-4">اعتماد و امنیت</h3>
-            <div className="flex justify-end items-center space-x-2 space-x-reverse text-muted-foreground">
-              <span className="text-sm">پرداخت امن</span>
-              <ShieldCheck className="h-8 w-8 text-green-500" />
-            </div>
-            <div className="flex justify-end items-center space-x-2 space-x-reverse text-muted-foreground mt-2">
-               <span className="text-sm">کیفیت تضمین‌شده</span>
-               <ShieldCheck className="h-8 w-8 text-green-500" />
+            <div className="flex flex-col gap-3 items-end md:items-start">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <ShieldCheck className="h-7 w-7 text-green-600" />
+                  <span className="text-sm">پرداخت امن</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                   <ShieldCheck className="h-7 w-7 text-green-600" />
+                   <span className="text-sm">کیفیت تضمین‌شده</span>
+                </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
+        <div className="mt-12 border-t pt-8 text-center text-xs sm:text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} زر برنج. تمام حقوق محفوظ است.</p>
         </div>
       </div>

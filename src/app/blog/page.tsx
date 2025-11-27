@@ -10,18 +10,18 @@ export default function BlogPage() {
   return (
     <div className="bg-background">
       <header className="py-16 md:py-24 bg-secondary text-center">
-        <div className="container">
-          <h1 className="font-headline text-4xl md:text-5xl font-bold">از مجله زر برنج</h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+        <div className="container px-4">
+          <h1 className="font-headline text-4xl sm:text-5xl font-bold">از مجله زر برنج</h1>
+          <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             بینش‌ها، دستور پخت‌ها و داستان‌هایی از دنیای برنج ممتاز ایرانی.
           </p>
         </div>
       </header>
       
-      <main className="py-16 md:py-24">
-        <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => {
+      <main className="py-12 md:py-20">
+        <div className="container px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {blogPosts.map((post) => {
               const postImage = placeholderImages.find(p => p.id === post.imageId);
               return (
                 <Link href={`/blog/${post.slug}`} key={post.id} className="group block">
@@ -39,9 +39,9 @@ export default function BlogPage() {
                         }
                       </div>
                     </CardHeader>
-                    <CardContent className="p-6 text-right flex flex-col flex-grow">
-                      <p className="text-sm text-muted-foreground mb-2">{post.author} &bull; {post.date}</p>
-                      <h2 className="font-headline text-xl font-semibold mb-3 flex-grow group-hover:text-primary transition-colors">{post.title}</h2>
+                    <CardContent className="p-5 text-right flex flex-col flex-grow">
+                      <p className="text-xs sm:text-sm text-muted-foreground mb-2">{post.author} &bull; {post.date}</p>
+                      <h2 className="font-headline text-lg sm:text-xl font-semibold mb-3 flex-grow group-hover:text-primary transition-colors">{post.title}</h2>
                       <p className="text-muted-foreground text-sm line-clamp-3 mb-4">{post.excerpt}</p>
                       <div className="mt-auto flex items-center justify-end text-sm font-semibold text-primary">
                         بیشتر بخوانید <ArrowLeft className="mr-1 h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />

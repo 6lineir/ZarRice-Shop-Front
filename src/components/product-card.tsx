@@ -36,14 +36,13 @@ const ProductCard = ({ product }: ProductCardProps) => {
       quantity: 1,
     };
     addItem(itemToAdd);
-    // You might want to show a toast notification here
   };
 
 
   return (
     <Card className="flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
       <CardHeader className="p-0 relative">
-        <Link href={`/products/${product.slug}`} className="block">
+        <Link href={`/products/${product.slug}`} className="block group">
           <div className="aspect-video w-full overflow-hidden">
             {productImage && (
               <Image
@@ -51,7 +50,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 alt={product.name}
                 width={600}
                 height={400}
-                className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 data-ai-hint={productImage.imageHint}
               />
             )}
@@ -66,26 +65,26 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </Badge>
         )}
       </CardHeader>
-      <CardContent className="flex-1 p-4">
-        <div className="flex items-start justify-between">
-          <Badge variant="outline">{product.category}</Badge>
-          <StarRating rating={product.rating} />
+      <CardContent className="flex-1 p-4 text-right">
+        <div className="flex items-center justify-between mb-2">
+            <StarRating rating={product.rating} />
+            <Badge variant="outline">{product.category}</Badge>
         </div>
         <Link href={`/products/${product.slug}`}>
-          <CardTitle className="mt-2 text-lg font-headline font-semibold hover:text-primary transition-colors">
+          <CardTitle className="mt-2 text-base sm:text-lg font-headline font-semibold hover:text-primary transition-colors">
             {product.name}
           </CardTitle>
         </Link>
       </CardContent>
-      <CardFooter className="p-4 pt-0 flex justify-between items-center">
-        <Button size="sm" onClick={handleAddToCart}>
-           افزودن به سبد خرید
-          <ShoppingCart className="mr-2 h-4 w-4" />
-        </Button>
-         <div className="text-lg font-bold text-primary">
+      <CardFooter className="p-4 pt-0 flex-col sm:flex-row items-stretch sm:items-center sm:justify-between gap-4">
+        <div className="text-lg font-bold text-primary text-right sm:text-left">
           {product.weightOptions[0].price.toLocaleString()} تومان
           <span className="text-sm font-normal text-muted-foreground">/{product.weightOptions[0].weight}</span>
         </div>
+        <Button size="sm" onClick={handleAddToCart} className="w-full sm:w-auto">
+          <ShoppingCart className="ml-2 h-4 w-4" />
+           افزودن 
+        </Button>
       </CardFooter>
     </Card>
   );

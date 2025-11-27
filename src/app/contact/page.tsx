@@ -42,53 +42,54 @@ export default function ContactPage() {
             fill
             className="object-cover"
             data-ai-hint={headerImage.imageHint}
+            priority
           />
         )}
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 p-4">
-          <h1 className="font-headline text-4xl md:text-6xl font-bold">تماس با ما</h1>
-          <p className="mt-4 text-lg md:text-xl text-gray-200 max-w-2xl mx-auto">ما برای کمک اینجا هستیم. با هر سوال، پیشنهاد یا نظری با ما در تماس باشید.</p>
+          <h1 className="font-headline text-4xl sm:text-5xl md:text-6xl font-bold">تماس با ما</h1>
+          <p className="mt-4 text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto">ما برای کمک اینجا هستیم. با هر سوال، پیشنهاد یا نظری با ما در تماس باشید.</p>
         </div>
       </header>
 
-      <main className="py-16 md:py-24">
-        <div className="container">
-          <div className="grid lg:grid-cols-5 gap-12">
+      <main className="py-12 md:py-20">
+        <div className="container px-4">
+          <div className="grid lg:grid-cols-5 gap-12 items-start">
             
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-3 order-2 lg:order-1">
               <Card className="shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-3xl font-headline">برای ما پیام بفرستید</CardTitle>
+                  <CardTitle className="text-2xl sm:text-3xl font-headline">برای ما پیام بفرستید</CardTitle>
                   <CardDescription>فرم زیر را پر کنید تا در اسرع وقت با شما تماس بگیریم.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form className="space-y-6 text-right">
                     <div className="grid sm:grid-cols-2 gap-6">
+                       <div className="space-y-2">
+                        <Label htmlFor="firstName">نام</Label>
+                        <Input id="firstName" placeholder="علی" />
+                      </div>
                       <div className="space-y-2">
                         <Label htmlFor="lastName">نام خانوادگی</Label>
                         <Input id="lastName" placeholder="رضایی" />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="firstName">نام</Label>
-                        <Input id="firstName" placeholder="علی" />
-                      </div>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">ایمیل</Label>
-                      <Input id="email" type="email" placeholder="ali.rezaei@example.com" />
+                      <Input id="email" type="email" placeholder="ali.rezaei@example.com" dir="ltr" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="message">پیام شما</Label>
-                      <Textarea id="message" placeholder="لطفاً پیام خود را اینجا بنویسید..." rows={6} />
+                      <Textarea id="message" placeholder="لطفاً پیام خود را اینجا بنویسید..." rows={5} />
                     </div>
-                    <Button type="submit" size="lg" className="w-full">ارسال پیام</Button>
+                    <Button type="submit" size="lg" className="w-full sm:w-auto">ارسال پیام</Button>
                   </form>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="lg:col-span-2 space-y-8 text-right">
-                <h2 className="font-headline text-3xl font-semibold mb-6">اطلاعات تماس</h2>
+            <div className="lg:col-span-2 space-y-8 text-right order-1 lg:order-2">
+                <h2 className="font-headline text-2xl sm:text-3xl font-semibold mb-6">اطلاعات تماس</h2>
                 <div className="space-y-6">
                     {contactInfo.map((info) => (
                         <div key={info.title} className="flex items-start gap-4 justify-end">
@@ -106,7 +107,7 @@ export default function ContactPage() {
                         </div>
                     ))}
                 </div>
-                <div className="pt-8">
+                <div className="pt-6">
                   <h3 className="font-headline text-2xl font-semibold mb-4">مکان ما روی نقشه</h3>
                   <div className="aspect-video bg-muted rounded-lg overflow-hidden shadow-md">
                      <iframe 

@@ -6,14 +6,14 @@ import { ListOrdered, User, LogOut } from 'lucide-react';
 export default function AccountPage() {
   return (
     <div className="bg-secondary">
-      <div className="container py-16 md:py-24">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-8">حساب کاربری من</h1>
-        <div className="grid md:grid-cols-3 gap-8">
+      <div className="container py-12 md:py-20 px-4">
+        <h1 className="font-headline text-3xl sm:text-4xl md:text-5xl font-bold mb-8">حساب کاربری من</h1>
+        <div className="grid md:grid-cols-4 gap-8">
           <aside className="md:col-span-1">
             <Card>
               <CardContent className="p-4">
                 <nav className="flex flex-col gap-2">
-                  <Button variant="ghost" asChild className="justify-start">
+                  <Button variant="ghost" asChild className="justify-start bg-muted">
                     <Link href="/account">
                       <User className="ml-2 h-4 w-4" />
                       جزئیات حساب
@@ -33,7 +33,7 @@ export default function AccountPage() {
               </CardContent>
             </Card>
           </aside>
-          <main className="md:col-span-2">
+          <main className="md:col-span-3">
             <Card>
               <CardHeader>
                 <CardTitle>جزئیات حساب</CardTitle>
