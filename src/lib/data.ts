@@ -16,7 +16,15 @@ export const products: Product[] = [
     reviewCount: 125,
     discount: 10,
     imageId: 'product-tarom',
-    stock: 100
+    stock: 100,
+    cookingType: 'کته و آبکش',
+    aroma: 'بسیار معطر',
+    texture: 'نرم و پفکی',
+    origin: 'گیلان',
+    reviews: [
+        { author: 'مریم رضایی', rating: 5, comment: 'عطر و طعم این برنج فوق‌العاده‌ست! کاملا مجلسی و باکیفیت.' },
+        { author: 'علی احمدی', rating: 4, comment: 'برنج خوبیه ولی انتظار داشتم یکم بیشتر قد بکشه.' },
+    ]
   },
   {
     id: '2',
@@ -32,7 +40,14 @@ export const products: Product[] = [
     reviewCount: 98,
     discount: 0,
     imageId: 'product-sadri',
-    stock: 75
+    stock: 75,
+    cookingType: 'آبکش',
+    aroma: 'استثنایی',
+    texture: 'بسیار سبک',
+    origin: 'آستانه اشرفیه',
+    reviews: [
+        { author: 'سارا کریمی', rating: 5, comment: 'بهترین برنجی که تا حالا امتحان کردم. قد کشیدنش بی‌نظیره.' },
+    ]
   },
   {
     id: '3',
@@ -49,7 +64,15 @@ export const products: Product[] = [
     reviewCount: 210,
     discount: 0,
     imageId: 'product-hashemi',
-    stock: 200
+    stock: 200,
+    cookingType: 'کته و آبکش',
+    aroma: 'معطر',
+    texture: 'خوش‌پخت',
+    origin: 'گیلان',
+    reviews: [
+        { author: 'حسین جلالی', rating: 5, comment: 'برای مصرف روزانه عالیه. قیمت و کیفیتش متناسبه.' },
+        { author: 'فاطمه نوری', rating: 4, comment: 'برنج خوب و خوش خوراکیه.' },
+    ]
   },
   {
     id: '4',
@@ -65,7 +88,14 @@ export const products: Product[] = [
     reviewCount: 55,
     discount: 15,
     imageId: 'product-fereydunkenar',
-    stock: 50
+    stock: 50,
+    cookingType: 'کته',
+    aroma: 'دودی',
+    texture: 'کمی چسبناک',
+    origin: 'فریدونکنار',
+    reviews: [
+        { author: 'رضا قاسمی', rating: 5, comment: 'طعم دودیش فوق‌العاده‌ست. برای غذاهای خاص مثل ماهی عالیه.' },
+    ]
   },
   {
     id: '5',
@@ -81,7 +111,14 @@ export const products: Product[] = [
     reviewCount: 72,
     discount: 0,
     imageId: 'product-gilan',
-    stock: 80
+    stock: 80,
+    cookingType: 'کته',
+    aroma: 'شیرین و خاص',
+    texture: 'کمی چسبناک',
+    origin: 'گیلان',
+    reviews: [
+        { author: 'زهرا موسوی', rating: 5, comment: 'عطر این برنج آدم رو مست میکنه! برای کته عالیه.' },
+    ]
   },
   {
     id: '6',
@@ -98,7 +135,14 @@ export const products: Product[] = [
     reviewCount: 150,
     discount: 5,
     imageId: 'product-golestan',
-    stock: 300
+    stock: 300,
+    cookingType: 'کته و آبکش',
+    aroma: 'متوسط',
+    texture: 'معمولی',
+    origin: 'گلستان',
+    reviews: [
+        { author: 'محمد اکبری', rating: 4, comment: 'یه برنج اقتصادی و خوب برای دم دستی.' },
+    ]
   },
 ];
 

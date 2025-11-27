@@ -3,6 +3,12 @@ export type WeightOption = {
   price: number;
 };
 
+export type Review = {
+    author: string;
+    rating: number;
+    comment: string;
+}
+
 export type Product = {
   id: string;
   name: string;
@@ -15,6 +21,12 @@ export type Product = {
   discount: number;
   imageId: string;
   stock: number;
+  // New detailed properties
+  cookingType: string;
+  aroma: string;
+  texture: string;
+  origin: string;
+  reviews: Review[];
 };
 
 export type ProductCategory = {
