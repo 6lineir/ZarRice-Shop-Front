@@ -25,6 +25,13 @@ import {
 } from '@/components/ui/chart';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { products } from '@/lib/data';
+import { placeholderImages } from '@/lib/placeholder-images';
+import Image from 'next/image';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 
 const salesData = [
@@ -54,6 +61,16 @@ const tasks = [
     { id: 'task4', label: 'نوشتن مقاله جدید برای وبلاگ' },
     { id: 'task5', label: 'برنامه‌ریزی کمپین تخفیف بعدی' },
 ]
+
+const recentCustomers = [
+    { name: 'علی رضایی', email: 'ali.rezaei@example.com' },
+    { name: 'سارا محمدی', email: 'sara.mohammadi@example.com' },
+    { name: 'مریم حسینی', email: 'maryam.hosseini@example.com' },
+    { name: 'رضا احمدی', email: 'reza.ahmadi@example.com' },
+    { name: 'فاطمه کریمی', email: 'fateme.karimi@example.com' },
+];
+
+const bestSellingProducts = products.slice(0,4).map((p,i) => ({...p, sales: 210 - (i*30)}));
 
 export default function AdminDashboardPage() {
   return (
@@ -156,50 +173,63 @@ export default function AdminDashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4 lg:col-span-4">
+       <div className="grid gap-4 lg:grid-cols-2">
+        <Card>
           <CardHeader>
-            <CardTitle>سفارشات اخیر</CardTitle>
+            <CardTitle>پرفروش‌ترین محصولات</CardTitle>
+             <CardDescription>محصولاتی که بیشترین فروش را این ماه داشته‌اند.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {bestSellingProducts.map((product) => {
+                const image = placeholderImages.find(p => p.id === product.imageId);
+                return (
+                  <div key={product.id} className="flex items-center gap-4">
+                    {image && (
+                      <Link href={`/products/${product.slug}`}>
+                        <Image
+                          src={image.imageUrl}
+                          alt={product.name}
+                          width={64}
+                          height={64}
+                          className="rounded-md object-cover h-16 w-16"
+                        />
+                      </Link>
+                    )}
+                    <div className="flex-1">
+                      <Link href={`/products/${product.slug}`} className="font-semibold hover:text-primary">{product.name}</Link>
+                      <p className="text-sm text-muted-foreground">{product.category}</p>
+                    </div>
+                    <div className="text-right">
+                        <p className="font-bold">{product.sales}</p>
+                        <p className="text-xs text-muted-foreground">فروش</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+           <CardHeader>
+            <CardTitle>آخرین مشتریان</CardTitle>
             <CardDescription>
-              شما در این ماه ۲۶۵ سفارش داشته‌اید.
+              ۵ مشتری که اخیراً ثبت‌نام کرده‌اند.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-             <div className="flex items-center">
-              <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">علی رضایی</p>
-                <p className="text-sm text-muted-foreground">ali.rezaei@email.com</p>
-              </div>
-              <div className="mr-auto font-medium">+۱,۹۹۹,۹۰۰ تومان</div>
-            </div>
-             <div className="flex items-center">
-              <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">سارا محمدی</p>
-                <p className="text-sm text-muted-foreground">sara.mohammadi@email.com</p>
-              </div>
-              <div className="mr-auto font-medium">+۳۹۰,۰۰۰ تومان</div>
-            </div>
-             <div className="flex items-center">
-              <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">مریم حسینی</p>
-                <p className="text-sm text-muted-foreground">maryam.hosseini@email.com</p>
-              </div>
-              <div className="mr-auto font-medium">+۲۹۹,۰۰۰ تومان</div>
-            </div>
-             <div className="flex items-center">
-              <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">رضا احمدی</p>
-                <p className="text-sm text-muted-foreground">reza.ahmadi@email.com</p>
-              </div>
-              <div className="mr-auto font-medium">+۹۹۰,۰۰۰ تومان</div>
-            </div>
-             <div className="flex items-center">
-              <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">فاطمه کریمی</p>
-                <p className="text-sm text-muted-foreground">fateme.karimi@email.com</p>
-              </div>
-              <div className="mr-auto font-medium">+۳۹۰,۰۰۰ تومان</div>
-            </div>
+            {recentCustomers.map((customer) => (
+                <div key={customer.email} className="flex items-center gap-4">
+                    <Avatar className="h-10 w-10">
+                        <AvatarFallback>{customer.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <p className="font-semibold">{customer.name}</p>
+                        <p className="text-sm text-muted-foreground">{customer.email}</p>
+                    </div>
+                </div>
+            ))}
           </CardContent>
         </Card>
       </div>
