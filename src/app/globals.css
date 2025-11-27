@@ -96,10 +96,23 @@
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
     width: 100%;
     height: 100%;
-    padding: 2rem;
     background: white;
     color: black;
+  }
+   body.print-active .printable-content div,
+   body.print-active .printable-content span,
+   body.print-active .printable-content p,
+   body.print-active .printable-content h2,
+   body.print-active .printable-content h3,
+   body.print-active .printable-content address {
+     color: black !important;
+   }
+
+  @page {
+    size: auto;
+    margin: 0;
   }
 }

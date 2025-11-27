@@ -122,15 +122,25 @@ export default function OrdersPage() {
   useEffect(() => {
     const afterPrint = () => {
         setIsPrinting(false);
+        document.body.classList.remove('print-active');
     };
     window.addEventListener('afterprint', afterPrint);
     return () => window.removeEventListener('afterprint', afterPrint);
   }, []);
+  
+  useEffect(() => {
+      if(isPrinting) {
+          document.body.classList.add('print-active');
+      } else {
+          document.body.classList.remove('print-active');
+      }
+  }, [isPrinting]);
+
 
   const currentStatusIndex = selectedOrder ? statusSteps.findIndex(step => step.status === selectedOrder.status) : -1;
 
   return (
-    <div className={`bg-secondary ${isPrinting ? 'print-active' : ''}`}>
+    <div className={`bg-secondary`}>
       <div className="container py-12 md:py-20 px-4 non-printable">
         <h1 className="font-headline text-3xl sm:text-4xl md:text-5xl font-bold mb-8">حساب کاربری من</h1>
         <div className="grid md:grid-cols-4 gap-8">
@@ -208,9 +218,9 @@ export default function OrdersPage() {
         </div>
       </div>
       
-      {selectedOrder && (
-          <div className={`printable-content ${isPrinting ? 'visible' : 'hidden'}`}>
-            <div ref={invoiceRef} className="p-8">
+        {selectedOrder && (
+          <div className="printable-content" ref={invoiceRef}>
+            <div className="p-8">
                 <div className="text-center mb-6">
                     <h2 className="text-2xl font-bold mb-2">فاکتور سفارش {selectedOrder.id}</h2>
                     <p className="text-sm text-gray-600">
@@ -278,13 +288,13 @@ export default function OrdersPage() {
             {selectedOrder && (
                 <>
                 <div ref={dialogInvoiceRef}>
-                    <DialogHeader className='p-8 pb-4'>
+                    <DialogHeader className='p-6 pb-4'>
                         <DialogTitle className="text-2xl mb-2">فاکتور سفارش {selectedOrder.id}</DialogTitle>
                         <DialogDescription>
                             تاریخ سفارش: {selectedOrder.date}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="px-8 py-4 space-y-6">
+                    <div className="px-6 py-4 space-y-6">
                         <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
                                 <h3 className="font-semibold mb-2">ارسال به:</h3>
@@ -337,7 +347,7 @@ export default function OrdersPage() {
                         </div>
                     </div>
                 </div>
-                <DialogFooter className="border-t p-6 gap-2 sm:justify-between flex-row-reverse">
+                <DialogFooter className="border-t p-6 gap-2 sm:justify-between flex-row-reverse sm:space-x-reverse sm:space-x-2">
                     <div className='flex gap-2 justify-end'>
                         <Button variant="outline" onClick={handlePrint}>
                             <Printer className="ml-2 h-4 w-4" />
@@ -362,11 +372,11 @@ export default function OrdersPage() {
         <DialogContent className="sm:max-w-md">
            {selectedOrder && (
                <>
-                <DialogHeader>
+                <DialogHeader className='p-6 pb-0'>
                     <DialogTitle>رهگیری سفارش {selectedOrder.id}</DialogTitle>
                     <DialogDescription>وضعیت لحظه‌ای سفارش خود را مشاهده کنید.</DialogDescription>
                 </DialogHeader>
-                <div className="py-4">
+                <div className="p-6">
                     {selectedOrder.status === 'لغو شده' ? (
                         <div className='text-center flex flex-col items-center gap-4 py-8'>
                             <XCircle className='h-16 w-16 text-destructive' />
@@ -403,7 +413,7 @@ export default function OrdersPage() {
                                 </Card>
                             )}
                              {selectedOrder.status === 'تحویل داده شد' && (
-                                 <div className='text-center flex flex-col items-center gap-2 py-4'>
+                                 <div className='text-center flex flex-col items-center gap-2 pt-4'>
                                     <ThumbsUp className='h-12 w-12 text-green-500' />
                                     <p className='font-semibold'>از خرید شما متشکریم!</p>
                                 </div>
