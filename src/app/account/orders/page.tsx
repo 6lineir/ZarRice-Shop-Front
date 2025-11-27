@@ -1,15 +1,17 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ListOrdered, User, LogOut, Printer } from 'lucide-react';
+import { ListOrdered, User, LogOut, Printer, FileDown, Loader2 } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const orders = [
     { 
@@ -57,6 +59,28 @@ const getStatusVariant = (status: string) => {
 
 export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  const invoiceRef = useRef(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownloadPdf = async () => {
+      if (!invoiceRef.current || !selectedOrder) return;
+      setIsDownloading(true);
+      try {
+        const canvas = await html2canvas(invoiceRef.current, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+            orientation: 'p',
+            unit: 'px',
+            format: [canvas.width, canvas.height]
+        });
+        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save(`invoice-${selectedOrder.id}.pdf`);
+      } catch(e) {
+          console.error("Error generating PDF:", e);
+      } finally {
+        setIsDownloading(false);
+      }
+  };
 
   return (
     <div className="bg-secondary">
@@ -114,69 +138,79 @@ export default function OrdersPage() {
                                                 </button>
                                             </DialogTrigger>
                                             {selectedOrder && selectedOrder.id === order.id && (
-                                                <DialogContent className="sm:max-w-2xl">
-                                                    <DialogHeader>
-                                                        <DialogTitle>فاکتور سفارش {order.id}</DialogTitle>
-                                                        <DialogDescription>
-                                                            تاریخ سفارش: {order.date}
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-                                                    <div className="py-4 space-y-6">
-                                                        <div className="grid grid-cols-2 gap-4 text-sm">
-                                                            <div>
-                                                                <h3 className="font-semibold mb-2">ارسال به:</h3>
-                                                                <address className="not-italic text-muted-foreground">
-                                                                    {order.customer.name}<br />
-                                                                    {order.customer.address}<br />
-                                                                    {order.customer.phone}
-                                                                </address>
+                                                <DialogContent className="sm:max-w-3xl">
+                                                    <div ref={invoiceRef} className="p-8">
+                                                        <DialogHeader>
+                                                            <DialogTitle className="text-2xl mb-2">فاکتور سفارش {order.id}</DialogTitle>
+                                                            <DialogDescription>
+                                                                تاریخ سفارش: {order.date}
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+                                                        <div className="py-4 space-y-6">
+                                                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                                                <div>
+                                                                    <h3 className="font-semibold mb-2">ارسال به:</h3>
+                                                                    <address className="not-italic text-muted-foreground">
+                                                                        {order.customer.name}<br />
+                                                                        {order.customer.address}<br />
+                                                                        {order.customer.phone}
+                                                                    </address>
+                                                                </div>
+                                                                <div>
+                                                                    <h3 className="font-semibold mb-2">وضعیت سفارش:</h3>
+                                                                    <Badge variant={getStatusVariant(order.status)}>{order.status}</Badge>
+                                                                </div>
                                                             </div>
-                                                            <div>
-                                                                <h3 className="font-semibold mb-2">وضعیت سفارش:</h3>
-                                                                <Badge variant={getStatusVariant(order.status)}>{order.status}</Badge>
-                                                            </div>
-                                                        </div>
-                                                        <Separator />
-                                                        <Table>
-                                                            <TableHeader>
-                                                                <TableRow>
-                                                                    <TableHead>محصول</TableHead>
-                                                                    <TableHead className="text-center">تعداد</TableHead>
-                                                                    <TableHead className="text-left">قیمت واحد</TableHead>
-                                                                    <TableHead className="text-left">جمع</TableHead>
-                                                                </TableRow>
-                                                            </TableHeader>
-                                                            <TableBody>
-                                                                {order.items.map(item => (
-                                                                    <TableRow key={item.name}>
-                                                                        <TableCell>{item.name}</TableCell>
-                                                                        <TableCell className="text-center">{item.quantity}</TableCell>
-                                                                        <TableCell className="text-left">{item.price.toLocaleString()} تومان</TableCell>
-                                                                        <TableCell className="text-left">{(item.price * item.quantity).toLocaleString()} تومان</TableCell>
+                                                            <Separator />
+                                                            <Table>
+                                                                <TableHeader>
+                                                                    <TableRow>
+                                                                        <TableHead>محصول</TableHead>
+                                                                        <TableHead className="text-center">تعداد</TableHead>
+                                                                        <TableHead className="text-left">قیمت واحد</TableHead>
+                                                                        <TableHead className="text-left">جمع</TableHead>
                                                                     </TableRow>
-                                                                ))}
-                                                            </TableBody>
-                                                        </Table>
-                                                        <Separator />
-                                                         <div className="space-y-2 text-sm">
-                                                            <div className="flex justify-between">
-                                                                <span className="text-muted-foreground">جمع جزء:</span>
-                                                                <span>{order.items.reduce((acc, i) => acc + i.price * i.quantity, 0).toLocaleString()} تومان</span>
-                                                            </div>
-                                                            <div className="flex justify-between">
-                                                                <span className="text-muted-foreground">هزینه ارسال:</span>
-                                                                <span>{(order.total - order.items.reduce((acc, i) => acc + i.price * i.quantity, 0)).toLocaleString()} تومان</span>
-                                                            </div>
-                                                            <div className="flex justify-between font-bold text-base">
-                                                                <span>مجموع کل:</span>
-                                                                <span>{order.total.toLocaleString()} تومان</span>
+                                                                </TableHeader>
+                                                                <TableBody>
+                                                                    {order.items.map(item => (
+                                                                        <TableRow key={item.name}>
+                                                                            <TableCell>{item.name}</TableCell>
+                                                                            <TableCell className="text-center">{item.quantity}</TableCell>
+                                                                            <TableCell className="text-left">{item.price.toLocaleString()} تومان</TableCell>
+                                                                            <TableCell className="text-left">{(item.price * item.quantity).toLocaleString()} تومان</TableCell>
+                                                                        </TableRow>
+                                                                    ))}
+                                                                </TableBody>
+                                                            </Table>
+                                                            <Separator />
+                                                             <div className="space-y-2 text-sm pt-4">
+                                                                <div className="flex justify-between">
+                                                                    <span className="text-muted-foreground">جمع جزء:</span>
+                                                                    <span>{order.items.reduce((acc, i) => acc + i.price * i.quantity, 0).toLocaleString()} تومان</span>
+                                                                </div>
+                                                                <div className="flex justify-between">
+                                                                    <span className="text-muted-foreground">هزینه ارسال:</span>
+                                                                    <span>{(order.total - order.items.reduce((acc, i) => acc + i.price * i.quantity, 0)).toLocaleString()} تومان</span>
+                                                                </div>
+                                                                <div className="flex justify-between font-bold text-base">
+                                                                    <span>مجموع کل:</span>
+                                                                    <span>{order.total.toLocaleString()} تومان</span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <DialogFooter>
+                                                    <DialogFooter className="border-t pt-4">
                                                         <Button variant="outline" onClick={() => window.print()}>
                                                             <Printer className="ml-2 h-4 w-4" />
                                                             چاپ فاکتور
+                                                        </Button>
+                                                        <Button onClick={handleDownloadPdf} disabled={isDownloading}>
+                                                            {isDownloading ? (
+                                                                <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                                                            ) : (
+                                                                <FileDown className="ml-2 h-4 w-4" />
+                                                            )}
+                                                            دانلود PDF
                                                         </Button>
                                                     </DialogFooter>
                                                 </DialogContent>
