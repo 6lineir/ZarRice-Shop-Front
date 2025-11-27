@@ -92,6 +92,7 @@ export default function AdminProductsPage() {
                           height="64"
                           src={image.imageUrl}
                           width="64"
+                          data-ai-hint={image.imageHint}
                         />
                       )}
                     </TableCell>
@@ -108,7 +109,7 @@ export default function AdminProductsPage() {
                       {product.stock}
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      2023-07-12 10:42 AM
+                      ۱۴۰۲/۰۸/۱۲
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -125,7 +126,7 @@ export default function AdminProductsPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>عملیات</DropdownMenuLabel>
                           <DropdownMenuItem>ویرایش</DropdownMenuItem>
-                          <DropdownMenuItem>حذف</DropdownMenuItem>
+                          <DropdownMenuItem className="text-destructive">حذف</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

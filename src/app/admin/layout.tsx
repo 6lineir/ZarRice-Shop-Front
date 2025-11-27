@@ -13,7 +13,7 @@ import {
   SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, ShoppingBag, ListOrdered, Users, LogOut, Settings, LayoutGrid } from 'lucide-react';
+import { Home, ShoppingBag, ListOrdered, Users, LogOut, Settings, LayoutGrid, Sparkles } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Link from 'next/link';
@@ -25,6 +25,7 @@ const adminNavLinks = [
   { href: '/admin/categories', label: 'دسته‌بندی‌ها', icon: LayoutGrid },
   { href: '/admin/orders', label: 'سفارشات', icon: ListOrdered },
   { href: '/admin/customers', label: 'مشتریان', icon: Users },
+  { href: '/admin/ai-tools', label: 'ابزارهای AI', icon: Sparkles },
   { href: '/admin/settings', label: 'تنظیمات', icon: Settings },
 ];
 
