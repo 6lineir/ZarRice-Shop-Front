@@ -12,7 +12,7 @@ export default function CartPage() {
   const { items, updateItemQuantity, removeItem, clearCart } = useCart();
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   // Assuming a flat shipping rate for simplicity
-  const shipping = items.length > 0 ? 5.00 : 0;
+  const shipping = items.length > 0 ? 50000 : 0;
   const total = subtotal + shipping;
 
   return (
@@ -36,7 +36,7 @@ export default function CartPage() {
                   <Button variant="ghost" size="icon" className="ml-4 text-muted-foreground hover:text-destructive" onClick={() => removeItem(item.id)}>
                     <Trash2 className="h-5 w-5" />
                   </Button>
-                  <p className="w-24 text-right font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="w-32 text-right font-semibold">{(item.price * item.quantity).toLocaleString()} تومان</p>
                    <div className="flex items-center border rounded-lg mx-4">
                      <Button variant="ghost" size="icon" onClick={() => updateItemQuantity(item.id, item.quantity + 1)}>
                       <Plus className="h-4 w-4" />
@@ -49,7 +49,7 @@ export default function CartPage() {
                   <div className="flex-grow text-right">
                     <Link href={`/products/${item.productId}`} className="font-semibold hover:text-primary">{item.name}</Link>
                     <p className="text-sm text-muted-foreground">{item.weight}</p>
-                    <p className="text-sm font-bold">${item.price.toFixed(2)}</p>
+                    <p className="text-sm font-bold">{item.price.toLocaleString()} تومان</p>
                   </div>
                    <div className="relative h-24 w-24 rounded-md overflow-hidden ml-4">
                     {item.image && <Image src={item.image} alt={item.name} fill className="object-cover" />}
@@ -65,11 +65,11 @@ export default function CartPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between">
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>{subtotal.toLocaleString()} تومان</span>
                     <span>جمع کل</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>${shipping.toFixed(2)}</span>
+                    <span>{shipping.toLocaleString()} تومان</span>
                     <span>هزینه ارسال</span>
                   </div>
                    <div className="flex justify-between">
@@ -78,7 +78,7 @@ export default function CartPage() {
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold text-lg">
-                    <span>${total.toFixed(2)}</span>
+                    <span>{total.toLocaleString()} تومان</span>
                     <span>مجموع</span>
                   </div>
                 </CardContent>

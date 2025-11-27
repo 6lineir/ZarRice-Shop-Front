@@ -82,8 +82,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
            افزودن به سبد خرید
           <ShoppingCart className="mr-2 h-4 w-4" />
         </Button>
-         <div className="text-xl font-bold text-primary">
-          ${product.weightOptions[0].price.toFixed(2)}
+         <div className="text-lg font-bold text-primary">
+          {product.weightOptions[0].price.toLocaleString()} تومان
           <span className="text-sm font-normal text-muted-foreground">/{product.weightOptions[0].weight}</span>
         </div>
       </CardFooter>

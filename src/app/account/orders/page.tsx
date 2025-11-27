@@ -6,9 +6,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 
 const orders = [
-    { id: 'ZR-1701', date: '2023-10-25', status: 'تحویل داده شد', total: 75.99 },
-    { id: 'ZR-1708', date: '2023-11-12', status: 'ارسال شده', total: 110.00 },
-    { id: 'ZR-1715', date: '2023-11-20', status: 'در حال پردازش', total: 12.99 },
+    { id: 'ZR-1701', date: '2023-10-25', status: 'تحویل داده شد', total: 759900 },
+    { id: 'ZR-1708', date: '2023-11-12', status: 'ارسال شده', total: 1100000 },
+    { id: 'ZR-1715', date: '2023-11-20', status: 'در حال پردازش', total: 129900 },
 ];
 
 export default function OrdersPage() {
@@ -68,7 +68,7 @@ export default function OrdersPage() {
                                         {order.status}
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="text-left">${order.total.toFixed(2)}</TableCell>
+                                <TableCell className="text-left">{order.total.toLocaleString()} تومان</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

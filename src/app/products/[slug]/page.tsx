@@ -114,7 +114,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div className="flex justify-between items-center mb-6">
                 <span className="text-muted-foreground text-xl">قیمت کل</span>
                 <span className="font-headline text-4xl font-bold text-primary">
-                ${(selectedWeight.price * quantity).toFixed(2)}
+                {(selectedWeight.price * quantity).toLocaleString()} تومان
                 </span>
             </div>
             <Button
