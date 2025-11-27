@@ -17,12 +17,13 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Eye, Printer, Truck } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -109,8 +110,19 @@ export default function AdminOrdersPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>عملیات</DropdownMenuLabel>
-                          <DropdownMenuItem>مشاهده جزئیات</DropdownMenuItem>
-                          <DropdownMenuItem>تغییر وضعیت</DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Eye className="ml-2 h-4 w-4" />
+                            مشاهده جزئیات
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Printer className="ml-2 h-4 w-4" />
+                            چاپ فاکتور
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                           <DropdownMenuItem>
+                             <Truck className="ml-2 h-4 w-4" />
+                            تغییر وضعیت
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
