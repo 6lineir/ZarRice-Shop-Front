@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { DollarSign, Users, ListOrdered, ShoppingBag } from 'lucide-react';
+import { DollarSign, Users, ListOrdered, ShoppingBag, CheckCircle } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -23,6 +23,8 @@ import {
   ChartContainer,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 
 const salesData = [
@@ -44,6 +46,14 @@ const chartConfig = {
     color: 'hsl(var(--accent))',
   },
 };
+
+const tasks = [
+    { id: 'task1', label: 'بررسی سفارشات جدید' },
+    { id: 'task2', label: 'پاسخ به تیکت‌های پشتیبانی' },
+    { id: 'task3', label: 'به‌روزرسانی موجودی انبار' },
+    { id: 'task4', label: 'نوشتن مقاله جدید برای وبلاگ' },
+    { id: 'task5', label: 'برنامه‌ریزی کمپین تخفیف بعدی' },
+]
 
 export default function AdminDashboardPage() {
   return (
@@ -101,8 +111,8 @@ export default function AdminDashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <Card className="xl:col-span-2">
           <CardHeader>
             <CardTitle>نمودار فروش و درآمد</CardTitle>
             <CardDescription>نمای کلی فروش و درآمد در ۶ ماه گذشته</CardDescription>
@@ -128,7 +138,26 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-4 lg:col-span-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>لیست کارها</CardTitle>
+            <CardDescription>
+              کارهای مهمی که باید انجام دهید.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+             {tasks.map(task => (
+                 <div key={task.id} className="flex items-center space-x-2 space-x-reverse">
+                    <Checkbox id={task.id} />
+                    <Label htmlFor={task.id} className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>{task.label}</Label>
+                 </div>
+             ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4 lg:col-span-4">
           <CardHeader>
             <CardTitle>سفارشات اخیر</CardTitle>
             <CardDescription>
