@@ -276,6 +276,7 @@ export default function AccountPage() {
                          <DialogContent className="sm:max-w-[425px]">
                             <DialogHeader className="p-6 pb-4">
                                 <DialogTitle>ویرایش آدرس</DialogTitle>
+                                <DialogDescription>آدرس انتخاب شده را ویرایش کنید.</DialogDescription>
                             </DialogHeader>
                             <div className="grid gap-4 py-4 px-6 text-right">
                                 <div className="grid grid-cols-4 items-center gap-4">
