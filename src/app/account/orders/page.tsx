@@ -86,10 +86,16 @@ export default function OrdersPage() {
 
   const handlePrint = () => {
     setIsPrinting(true);
-    setTimeout(() => {
-        window.print();
-    }, 100);
   };
+
+  useEffect(() => {
+    if (isPrinting) {
+      setTimeout(() => {
+        window.print();
+        setIsPrinting(false);
+      }, 100);
+    }
+  }, [isPrinting]);
 
   useEffect(() => {
     const afterPrint = () => {
@@ -243,14 +249,14 @@ export default function OrdersPage() {
         <DialogContent className="sm:max-w-3xl">
             {selectedOrder && (
                 <>
-                <div ref={dialogInvoiceRef} className="p-8">
-                    <DialogHeader>
+                <div ref={dialogInvoiceRef}>
+                    <DialogHeader className='p-8 pb-4'>
                         <DialogTitle className="text-2xl mb-2">فاکتور سفارش {selectedOrder.id}</DialogTitle>
                         <DialogDescription>
                             تاریخ سفارش: {selectedOrder.date}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="py-4 space-y-6">
+                    <div className="px-8 py-4 space-y-6">
                         <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
                                 <h3 className="font-semibold mb-2">ارسال به:</h3>
@@ -303,7 +309,7 @@ export default function OrdersPage() {
                         </div>
                     </div>
                 </div>
-                <DialogFooter className="border-t pt-4">
+                <DialogFooter className="border-t p-6 gap-2 sm:space-x-reverse">
                     <Button variant="outline" onClick={handlePrint}>
                         <Printer className="ml-2 h-4 w-4" />
                         چاپ فاکتور
