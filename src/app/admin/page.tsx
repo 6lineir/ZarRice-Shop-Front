@@ -1,3 +1,4 @@
+
 'use client';
 import { useState } from 'react';
 import {
@@ -164,32 +165,6 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="grid gap-4 xl:grid-cols-2">
-        <Card className="xl:col-span-2">
-          <CardHeader>
-            <CardTitle>نمودار فروش و درآمد</CardTitle>
-            <CardDescription>نمای کلی فروش و درآمد در ۶ ماه گذشته</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-              <BarChart data={salesData} accessibilityLayer>
-                 <CartesianGrid vertical={false} />
-                 <XAxis
-                  dataKey="month"
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                />
-                 <YAxis yAxisId="left" orientation="left" stroke="hsl(var(--primary))" />
-                 <YAxis yAxisId="right" orientation="right" stroke="hsl(var(--accent))" />
-                <Tooltip content={<ChartTooltipContent />} />
-                <Legend />
-                <Bar yAxisId="left" dataKey="revenue" fill="hsl(var(--primary))" radius={4} name="درآمد" />
-                <Bar yAxisId="right" dataKey="sales" fill="hsl(var(--accent))" radius={4} name="فروش" />
-              </BarChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
-        
         <Card>
           <CardHeader>
             <CardTitle>لیست کارها</CardTitle>
@@ -317,6 +292,34 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+       <Card>
+          <CardHeader>
+            <CardTitle>نمودار فروش و درآمد</CardTitle>
+            <CardDescription>نمای کلی فروش و درآمد در ۶ ماه گذشته</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
+              <BarChart data={salesData} accessibilityLayer>
+                 <CartesianGrid vertical={false} />
+                 <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                />
+                 <YAxis yAxisId="left" orientation="left" stroke="hsl(var(--primary))" />
+                 <YAxis yAxisId="right" orientation="right" stroke="hsl(var(--accent))" />
+                <Tooltip content={<ChartTooltipContent />} />
+                <Legend />
+                <Bar yAxisId="left" dataKey="revenue" fill="hsl(var(--primary))" radius={4} name="درآمد" />
+                <Bar yAxisId="right" dataKey="sales" fill="hsl(var(--accent))" radius={4} name="فروش" />
+              </BarChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
     </div>
   );
 }
+
+    
