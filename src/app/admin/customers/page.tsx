@@ -107,7 +107,7 @@ export default function AdminCustomersPage() {
             <div className="text-xs text-muted-foreground">
                 نمایش <strong>1-6</strong> از <strong>{customers.length}</strong> مشتری
             </div>
-            <Pagination className="mr-auto">
+            <Pagination className="ml-auto">
                 <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious href="#" />

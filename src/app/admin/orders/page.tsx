@@ -135,7 +135,7 @@ export default function AdminOrdersPage() {
             <div className="text-xs text-muted-foreground">
                 نمایش <strong>1-6</strong> از <strong>{orders.length}</strong> سفارش
             </div>
-            <Pagination className="mr-auto">
+            <Pagination className="ml-auto">
                 <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious href="#" />

@@ -272,7 +272,7 @@ export default function AdminProductsPage() {
             <div className="text-xs text-muted-foreground">
                 نمایش <strong>1-6</strong> از <strong>{products.length}</strong> محصول
             </div>
-            <Pagination className="mr-auto">
+            <Pagination className="ml-auto">
                 <PaginationContent>
                 <PaginationItem>
                     <PaginationPrevious href="#" />
