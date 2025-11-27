@@ -1,19 +1,19 @@
 'use client';
+import { useState } from 'react';
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { DollarSign, Users, ListOrdered, ShoppingBag, CheckCircle, ArrowLeft } from 'lucide-react';
+import { DollarSign, Users, ListOrdered, ShoppingBag, ArrowLeft, Trash2, Plus } from 'lucide-react';
 import {
   Bar,
   BarChart,
   CartesianGrid,
   Legend,
-  Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -32,6 +32,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 
 
 const salesData = [
@@ -54,12 +55,12 @@ const chartConfig = {
   },
 };
 
-const tasks = [
-    { id: 'task1', label: 'بررسی سفارشات جدید' },
-    { id: 'task2', label: 'پاسخ به تیکت‌های پشتیبانی' },
-    { id: 'task3', label: 'به‌روزرسانی موجودی انبار' },
-    { id: 'task4', label: 'نوشتن مقاله جدید برای وبلاگ' },
-    { id: 'task5', label: 'برنامه‌ریزی کمپین تخفیف بعدی' },
+const initialTasks = [
+    { id: 'task1', label: 'بررسی سفارشات جدید', completed: false },
+    { id: 'task2', label: 'پاسخ به تیکت‌های پشتیبانی', completed: false },
+    { id: 'task3', label: 'به‌روزرسانی موجودی انبار', completed: false },
+    { id: 'task4', label: 'نوشتن مقاله جدید برای وبلاگ', completed: true },
+    { id: 'task5', label: 'برنامه‌ریزی کمپین تخفیف بعدی', completed: false },
 ]
 
 const recentOrders = [
@@ -83,6 +84,30 @@ const getStatusVariant = (status: string) => {
 const bestSellingProducts = products.slice(0,4).map((p,i) => ({...p, sales: 210 - (i*30)}));
 
 export default function AdminDashboardPage() {
+  const [tasks, setTasks] = useState(initialTasks);
+  const [newTaskLabel, setNewTaskLabel] = useState('');
+
+  const handleToggleTask = (taskId: string) => {
+    setTasks(tasks.map(task => 
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+    ));
+  };
+
+  const handleAddTask = () => {
+    if (newTaskLabel.trim() === '') return;
+    const newTask = {
+        id: `task${Date.now()}`,
+        label: newTaskLabel,
+        completed: false
+    };
+    setTasks([...tasks, newTask]);
+    setNewTaskLabel('');
+  };
+
+  const handleDeleteTask = (taskId: string) => {
+    setTasks(tasks.filter(task => task.id !== taskId));
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">داشبورد ادمین</h1>
@@ -174,12 +199,29 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent className="space-y-4">
              {tasks.map(task => (
-                 <div key={task.id} className="flex items-center gap-3">
-                    <Checkbox id={task.id} />
-                    <Label htmlFor={task.id} className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>{task.label}</Label>
+                 <div key={task.id} className="flex items-center gap-3 group">
+                    <Checkbox id={task.id} checked={task.completed} onCheckedChange={() => handleToggleTask(task.id)} />
+                    <Label htmlFor={task.id} className={`flex-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${task.completed ? 'line-through text-muted-foreground' : ''}`}>{task.label}</Label>
+                    <Button variant="ghost" size="icon" className="h-6 w-6 opacity-0 group-hover:opacity-100" onClick={() => handleDeleteTask(task.id)}>
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
                  </div>
              ))}
           </CardContent>
+          <CardFooter>
+            <div className="flex w-full items-center gap-2">
+                <Input 
+                    placeholder="وظیفه جدید..." 
+                    value={newTaskLabel} 
+                    onChange={(e) => setNewTaskLabel(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
+                />
+                <Button onClick={handleAddTask}>
+                    <Plus className="ml-2 h-4 w-4" />
+                    افزودن
+                </Button>
+            </div>
+          </CardFooter>
         </Card>
 
         <Card>
