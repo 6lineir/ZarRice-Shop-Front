@@ -147,7 +147,7 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent className="space-y-4">
              {tasks.map(task => (
-                 <div key={task.id} className="flex items-center space-x-2 space-x-reverse">
+                 <div key={task.id} className="flex items-center gap-3">
                     <Checkbox id={task.id} />
                     <Label htmlFor={task.id} className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>{task.label}</Label>
                  </div>
