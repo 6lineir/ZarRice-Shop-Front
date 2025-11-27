@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingCart, User, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, Search } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 import { Logo } from '@/components/logo';
@@ -18,6 +18,7 @@ import {
   SheetTrigger,
   SheetClose
 } from "@/components/ui/sheet"
+import { SearchDialog } from '../search-dialog';
 
 
 const navLinks = [
@@ -102,6 +103,11 @@ const Header = () => {
            <div className="hidden md:flex md:flex-1 md:items-center md:justify-start">
             <div className="flex items-center gap-2">
               <ThemeToggle />
+               <SearchDialog>
+                  <Button variant="ghost" size="icon" aria-label="جستجو">
+                    <Search className="h-6 w-6" />
+                  </Button>
+               </SearchDialog>
               <Link href="/account">
                 <Button variant="ghost" size="icon" aria-label="حساب کاربری">
                   <User className="h-6 w-6" />
@@ -132,6 +138,11 @@ const Header = () => {
            
            <div className="flex items-center gap-2 md:hidden">
               <ThemeToggle />
+              <SearchDialog>
+                  <Button variant="ghost" size="icon" aria-label="جستجو">
+                    <Search className="h-6 w-6" />
+                  </Button>
+               </SearchDialog>
               <Link href="/cart" className="relative" aria-label={`سبد خرید با ${cartItemCount} کالا`}>
                 <Button variant="ghost" size="icon">
                   <ShoppingCart className="h-6 w-6" />
