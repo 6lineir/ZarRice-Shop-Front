@@ -13,7 +13,7 @@ import {
   SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, ShoppingBag, ListOrdered, Users, LogOut, Settings, LayoutGrid, Sparkles, TicketPercent } from 'lucide-react';
+import { Home, ShoppingBag, ListOrdered, Users, LogOut, Settings, LayoutGrid, Sparkles, TicketPercent, FileText } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Link from 'next/link';
@@ -25,6 +25,7 @@ const adminNavLinks = [
   { href: '/admin/categories', label: 'دسته‌بندی‌ها', icon: LayoutGrid },
   { href: '/admin/orders', label: 'سفارشات', icon: ListOrdered },
   { href: '/admin/customers', label: 'مشتریان', icon: Users },
+  { href: '/admin/blog', label: 'وبلاگ', icon: FileText },
   { href: '/admin/discounts', label: 'کدهای تخفیف', icon: TicketPercent },
   { href: '/admin/ai-tools', label: 'ابزارهای AI', icon: Sparkles },
   { href: '/admin/settings', label: 'تنظیمات', icon: Settings },
@@ -79,7 +80,11 @@ export default function AdminLayout({
       <SidebarInset>
         <header className="flex h-14 items-center justify-between border-b bg-background/95 px-4 backdrop-blur-sm md:hidden">
           <SidebarTrigger />
-          <Logo />
+           <div className="flex flex-1 items-center justify-end">
+             <Link href="/" aria-label="بازگشت به صفحه اصلی">
+              <span className="font-headline text-xl font-bold">زر برنج</span>
+            </Link>
+           </div>
         </header>
         <main className="flex-1 p-4 sm:p-6">{children}</main>
       </SidebarInset>
