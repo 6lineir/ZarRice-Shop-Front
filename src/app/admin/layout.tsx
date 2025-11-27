@@ -13,7 +13,7 @@ import {
   SidebarFooter,
   SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, ShoppingBag, ListOrdered, Users, LogOut } from 'lucide-react';
+import { Home, ShoppingBag, ListOrdered, Users, LogOut, Settings, LayoutGrid } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Link from 'next/link';
@@ -22,8 +22,10 @@ import { usePathname } from 'next/navigation';
 const adminNavLinks = [
   { href: '/admin', label: 'داشبورد', icon: Home },
   { href: '/admin/products', label: 'محصولات', icon: ShoppingBag },
+  { href: '/admin/categories', label: 'دسته‌بندی‌ها', icon: LayoutGrid },
   { href: '/admin/orders', label: 'سفارشات', icon: ListOrdered },
   { href: '/admin/customers', label: 'مشتریان', icon: Users },
+  { href: '/admin/settings', label: 'تنظیمات', icon: Settings },
 ];
 
 export default function AdminLayout({
@@ -48,7 +50,7 @@ export default function AdminLayout({
               <SidebarMenuItem key={link.href}>
                 <Link href={link.href}>
                   <SidebarMenuButton
-                    isActive={pathname === link.href}
+                    isActive={pathname.startsWith(link.href) && (link.href !== '/admin' || pathname === '/admin')}
                     tooltip={{ children: link.label }}
                   >
                     <link.icon />

@@ -1,4 +1,6 @@
+
 'use client';
+import Link from 'next/link';
 import {
   Card,
   CardContent,
@@ -20,7 +22,7 @@ import { products } from '@/lib/data';
 import Image from 'next/image';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, PlusCircle } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,7 +46,12 @@ export default function AdminProductsPage() {
             <h1 className="text-2xl font-bold">محصولات</h1>
             <p className="text-muted-foreground">لیست تمام محصولات فروشگاه شما.</p>
         </div>
-        <Button>افزودن محصول</Button>
+        <Button asChild>
+            <Link href="/admin/products/new">
+                <PlusCircle className="ml-2 h-4 w-4" />
+                افزودن محصول
+            </Link>
+        </Button>
       </div>
       <Card>
         <CardHeader>
@@ -90,7 +97,7 @@ export default function AdminProductsPage() {
                     </TableCell>
                     <TableCell className="font-medium">{product.name}</TableCell>
                     <TableCell>
-                      <Badge variant={product.stock > 0 ? "default" : "destructive"}>
+                      <Badge variant={product.stock > 0 ? 'default' : 'destructive'}>
                         {product.stock > 0 ? 'موجود' : 'ناموجود'}
                       </Badge>
                     </TableCell>
