@@ -31,6 +31,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function AccountPage() {
   const [user, setUser] = useState({
@@ -175,9 +176,46 @@ export default function AccountPage() {
                     آدرس‌های ذخیره شده برای ارسال سریع‌تر
                   </CardDescription>
                 </div>
-                <Button variant="outline" size="sm">
-                  <PlusCircle className="ml-2 h-4 w-4" /> افزودن آدرس
-                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <PlusCircle className="ml-2 h-4 w-4" /> افزودن آدرس
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>افزودن آدرس جدید</DialogTitle>
+                      <DialogDescription>
+                        آدرس جدید خود را برای ارسال سفارشات وارد کنید.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4 text-right">
+                      <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="address-title" className="text-right">
+                          عنوان
+                        </Label>
+                        <Input
+                          id="address-title"
+                          placeholder="مثلا: خانه"
+                          className="col-span-3"
+                        />
+                      </div>
+                      <div className="grid grid-cols-4 items-start gap-4">
+                        <Label htmlFor="address-details" className="text-right pt-2">
+                          آدرس کامل
+                        </Label>
+                        <Textarea
+                          id="address-details"
+                          placeholder="استان، شهر، خیابان..."
+                          className="col-span-3"
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button type="submit">ذخیره آدرس</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </CardHeader>
               <CardContent className="space-y-4">
                 {user.addresses.map((addr) => (
