@@ -1,4 +1,4 @@
-import { Leaf } from 'lucide-react';
+import { Wheat } from 'lucide-react';
 
 export function Logo() {
   return (
@@ -6,7 +6,7 @@ export function Logo() {
       <span className="font-headline text-2xl font-bold tracking-tight">
         زر برنج
       </span>
-      <Leaf className="h-7 w-7 text-primary" />
+      <Wheat className="h-7 w-7 text-primary" />
     </div>
   );
 }
