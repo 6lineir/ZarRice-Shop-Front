@@ -67,6 +67,11 @@ export default function CartPage() {
                   <CardTitle>خلاصه سفارش</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                   <div className="flex items-center gap-2">
+                      <Input placeholder="کد تخفیف" className="flex-1" />
+                      <Button variant="secondary">اعمال</Button>
+                    </div>
+                   <Separator />
                   <div className="flex justify-between">
                     <span>جمع کل</span>
                     <span>{subtotal.toLocaleString()} تومان</span>
