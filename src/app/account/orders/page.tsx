@@ -337,7 +337,7 @@ export default function OrdersPage() {
                         </div>
                     </div>
                 </div>
-                <DialogFooter className="border-t p-6 gap-2 sm:justify-between sm:flex-row-reverse">
+                <DialogFooter className="border-t p-6 gap-2 sm:justify-between flex-row-reverse">
                     <div className='flex gap-2 justify-end'>
                         <Button variant="outline" onClick={handlePrint}>
                             <Printer className="ml-2 h-4 w-4" />
@@ -378,9 +378,9 @@ export default function OrdersPage() {
                                 {statusSteps.map((step, index) => (
                                 <div key={step.status} className="flex flex-col items-center relative flex-1">
                                     <div className={cn(
-                                        "w-full h-1 bg-muted absolute top-5",
+                                        "w-full h-1 bg-muted absolute top-5 -z-10",
                                         index === 0 ? "right-1/2" : (index === statusSteps.length - 1 ? "left-1/2" : ""),
-                                        currentStatusIndex >= index && "bg-primary"
+                                        currentStatusIndex > index ? "bg-primary" : (currentStatusIndex === index ? "bg-gradient-to-l from-primary to-muted" : "bg-muted")
                                     )}></div>
                                     <div className={cn("h-10 w-10 rounded-full flex items-center justify-center z-10", currentStatusIndex >= index ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>
                                         <step.icon className="h-6 w-6" />
@@ -389,7 +389,7 @@ export default function OrdersPage() {
                                 </div>
                                 ))}
                             </div>
-                            {selectedOrder.trackingCode && selectedOrder.status === 'ارسال شده' && (
+                            {selectedOrder.trackingCode && (selectedOrder.status === 'ارسال شده' || selectedOrder.status === 'تحویل داده شد') && (
                                 <Card className='bg-secondary'>
                                     <CardContent className='p-4 text-center space-y-3'>
                                         <p className='text-sm text-muted-foreground'>کد رهگیری پستی شما:</p>
