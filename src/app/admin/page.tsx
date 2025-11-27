@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { DollarSign, Users, ListOrdered, ShoppingBag, CheckCircle } from 'lucide-react';
+import { DollarSign, Users, ListOrdered, ShoppingBag, CheckCircle, ArrowLeft } from 'lucide-react';
 import {
   Bar,
   BarChart,
@@ -28,10 +28,10 @@ import { Label } from '@/components/ui/label';
 import { products } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 
 const salesData = [
@@ -62,13 +62,23 @@ const tasks = [
     { id: 'task5', label: 'برنامه‌ریزی کمپین تخفیف بعدی' },
 ]
 
-const recentCustomers = [
-    { name: 'علی رضایی', email: 'ali.rezaei@example.com' },
-    { name: 'سارا محمدی', email: 'sara.mohammadi@example.com' },
-    { name: 'مریم حسینی', email: 'maryam.hosseini@example.com' },
-    { name: 'رضا احمدی', email: 'reza.ahmadi@example.com' },
-    { name: 'فاطمه کریمی', email: 'fateme.karimi@example.com' },
-];
+const recentOrders = [
+    { id: 'ZR-1708', customerName: 'سارا محمدی', email: 'sara.m@example.com', total: 1100000, status: 'ارسال شده' },
+    { id: 'ZR-1715', customerName: 'مریم حسینی', email: 'maryam.h@example.com', total: 129900, status: 'در حال پردازش' },
+    { id: 'ZR-1701', customerName: 'علی رضایی', email: 'ali.r@example.com', total: 759900, status: 'تحویل داده شد' },
+    { id: 'ZR-1716', customerName: 'حسین جلالی', email: 'hossein.j@example.com', total: 890000, status: 'در حال پردازش' },
+    { id: 'ZR-1709', customerName: 'فاطمه کریمی', email: 'fateme.k@example.com', total: 250000, status: 'تحویل داده شد' },
+]
+
+const getStatusVariant = (status: string) => {
+    switch (status) {
+        case 'تحویل داده شد': return 'default';
+        case 'ارسال شده': return 'secondary';
+        case 'در حال پردازش': return 'outline';
+        case 'لغو شده': return 'destructive';
+        default: return 'outline';
+    }
+}
 
 const bestSellingProducts = products.slice(0,4).map((p,i) => ({...p, sales: 210 - (i*30)}));
 
@@ -128,7 +138,7 @@ export default function AdminDashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 xl:grid-cols-2">
         <Card className="xl:col-span-2">
           <CardHeader>
             <CardTitle>نمودار فروش و درآمد</CardTitle>
@@ -154,7 +164,7 @@ export default function AdminDashboardPage() {
             </ChartContainer>
           </CardContent>
         </Card>
-
+        
         <Card>
           <CardHeader>
             <CardTitle>لیست کارها</CardTitle>
@@ -169,6 +179,38 @@ export default function AdminDashboardPage() {
                     <Label htmlFor={task.id} className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>{task.label}</Label>
                  </div>
              ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+           <CardHeader>
+            <CardTitle>سفارشات اخیر</CardTitle>
+            <CardDescription>
+              ۵ سفارش اخیری که در فروشگاه ثبت شده است.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {recentOrders.map((order) => (
+                <div key={order.id} className="flex items-center gap-4">
+                    <Avatar className="h-10 w-10">
+                        <AvatarFallback>{order.customerName.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className='flex-1'>
+                        <p className="font-semibold">{order.customerName}</p>
+                        <p className="text-sm text-muted-foreground" dir="ltr">{order.email}</p>
+                    </div>
+                     <div className='text-right'>
+                        <p className='font-bold whitespace-nowrap'>{order.total.toLocaleString()} تومان</p>
+                        <Badge variant={getStatusVariant(order.status)} className="mt-1">{order.status}</Badge>
+                    </div>
+                </div>
+            ))}
+             <Button asChild variant="outline" className="w-full mt-4">
+                <Link href="/admin/orders">
+                    <ArrowLeft className="ml-2 h-4 w-4" />
+                    مشاهده همه سفارشات
+                </Link>
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -219,14 +261,14 @@ export default function AdminDashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {recentCustomers.map((customer) => (
+             {recentOrders.slice(0, 5).map((customer) => (
                 <div key={customer.email} className="flex items-center gap-4">
                     <Avatar className="h-10 w-10">
-                        <AvatarFallback>{customer.name.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>{customer.customerName.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <p className="font-semibold">{customer.name}</p>
-                        <p className="text-sm text-muted-foreground">{customer.email}</p>
+                        <p className="font-semibold">{customer.customerName}</p>
+                        <p className="text-sm text-muted-foreground" dir="ltr">{customer.email}</p>
                     </div>
                 </div>
             ))}
