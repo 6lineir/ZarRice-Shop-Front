@@ -241,7 +241,7 @@ export default function AdminDashboardPage() {
           <CardContent>
             <div className="space-y-4">
               {bestSellingProducts.map((product) => {
-                const image = placeholderImages.find(p => p.id === product.imageId);
+                const image = placeholderImages.find(p => p.id === product.images[0].id);
                 return (
                   <div key={product.id} className="flex items-center gap-4">
                     {image && (

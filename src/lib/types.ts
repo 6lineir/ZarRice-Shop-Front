@@ -9,6 +9,11 @@ export type Review = {
     comment: string;
 }
 
+export type ProductImage = {
+  id: string;
+  type: 'image' | 'video';
+}
+
 export type Product = {
   id: string;
   name: string;
@@ -19,7 +24,7 @@ export type Product = {
   rating: number;
   reviewCount: number;
   discount: number;
-  imageId: string;
+  images: ProductImage[];
   stock: number;
   // New detailed properties
   cookingType: string;

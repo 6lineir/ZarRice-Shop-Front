@@ -22,7 +22,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const productImage = placeholderImages.find((p) => p.id === product.imageId);
+  const productImage = placeholderImages.find((p) => p.id === product.images[0].id);
   const { addItem } = useCart();
 
   const handleAddToCart = () => {

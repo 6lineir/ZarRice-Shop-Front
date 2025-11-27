@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, use } from 'react';
+import { useState, use, useMemo } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { products } from '@/lib/data';
@@ -20,6 +20,7 @@ import {
   ChefHat,
   Star,
   UserCircle,
+  PlayCircle,
 } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
 import {
@@ -28,9 +29,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { Card, CardContent } from '@/components/ui/card';
 import ProductCard from '@/components/product-card';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
+import { cn } from '@/lib/utils';
+import type { ProductImage } from '@/lib/types';
+
 
 type ProductPageProps = {
   params: Promise<{
@@ -45,7 +55,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   if (!product) {
     notFound();
   }
-
+  
+  const [selectedImage, setSelectedImage] = useState(product.images[0]);
   const [selectedWeight, setSelectedWeight] = useState(
     product.weightOptions[0]
   );
@@ -53,7 +64,8 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [addedToCart, setAddedToCart] = useState(false);
 
   const { addItem } = useCart();
-  const productImage = placeholderImages.find((p) => p.id === product.imageId);
+  
+  const mainProductImage = placeholderImages.find((p) => p.id === selectedImage.id);
 
   const handleAddToCart = () => {
     const itemToAdd = {
@@ -62,7 +74,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       name: product.name,
       price: selectedWeight.price,
       weight: selectedWeight.weight,
-      image: productImage?.imageUrl,
+      image: placeholderImages.find(p => p.id === product.images[0].id)?.imageUrl,
       quantity: quantity,
     };
     addItem(itemToAdd);
@@ -77,26 +89,52 @@ export default function ProductPage({ params }: ProductPageProps) {
     { icon: MapPin, label: 'منطقه کشت', value: product.origin },
   ];
   
-  const relatedProducts = products.filter(
-      p => p.category === product.category && p.id !== product.id
-  ).slice(0, 3);
+  const bestSellingProducts = useMemo(() => 
+    [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 6)
+  , []);
 
   return (
     <div className="container py-8 md:py-16 px-4">
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-        <div className="bg-secondary rounded-lg p-4 sticky top-24 h-max shadow-md">
-          {productImage && (
-            <div className="aspect-square relative">
-              <Image
-                src={productImage.imageUrl}
-                alt={product.name}
-                fill
-                className="object-contain hover:scale-105 transition-transform duration-300"
-                data-ai-hint={productImage.imageHint}
-              />
+        <div className="space-y-4 sticky top-24 h-max">
+           <div className="bg-secondary rounded-lg p-4 shadow-md">
+            {mainProductImage && (
+                <div className="aspect-square relative">
+                <Image
+                    src={mainProductImage.imageUrl}
+                    alt={product.name}
+                    fill
+                    className="object-contain hover:scale-105 transition-transform duration-300"
+                    data-ai-hint={mainProductImage.imageHint}
+                />
+                </div>
+            )}
             </div>
-          )}
+            {product.images.length > 1 && (
+                <div className='grid grid-cols-5 gap-2'>
+                    {product.images.map(img => {
+                        const thumb = placeholderImages.find(p => p.id === img.id);
+                        return thumb ? (
+                           <button 
+                             key={img.id}
+                             onClick={() => setSelectedImage(img)}
+                             className={cn("aspect-square relative rounded-md overflow-hidden border-2 transition",
+                                selectedImage.id === img.id ? 'border-primary' : 'border-transparent'
+                             )}
+                           >
+                               <Image src={thumb.imageUrl} alt={thumb.description} fill className='object-cover' data-ai-hint={thumb.imageHint} />
+                               {img.type === 'video' && (
+                                   <div className='absolute inset-0 bg-black/50 flex items-center justify-center'>
+                                       <PlayCircle className='h-6 w-6 text-white' />
+                                   </div>
+                               )}
+                           </button>
+                        ) : null;
+                    })}
+                </div>
+            )}
         </div>
+
 
         <div>
           <h1 className="font-headline text-3xl md:text-4xl font-bold">
@@ -245,18 +283,31 @@ export default function ProductPage({ params }: ProductPageProps) {
         </Accordion>
       </div>
 
-      {relatedProducts.length > 0 && (
-        <div className="mt-16 md:mt-24">
+       <div className="mt-16 md:mt-24">
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-10">
-            محصولات مرتبط
+                محصولات پرفروش
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-            {relatedProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
-            ))}
-            </div>
+            <Carousel
+                opts={{
+                    align: "start",
+                    loop: true,
+                    direction: "rtl",
+                }}
+                className="w-full max-w-5xl mx-auto"
+                >
+                <CarouselContent>
+                    {bestSellingProducts.map((p) => (
+                    <CarouselItem key={p.id} className="md:basis-1/2 lg:basis-1/3">
+                        <div className="p-1">
+                            <ProductCard product={p} />
+                        </div>
+                    </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+            </Carousel>
         </div>
-      )}
 
     </div>
   );

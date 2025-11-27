@@ -205,7 +205,7 @@ export default function AdminProductsPage() {
             <TableBody>
               {products.map((product) => {
                 const image = placeholderImages.find(
-                  (p) => p.id === product.imageId
+                  (p) => p.id === product.images[0].id
                 );
                 return (
                   <TableRow key={product.id}>
