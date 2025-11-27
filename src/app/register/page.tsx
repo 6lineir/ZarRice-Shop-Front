@@ -13,33 +13,33 @@ export default function RegisterPage() {
            <Link href="/" className="mb-4 inline-block mx-auto">
             <Logo />
           </Link>
-          <CardTitle className="font-headline text-2xl">Create an Account</CardTitle>
-          <CardDescription>Join ZarRice to start your premium rice journey.</CardDescription>
+          <CardTitle className="font-headline text-2xl">ایجاد حساب کاربری</CardTitle>
+          <CardDescription>برای شروع سفر برنج ممتاز خود به زر برنج بپیوندید.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form className="space-y-4 text-right">
              <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" type="text" placeholder="John Doe" required />
+              <Label htmlFor="name">نام</Label>
+              <Input id="name" type="text" placeholder="علی رضایی" required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="m@example.com" required />
+              <Label htmlFor="email">ایمیل</Label>
+              <Input id="email" type="email" placeholder="m@example.com" required dir="ltr"/>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Label htmlFor="password">رمز عبور</Label>
+              <Input id="password" type="password" required dir="ltr"/>
             </div>
             <Button type="submit" className="w-full">
-              Create Account
+              ایجاد حساب
             </Button>
           </form>
         </CardContent>
         <CardFooter>
            <div className="text-center text-sm w-full">
-            Already have an account?{' '}
+            قبلا حساب کاربری ساخته‌اید؟{' '}
             <Link href="/login" className="font-semibold text-primary hover:underline">
-              Log in
+              وارد شوید
             </Link>
           </div>
         </CardFooter>

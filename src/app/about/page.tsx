@@ -8,33 +8,33 @@ export default function AboutPage() {
   const values = [
     {
       icon: Leaf,
-      title: 'Purity',
-      description: 'Sourcing only the most natural, non-GMO rice from trusted family farms.',
+      title: 'خلوص',
+      description: 'تامین خالص‌ترین برنج غیرتراریخته از مزارع خانوادگی معتمد.',
     },
     {
       icon: Award,
-      title: 'Heritage',
-      description: 'Honoring centuries of Persian agricultural tradition in every grain.',
+      title: 'میراث',
+      description: 'احترام به قرن‌ها سنت کشاورزی ایرانی در هر دانه برنج.',
     },
     {
       icon: Truck,
-      title: 'Freshness',
-      description: 'A direct-to-you model ensuring unparalleled freshness and flavor.',
+      title: 'تازگی',
+      description: 'مدل مستقیم به شما که تازگی و طعم بی‌نظیری را تضمین می‌کند.',
     },
   ];
 
   const trustBadges = [
     {
       icon: ShieldCheck,
-      text: '100% Secure Payments'
+      text: 'پرداخت ۱۰۰٪ امن'
     },
     {
       icon: Award,
-      text: 'Certified Premium Quality'
+      text: 'کیفیت برتر تایید شده'
     },
     {
       icon: Leaf,
-      text: 'Ethically Sourced'
+      text: 'تامین اخلاقی'
     }
   ];
 
@@ -42,9 +42,9 @@ export default function AboutPage() {
     <div className="bg-background">
       <header className="py-16 md:py-24 bg-secondary text-center">
         <div className="container">
-          <h1 className="font-headline text-4xl md:text-5xl font-bold">About ZarRice</h1>
+          <h1 className="font-headline text-4xl md:text-5xl font-bold">درباره زر برنج</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            From the fertile crescent of ancient Persia to the modern table, our story is one of passion, purity, and perfection.
+            از هلال حاصلخیز ایران باستان تا سفره مدرن، داستان ما داستان شور، خلوص و کمال است.
           </p>
         </div>
       </header>
@@ -52,17 +52,17 @@ export default function AboutPage() {
       <section className="py-16 md:py-24">
         <div className="container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="prose prose-lg dark:prose-invert max-w-none">
-              <h2 className="font-headline text-3xl">Our Story</h2>
+            <div className="prose prose-lg dark:prose-invert max-w-none text-right">
+              <h2 className="font-headline text-3xl">داستان ما</h2>
               <p>
-                ZarRice was born from a simple desire: to share the authentic taste of premium Iranian rice with the world. Our founders, with roots deep in the rice-growing regions of Gilan and Mazandaran, grew up with the unparalleled aroma and delicate flavor of true Persian rice – a quality often lost in mass-market exports.
+                زر برنج از یک آرزوی ساده متولد شد: به اشتراک گذاشتن طعم اصیل برنج ممتاز ایرانی با جهان. بنیان‌گذاران ما، با ریشه‌هایی عمیق در مناطق برنج‌خیز گیلان و مازندران، با عطر بی‌نظیر و طعم لطیف برنج واقعی ایرانی بزرگ شدند – کیفیتی که اغلب در صادرات انبوه از بین می‌رود.
               </p>
               <p>
-                We embarked on a journey to bridge the gap, building direct relationships with small, family-owned farms that have cultivated these ancient grains for generations. We believe in a process that respects both the farmer and the land, ensuring that every bag of ZarRice is not just a product, but a piece of Persian heritage.
+                ما سفری را برای پر کردن این شکاف آغاز کردیم و روابط مستقیمی با مزارع کوچک و خانوادگی ایجاد کردیم که این دانه‌های باستانی را برای نسل‌ها کشت کرده‌اند. ما به فرآیندی معتقدیم که هم به کشاورز و هم به زمین احترام می‌گذارد و تضمین می‌کند که هر کیسه زر برنج فقط یک محصول نیست، بلکه قطعه‌ای از میراث ایران است.
               </p>
-              <h3 className="font-headline text-2xl mt-8">Our Mission</h3>
+              <h3 className="font-headline text-2xl mt-8">ماموریت ما</h3>
               <p>
-                To deliver the world's finest Iranian rice to discerning customers, while upholding principles of sustainability, fair trade, and cultural preservation. We aim to elevate the simple act of cooking rice into a truly golden experience.
+                ارائه بهترین برنج ایرانی جهان به مشتریان فهیم، ضمن رعایت اصول پایداری، تجارت منصفانه و حفظ فرهنگ. هدف ما ارتقای عمل ساده پختن برنج به یک تجربه واقعا طلایی است.
               </p>
             </div>
             <div>
@@ -83,7 +83,7 @@ export default function AboutPage() {
 
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container text-center">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold mb-12">Our Core Values</h2>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold mb-12">ارزش‌های اصلی ما</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {values.map((value) => (
               <div key={value.title} className="p-8 bg-background rounded-lg shadow-md">

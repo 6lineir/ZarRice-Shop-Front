@@ -15,9 +15,9 @@ export default function ProductsPage() {
     <div className="bg-background">
       <header className="py-16 md:py-24 bg-secondary text-center">
         <div className="container">
-          <h1 className="font-headline text-4xl md:text-5xl font-bold">Our Premium Rice Collection</h1>
+          <h1 className="font-headline text-4xl md:text-5xl font-bold">مجموعه برنج ممتاز ما</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explore the authentic taste of Persia with our hand-selected rice varieties.
+            طعم اصیل ایرانی را با انواع برنج دست‌چین ما کاوش کنید.
           </p>
         </div>
       </header>
@@ -26,13 +26,13 @@ export default function ProductsPage() {
         <div className="container">
           <div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-8">
             <div className='flex gap-4'>
-              <Input placeholder="Search products..." className="w-full md:w-64" />
+              <Input placeholder="جستجوی محصولات..." className="w-full md:w-64" />
                <Select>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="All Categories" />
+                  <SelectValue placeholder="همه دسته‌ها" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="all">همه دسته‌ها</SelectItem>
                   {productCategories.map(cat => (
                     <SelectItem key={cat.name} value={cat.name.toLowerCase()}>{cat.name}</SelectItem>
                   ))}
@@ -41,13 +41,13 @@ export default function ProductsPage() {
             </div>
              <Select>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder="مرتب‌سازی بر اساس" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="featured">Featured</SelectItem>
-                  <SelectItem value="price_asc">Price: Low to High</SelectItem>
-                  <SelectItem value="price_desc">Price: High to Low</SelectItem>
-                   <SelectItem value="rating">Avg. Customer Review</SelectItem>
+                  <SelectItem value="featured">ویژه</SelectItem>
+                  <SelectItem value="price_asc">قیمت: از کم به زیاد</SelectItem>
+                  <SelectItem value="price_desc">قیمت: از زیاد به کم</SelectItem>
+                   <SelectItem value="rating">میانگین نظرات مشتریان</SelectItem>
                 </SelectContent>
               </Select>
           </div>

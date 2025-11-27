@@ -13,29 +13,29 @@ export default function LoginPage() {
           <Link href="/" className="mb-4 inline-block mx-auto">
             <Logo />
           </Link>
-          <CardTitle className="font-headline text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Enter your credentials to access your account.</CardDescription>
+          <CardTitle className="font-headline text-2xl">خوش آمدید</CardTitle>
+          <CardDescription>برای دسترسی به حساب خود وارد شوید.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form className="space-y-4 text-right">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="m@example.com" required />
+              <Label htmlFor="email">ایمیل</Label>
+              <Input id="email" type="email" placeholder="m@example.com" required dir="ltr" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Label htmlFor="password">رمز عبور</Label>
+              <Input id="password" type="password" required dir="ltr" />
             </div>
             <Button type="submit" className="w-full">
-              Login
+              ورود
             </Button>
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-4 text-sm">
            <div className="text-center">
-            Don't have an account?{' '}
+            حساب کاربری ندارید؟{' '}
             <Link href="/register" className="font-semibold text-primary hover:underline">
-              Sign up
+              ثبت نام کنید
             </Link>
           </div>
         </CardFooter>

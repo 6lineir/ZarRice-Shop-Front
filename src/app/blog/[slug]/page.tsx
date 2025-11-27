@@ -45,12 +45,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           </h1>
           <div className="flex justify-center items-center gap-6 text-sm text-gray-200">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              <span>{post.author}</span>
+              <span>{post.date}</span>
+              <Calendar className="h-4 w-4" />
             </div>
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
-              <span>{post.date}</span>
+              <span>{post.author}</span>
+              <User className="h-4 w-4" />
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
 
       <div className="container max-w-3xl mx-auto py-12 md:py-16 px-4">
         <div
-          className="prose prose-lg dark:prose-invert max-w-none"
+          className="prose prose-lg dark:prose-invert max-w-none text-right"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </div>

@@ -7,7 +7,7 @@ export default function AccountPage() {
   return (
     <div className="bg-secondary">
       <div className="container py-16 md:py-24">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-8">My Account</h1>
+        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-8">حساب کاربری من</h1>
         <div className="grid md:grid-cols-3 gap-8">
           <aside className="md:col-span-1">
             <Card>
@@ -15,19 +15,19 @@ export default function AccountPage() {
                 <nav className="flex flex-col gap-2">
                   <Button variant="ghost" asChild className="justify-start">
                     <Link href="/account">
-                      <User className="mr-2 h-4 w-4" />
-                      Account Details
+                      <User className="ml-2 h-4 w-4" />
+                      جزئیات حساب
                     </Link>
                   </Button>
                   <Button variant="ghost" asChild className="justify-start">
                     <Link href="/account/orders">
-                      <ListOrdered className="mr-2 h-4 w-4" />
-                      My Orders
+                      <ListOrdered className="ml-2 h-4 w-4" />
+                      سفارشات من
                     </Link>
                   </Button>
                    <Button variant="ghost" className="justify-start text-destructive hover:text-destructive">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
+                      <LogOut className="ml-2 h-4 w-4" />
+                      خروج
                    </Button>
                 </nav>
               </CardContent>
@@ -36,15 +36,15 @@ export default function AccountPage() {
           <main className="md:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle>Account Details</CardTitle>
+                <CardTitle>جزئیات حساب</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg mb-6">Welcome back, User!</p>
+                <p className="text-lg mb-6">خوش آمدید، کاربر!</p>
                 <div className="space-y-4">
-                    <p><span className="font-semibold">Name:</span> John Doe</p>
-                    <p><span className="font-semibold">Email:</span> john.doe@example.com</p>
+                    <p><span className="font-semibold">نام:</span> علی رضایی</p>
+                    <p><span className="font-semibold">ایمیل:</span> john.doe@example.com</p>
                 </div>
-                <Button className="mt-6">Edit Details</Button>
+                <Button className="mt-6">ویرایش جزئیات</Button>
               </CardContent>
             </Card>
           </main>

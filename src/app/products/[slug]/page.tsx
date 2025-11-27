@@ -68,13 +68,13 @@ export default function ProductPage({ params }: ProductPageProps) {
           <h1 className="font-headline text-3xl md:text-4xl font-bold">{product.name}</h1>
           <div className="mt-4 flex items-center gap-4">
             <StarRating rating={product.rating} />
-            <span className="text-muted-foreground text-sm">{product.reviewCount} reviews</span>
+            <span className="text-muted-foreground text-sm">{product.reviewCount} نظر</span>
           </div>
 
           <p className="mt-6 text-lg text-muted-foreground">{product.description}</p>
           
           <div className="mt-8">
-            <h3 className="font-semibold text-lg mb-4">Select Weight</h3>
+            <h3 className="font-semibold text-lg mb-4">انتخاب وزن</h3>
             <RadioGroup
               defaultValue={selectedWeight.weight}
               onValueChange={(value) => {
@@ -98,21 +98,21 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
           
           <div className="mt-8 flex items-center gap-4">
-            <h3 className="font-semibold text-lg">Quantity</h3>
+            <h3 className="font-semibold text-lg">تعداد</h3>
             <div className="flex items-center border rounded-lg">
-              <Button variant="ghost" size="icon" onClick={() => setQuantity(q => Math.max(1, q - 1))}>
-                <Minus className="h-4 w-4" />
-              </Button>
-              <span className="w-12 text-center font-bold">{quantity}</span>
               <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q + 1)}>
                 <Plus className="h-4 w-4" />
+              </Button>
+              <span className="w-12 text-center font-bold">{quantity}</span>
+              <Button variant="ghost" size="icon" onClick={() => setQuantity(q => Math.max(1, q - 1))}>
+                <Minus className="h-4 w-4" />
               </Button>
             </div>
           </div>
           
           <div className="mt-8 border-t pt-8">
             <div className="flex justify-between items-center mb-6">
-                <span className="text-muted-foreground text-xl">Total Price</span>
+                <span className="text-muted-foreground text-xl">قیمت کل</span>
                 <span className="font-headline text-4xl font-bold text-primary">
                 ${(selectedWeight.price * quantity).toFixed(2)}
                 </span>
@@ -125,13 +125,13 @@ export default function ProductPage({ params }: ProductPageProps) {
             >
               {addedToCart ? (
                 <>
+                  به سبد خرید اضافه شد!
                   <CheckCircle className="mr-2 h-5 w-5" />
-                  Added to Cart!
                 </>
               ) : (
                 <>
+                  افزودن به سبد خرید
                   <ShoppingCart className="mr-2 h-5 w-5" />
-                  Add to Cart
                 </>
               )}
             </Button>

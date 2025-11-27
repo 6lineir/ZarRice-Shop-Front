@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowLeft, Star } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
@@ -31,13 +31,13 @@ export default function Home() {
         <div className="relative z-10 max-w-4xl mx-auto p-8 text-center">
           <div className="bg-black/30 backdrop-blur-lg rounded-xl p-8 border border-white/20 shadow-2xl">
             <h1 className="font-headline text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter mb-4 text-shadow-lg">
-              The Gold of Persian Fields
+              طلای مزارع ایران
             </h1>
             <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-gray-200">
-              Experience the unparalleled aroma and flavor of ZarRice, where ancient traditions meet modern purity.
+              عطر و طعم بی‌نظیر زر برنج را تجربه کنید، جایی که سنت‌های کهن با خلوص مدرن تلاقی می‌کنند.
             </p>
             <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
-              <Link href="/products">Shop Now <ArrowRight className="ml-2 h-5 w-5" /></Link>
+              <Link href="/products">خرید <ArrowLeft className="mr-2 h-5 w-5" /></Link>
             </Button>
           </div>
         </div>
@@ -47,7 +47,7 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-            Our Featured Varieties
+            محصولات ویژه ما
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map((product) => (
@@ -56,7 +56,7 @@ export default function Home() {
           </div>
           <div className="text-center mt-12">
             <Button asChild variant="outline">
-              <Link href="/products">View All Products</Link>
+              <Link href="/products">مشاهده همه محصولات</Link>
             </Button>
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function Home() {
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-            From the Blog
+            از وبلاگ ما
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {latestPosts.map((post) => {
@@ -92,7 +92,7 @@ export default function Home() {
                       <h3 className="font-headline text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{post.title}</h3>
                       <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
                       <div className="mt-4 flex items-center text-sm font-semibold text-primary">
-                        Read More <ArrowRight className="ml-1 h-4 w-4" />
+                        بیشتر بخوانید <ArrowLeft className="mr-1 h-4 w-4" />
                       </div>
                     </CardContent>
                   </Card>
@@ -102,7 +102,7 @@ export default function Home() {
           </div>
           <div className="text-center mt-12">
             <Button asChild>
-              <Link href="/blog">Visit Our Blog</Link>
+              <Link href="/blog">مشاهده وبلاگ</Link>
             </Button>
           </div>
         </div>

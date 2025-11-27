@@ -19,10 +19,10 @@ import {
 
 
 const navLinks = [
-  { href: '/products', label: 'Products' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/about', label: 'About Us' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/products', label: 'محصولات' },
+  { href: '/blog', label: 'وبلاگ' },
+  { href: '/about', label: 'درباره ما' },
+  { href: '/contact', label: 'تماس با ما' },
 ];
 
 const Header = () => {
@@ -65,37 +65,19 @@ const Header = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" aria-label="Back to homepage">
-            <Logo />
-          </Link>
-          <div className="hidden md:flex md:items-center">
-            <NavContent />
-          </div>
           <div className="flex items-center gap-4">
-            <Link href="/cart" className="relative" aria-label={`Shopping cart with ${cartItemCount} items`}>
-              <ShoppingCart className="h-6 w-6 text-foreground/80 hover:text-primary transition-colors" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                  {cartItemCount}
-                </span>
-              )}
-            </Link>
-            <Link href="/account">
-              <User className="h-6 w-6 text-foreground/80 hover:text-primary transition-colors" />
-            </Link>
-            <ThemeToggle />
-            <div className="md:hidden">
+             <div className="md:hidden">
              <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon">
                     <Menu className="h-6 w-6" />
-                    <span className="sr-only">Open menu</span>
+                    <span className="sr-only">باز کردن منو</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                    <div className="flex flex-col gap-6 p-6">
                      <SheetClose asChild>
-                      <Link href="/" aria-label="Back to homepage">
+                      <Link href="/" aria-label="بازگشت به صفحه اصلی">
                         <Logo />
                       </Link>
                     </SheetClose>
@@ -104,7 +86,25 @@ const Header = () => {
                 </SheetContent>
               </Sheet>
             </div>
+            <ThemeToggle />
+             <Link href="/account">
+              <User className="h-6 w-6 text-foreground/80 hover:text-primary transition-colors" />
+            </Link>
+            <Link href="/cart" className="relative" aria-label={`سبد خرید با ${cartItemCount} کالا`}>
+              <ShoppingCart className="h-6 w-6 text-foreground/80 hover:text-primary transition-colors" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -left-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
           </div>
+          <div className="hidden md:flex md:items-center">
+            <NavContent />
+          </div>
+           <Link href="/" aria-label="بازگشت به صفحه اصلی">
+            <Logo />
+          </Link>
         </div>
       </div>
     </header>

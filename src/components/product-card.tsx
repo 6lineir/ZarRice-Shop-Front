@@ -60,9 +60,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
         {product.discount > 0 && (
           <Badge
             variant="destructive"
-            className="absolute top-2 right-2"
+            className="absolute top-2 left-2"
           >
-            {product.discount}% OFF
+            {product.discount}% تخفیف
           </Badge>
         )}
       </CardHeader>
@@ -78,14 +78,14 @@ const ProductCard = ({ product }: ProductCardProps) => {
         </Link>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between items-center">
-        <div className="text-xl font-bold text-primary">
+        <Button size="sm" onClick={handleAddToCart}>
+           افزودن به سبد خرید
+          <ShoppingCart className="mr-2 h-4 w-4" />
+        </Button>
+         <div className="text-xl font-bold text-primary">
           ${product.weightOptions[0].price.toFixed(2)}
           <span className="text-sm font-normal text-muted-foreground">/{product.weightOptions[0].weight}</span>
         </div>
-        <Button size="sm" onClick={handleAddToCart}>
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Add to Cart
-        </Button>
       </CardFooter>
     </Card>
   );

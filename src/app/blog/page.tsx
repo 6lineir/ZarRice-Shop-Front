@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { blogPosts } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -10,9 +10,9 @@ export default function BlogPage() {
     <div className="bg-background">
       <header className="py-16 md:py-24 bg-secondary text-center">
         <div className="container">
-          <h1 className="font-headline text-4xl md:text-5xl font-bold">From the ZarRice Journal</h1>
+          <h1 className="font-headline text-4xl md:text-5xl font-bold">از مجله زر برنج</h1>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Insights, recipes, and stories from the world of premium Persian rice.
+            بینش‌ها، دستور پخت‌ها و داستان‌هایی از دنیای برنج ممتاز ایرانی.
           </p>
         </div>
       </header>
@@ -38,12 +38,12 @@ export default function BlogPage() {
                         }
                       </div>
                     </CardHeader>
-                    <CardContent className="p-6">
-                      <p className="text-sm text-muted-foreground mb-2">{post.date} &bull; {post.author}</p>
+                    <CardContent className="p-6 text-right">
+                      <p className="text-sm text-muted-foreground mb-2">{post.author} &bull; {post.date}</p>
                       <h2 className="font-headline text-xl font-semibold mb-2 group-hover:text-primary transition-colors">{post.title}</h2>
                       <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
-                      <div className="mt-4 flex items-center text-sm font-semibold text-primary">
-                        Read More <ArrowRight className="ml-1 h-4 w-4" />
+                      <div className="mt-4 flex items-center justify-end text-sm font-semibold text-primary">
+                        بیشتر بخوانید <ArrowLeft className="ml-1 h-4 w-4" />
                       </div>
                     </CardContent>
                   </Card>

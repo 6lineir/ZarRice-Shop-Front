@@ -6,16 +6,16 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 
 const orders = [
-    { id: 'ZR-1701', date: '2023-10-25', status: 'Delivered', total: 75.99 },
-    { id: 'ZR-1708', date: '2023-11-12', status: 'Shipped', total: 110.00 },
-    { id: 'ZR-1715', date: '2023-11-20', status: 'Processing', total: 12.99 },
+    { id: 'ZR-1701', date: '2023-10-25', status: 'تحویل داده شد', total: 75.99 },
+    { id: 'ZR-1708', date: '2023-11-12', status: 'ارسال شده', total: 110.00 },
+    { id: 'ZR-1715', date: '2023-11-20', status: 'در حال پردازش', total: 12.99 },
 ];
 
 export default function OrdersPage() {
   return (
     <div className="bg-secondary">
       <div className="container py-16 md:py-24">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-8">My Account</h1>
+        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-8">حساب کاربری من</h1>
         <div className="grid md:grid-cols-3 gap-8">
           <aside className="md:col-span-1">
             <Card>
@@ -23,19 +23,19 @@ export default function OrdersPage() {
                 <nav className="flex flex-col gap-2">
                    <Button variant="ghost" asChild className="justify-start">
                     <Link href="/account">
-                      <User className="mr-2 h-4 w-4" />
-                      Account Details
+                      <User className="ml-2 h-4 w-4" />
+                      جزئیات حساب
                     </Link>
                   </Button>
                   <Button variant="ghost" asChild className="justify-start bg-muted">
                     <Link href="/account/orders">
-                      <ListOrdered className="mr-2 h-4 w-4" />
-                      My Orders
+                      <ListOrdered className="ml-2 h-4 w-4" />
+                      سفارشات من
                     </Link>
                   </Button>
                    <Button variant="ghost" className="justify-start text-destructive hover:text-destructive">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
+                      <LogOut className="ml-2 h-4 w-4" />
+                      خروج
                    </Button>
                 </nav>
               </CardContent>
@@ -44,16 +44,16 @@ export default function OrdersPage() {
           <main className="md:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle>My Orders</CardTitle>
+                <CardTitle>سفارشات من</CardTitle>
               </CardHeader>
               <CardContent>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Order ID</TableHead>
-                            <TableHead>Date</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead className="text-right">Total</TableHead>
+                            <TableHead>شناسه سفارش</TableHead>
+                            <TableHead>تاریخ</TableHead>
+                            <TableHead>وضعیت</TableHead>
+                            <TableHead className="text-left">مجموع</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -64,11 +64,11 @@ export default function OrdersPage() {
                                 </TableCell>
                                 <TableCell>{order.date}</TableCell>
                                 <TableCell>
-                                    <Badge variant={order.status === 'Delivered' ? 'default' : 'secondary'}>
+                                    <Badge variant={order.status === 'تحویل داده شد' ? 'default' : 'secondary'}>
                                         {order.status}
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="text-right">${order.total.toFixed(2)}</TableCell>
+                                <TableCell className="text-left">${order.total.toFixed(2)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
