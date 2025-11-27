@@ -1,8 +1,11 @@
+
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { blogPosts } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { Calendar, User } from 'lucide-react';
+import { Calendar, User, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type BlogPostPageProps = {
   params: {
@@ -26,8 +29,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   const postImage = placeholderImages.find(p => p.id === post.imageId);
 
   return (
-    <article>
-      <header className="relative h-[40vh] md:h-[50vh] w-full flex items-end justify-center text-white pb-12">
+    <article className="bg-secondary">
+      <header className="relative h-[50vh] md:h-[60vh] w-full flex items-end justify-center text-white pb-12 md:pb-20">
         {postImage && (
           <Image
             src={postImage.imageUrl}
@@ -38,29 +41,39 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             data-ai-hint={postImage.imageHint}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="relative z-10 max-w-4xl mx-auto p-4 text-center">
-          <h1 className="font-headline text-3xl md:text-5xl font-bold tracking-tight mb-4 text-shadow-lg">
+          <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tight mb-4 text-shadow-lg">
             {post.title}
           </h1>
           <div className="flex justify-center items-center gap-6 text-sm text-gray-200">
             <div className="flex items-center gap-2">
-              <span>{post.date}</span>
-              <Calendar className="h-4 w-4" />
+              <User className="h-4 w-4" />
+              <span>{post.author}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span>{post.author}</span>
-              <User className="h-4 w-4" />
+              <Calendar className="h-4 w-4" />
+              <span>{post.date}</span>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="container max-w-3xl mx-auto py-12 md:py-16 px-4">
-        <div
-          className="prose prose-lg dark:prose-invert max-w-none text-right"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+      <div className="bg-background rounded-t-2xl md:rounded-t-3xl -mt-10 relative z-20">
+        <div className="container max-w-3xl mx-auto py-16 md:py-24 px-4">
+          <div
+            className="prose prose-lg dark:prose-invert max-w-none text-right prose-p:leading-loose prose-headings:font-headline"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+          <div className="mt-16 text-center border-t pt-8">
+            <Button asChild>
+              <Link href="/blog">
+                <ArrowRight className="ml-2 h-5 w-5" />
+                بازگشت به وبلاگ
+              </Link>
+            </Button>
+          </div>
+        </div>
       </div>
     </article>
   );
