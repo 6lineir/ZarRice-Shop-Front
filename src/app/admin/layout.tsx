@@ -25,7 +25,7 @@ const adminNavLinks = [
   { href: '/admin/categories', label: 'دسته‌بندی‌ها', icon: LayoutGrid },
   { href: '/admin/orders', label: 'سفارشات', icon: ListOrdered },
   { href: '/admin/customers', label: 'مشتریان', icon: Users },
-  { href: '/admin/discounts', label: 'کدهای تخفیfف', icon: TicketPercent },
+  { href: '/admin/discounts', label: 'کدهای تخفیف', icon: TicketPercent },
   { href: '/admin/ai-tools', label: 'ابزارهای AI', icon: Sparkles },
   { href: '/admin/settings', label: 'تنظیمات', icon: Settings },
 ];
@@ -43,7 +43,7 @@ export default function AdminLayout({
         <SidebarContent>
           <SidebarHeader>
             <div className="flex items-center justify-between">
-              <Logo />
+                <span className="font-headline text-2xl font-bold">زر برنج</span>
               <ThemeToggle />
             </div>
           </SidebarHeader>
