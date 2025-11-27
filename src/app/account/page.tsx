@@ -99,6 +99,28 @@ export default function AccountPage() {
           <main className="md:col-span-3 space-y-8">
             <Card>
               <CardHeader>
+                <CardTitle>خلاصه فعالیت</CardTitle>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 gap-4">
+                <div className="bg-muted p-4 rounded-lg text-center">
+                  <p className="text-sm text-muted-foreground">
+                    تعداد کل سفارشات
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {user.orderStats.totalOrders}
+                  </p>
+                </div>
+                <div className="bg-muted p-4 rounded-lg text-center">
+                  <p className="text-sm text-muted-foreground">مجموع خرید</p>
+                  <p className="text-2xl font-bold">
+                    {user.orderStats.totalSpent}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
                 <CardTitle>اطلاعات شخصی</CardTitle>
                 <CardDescription>اطلاعات کاربری و تماس شما</CardDescription>
               </CardHeader>
@@ -256,27 +278,6 @@ export default function AccountPage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>خلاصه فعالیت</CardTitle>
-              </CardHeader>
-              <CardContent className="grid grid-cols-2 gap-4">
-                <div className="bg-muted p-4 rounded-lg text-center">
-                  <p className="text-sm text-muted-foreground">
-                    تعداد کل سفارشات
-                  </p>
-                  <p className="text-2xl font-bold">
-                    {user.orderStats.totalOrders}
-                  </p>
-                </div>
-                <div className="bg-muted p-4 rounded-lg text-center">
-                  <p className="text-sm text-muted-foreground">مجموع خرید</p>
-                  <p className="text-2xl font-bold">
-                    {user.orderStats.totalSpent}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
           </main>
         </div>
       </div>
