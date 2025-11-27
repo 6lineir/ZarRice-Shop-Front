@@ -11,14 +11,29 @@ import {
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Search } from 'lucide-react';
+import Image from 'next/image';
+import { placeholderImages } from '@/lib/placeholder-images';
 
 export default function ProductsPage() {
+  const headerImage = placeholderImages.find((img) => img.id === 'products-header');
+
   return (
     <div className="bg-background">
-      <header className="py-16 md:py-24 bg-secondary text-center">
-        <div className="container px-4">
+      <header className="relative py-16 md:py-24 text-center text-white">
+        {headerImage && (
+            <Image
+                src={headerImage.imageUrl}
+                alt={headerImage.description}
+                fill
+                className="object-cover"
+                data-ai-hint={headerImage.imageHint}
+                priority
+            />
+        )}
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="container relative z-10 px-4">
           <h1 className="font-headline text-4xl sm:text-5xl font-bold">مجموعه برنج ممتاز ما</h1>
-          <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-4 text-base sm:text-lg text-gray-200 max-w-2xl mx-auto">
             طعم اصیل ایرانی را با انواع برنج دست‌چین ما کاوش کنید. هر دانه، داستانی از کیفیت و سنت را روایت می‌کند.
           </p>
         </div>
