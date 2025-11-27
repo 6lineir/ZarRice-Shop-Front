@@ -73,8 +73,8 @@ const Header = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-4">
-             <div className="md:hidden">
+          
+          <div className="flex items-center gap-2 md:hidden">
              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" size="icon">
@@ -97,26 +97,53 @@ const Header = () => {
                    </div>
                 </SheetContent>
               </Sheet>
-            </div>
-            <Link href="/cart" className="relative" aria-label={`سبد خرید با ${cartItemCount} کالا`}>
-              <ShoppingCart className="h-6 w-6 text-foreground/80 hover:text-primary transition-colors" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -left-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                  {cartItemCount}
-                </span>
-              )}
-            </Link>
-             <Link href="/account">
-              <User className="h-6 w-6 text-foreground/80 hover:text-primary transition-colors" />
-            </Link>
-            <ThemeToggle />
           </div>
-          <div className="hidden md:flex md:items-center">
+          
+           <div className="hidden md:flex md:flex-1 md:items-center md:justify-start">
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Link href="/account">
+                <Button variant="ghost" size="icon" aria-label="حساب کاربری">
+                  <User className="h-6 w-6" />
+                </Button>
+              </Link>
+               <Link href="/cart" className="relative" aria-label={`سبد خرید با ${cartItemCount} کالا`}>
+                  <Button variant="ghost" size="icon">
+                    <ShoppingCart className="h-6 w-6" />
+                     {cartItemCount > 0 && (
+                      <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                        {cartItemCount}
+                      </span>
+                    )}
+                  </Button>
+              </Link>
+            </div>
+          </div>
+          
+           <div className="hidden md:flex md:flex-1 md:items-center md:justify-center">
             <NavContent />
           </div>
-           <Link href="/" aria-label="بازگشت به صفحه اصلی">
-            <Logo />
-          </Link>
+
+           <div className="flex flex-1 items-center justify-end">
+             <Link href="/" aria-label="بازگشت به صفحه اصلی">
+              <Logo />
+            </Link>
+           </div>
+           
+           <div className="flex items-center gap-2 md:hidden">
+              <ThemeToggle />
+              <Link href="/cart" className="relative" aria-label={`سبد خرید با ${cartItemCount} کالا`}>
+                <Button variant="ghost" size="icon">
+                  <ShoppingCart className="h-6 w-6" />
+                   {cartItemCount > 0 && (
+                    <span className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                      {cartItemCount}
+                    </span>
+                  )}
+                </Button>
+              </Link>
+           </div>
+
         </div>
       </div>
     </header>
