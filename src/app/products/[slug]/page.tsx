@@ -30,6 +30,7 @@ import {
 } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import ProductCard from '@/components/product-card';
 
 type ProductPageProps = {
   params: Promise<{
@@ -75,6 +76,10 @@ export default function ProductPage({ params }: ProductPageProps) {
     { icon: Leaf, label: 'بافت', value: product.texture },
     { icon: MapPin, label: 'منطقه کشت', value: product.origin },
   ];
+  
+  const relatedProducts = products.filter(
+      p => p.category === product.category && p.id !== product.id
+  ).slice(0, 3);
 
   return (
     <div className="container py-8 md:py-16 px-4">
@@ -239,6 +244,19 @@ export default function ProductPage({ params }: ProductPageProps) {
           </AccordionItem>
         </Accordion>
       </div>
+
+      {relatedProducts.length > 0 && (
+        <div className="mt-16 md:mt-24">
+            <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-10">
+            محصولات مرتبط
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+            {relatedProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
+            ))}
+            </div>
+        </div>
+      )}
 
     </div>
   );
