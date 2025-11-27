@@ -1,3 +1,76 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "Lush green rice paddy fields under a golden sunset.",
+      "imageUrl": "https://images.unsplash.com/photo-1604384041761-71d680147eb7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyaWNlJTIwcGFkZHl8ZW58MHx8fHwxNzY0MjYxOTg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice paddy"
+    },
+    {
+      "id": "product-tarom",
+      "description": "Close-up of Tarom rice grains in a rustic bowl.",
+      "imageUrl": "https://images.unsplash.com/photo-1625540002162-00320b5c6b63?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxyaWNlJTIwYm93bHxlbnwwfHx8fDE3NjQxNjU4ODN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice bowl"
+    },
+    {
+      "id": "product-sadri",
+      "description": "Sadri rice grains spread out on a wooden surface.",
+      "imageUrl": "https://images.unsplash.com/photo-1603106116068-02fc27fe5131?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyaWNlJTIwZ3JhaW5zfGVufDB8fHx8MTc2NDI1Mjc2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice grains"
+    },
+    {
+      "id": "product-hashemi",
+      "description": "A bag of Hashemi rice with a traditional Persian design.",
+      "imageUrl": "https://images.unsplash.com/photo-1760706092664-30debe6d3730?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cmljZSUyMGJhZ3xlbnwwfHx8fDE3NjQxODE5NTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice bag"
+    },
+    {
+      "id": "product-fereydunkenar",
+      "description": "Fereydunkenar rice in a measuring scoop.",
+      "imageUrl": "https://images.unsplash.com/photo-1704916029542-da6fa7bc34e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxyaWNlJTIwc2Nvb3B8ZW58MHx8fHwxNzY0MjYxOTg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice scoop"
+    },
+    {
+      "id": "product-gilan",
+      "description": "Cooked, fluffy Gilan rice in a ceramic dish.",
+      "imageUrl": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb29rZWQlMjByaWNlfGVufDB8fHx8MTc2NDI2MTk4OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cooked rice"
+    },
+    {
+      "id": "product-golestan",
+      "description": "Uncooked Golestan rice grains in a clear glass jar.",
+      "imageUrl": "https://images.unsplash.com/photo-1598976901905-3df109dc7060?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxyaWNlJTIwamFyfGVufDB8fHx8MTc2NDI2MTk4OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rice jar"
+    },
+    {
+      "id": "blog-cultivation",
+      "description": "A farmer working in a vibrant green rice paddy.",
+      "imageUrl": "https://images.unsplash.com/photo-1585302770920-586b6a7c3b00?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmYXJtZXIlMjByaWNlfGVufDB8fHx8MTc2NDI2MTk4OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "farmer rice"
+    },
+    {
+      "id": "blog-cooking",
+      "description": "A delicious-looking plate of Persian rice with saffron.",
+      "imageUrl": "https://images.unsplash.com/photo-1598110750624-207050c4f28c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJzaWFuJTIwZGlzaHxlbnwwfHx8fDE3NjQyNjE5ODh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "persian dish"
+    },
+    {
+      "id": "blog-storage",
+      "description": "Rice stored in airtight containers in a clean pantry.",
+      "imageUrl": "https://images.unsplash.com/photo-1760612887290-62645e654eaf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwYW50cnklMjBzdG9yYWdlfGVufDB8fHx8MTc2NDI2MTk4OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pantry storage"
+    },
+    {
+      "id": "about-us-story",
+      "description": "A black and white photo of a family of rice farmers from generations ago.",
+      "imageUrl": "https://images.unsplash.com/photo-1687253958716-1518e0dc5362?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx2aW50YWdlJTIwZmFtaWx5fGVufDB8fHx8MTc2NDE3NzIyNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "vintage family"
+    },
+    {
+      "id": "contact-header",
+      "description": "An elegant desk with a phone, laptop, and a cup of tea.",
+      "imageUrl": "https://images.unsplash.com/photo-1713947506367-b639b30230d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb250YWN0JTIwZGVza3xlbnwwfHx8fDE3NjQyNjE5ODh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "contact desk"
+    }
+  ]
 }

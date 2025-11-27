@@ -8,11 +8,17 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
-        code: ['monospace'],
+        body: ['var(--font-inter)', 'sans-serif'],
+        headline: ['var(--font-space-grotesk)', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -93,7 +99,20 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      textShadow: {
+        'lg': '0 2px 10px rgba(0, 0, 0, 0.5)',
+      }
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    function({ addUtilities, theme }: { addUtilities: any, theme: any }) {
+      const newUtilities = {
+        '.text-shadow-lg': {
+          textShadow: theme('textShadow.lg'),
+        },
+      }
+      addUtilities(newUtilities, ['responsive', 'hover'])
+    }
+  ],
 } satisfies Config;
