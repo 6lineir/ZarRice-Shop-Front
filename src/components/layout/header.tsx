@@ -13,6 +13,8 @@ import { useCart } from '@/hooks/use-cart';
 import {
   Sheet,
   SheetContent,
+  SheetHeader,
+  SheetTitle,
   SheetTrigger,
   SheetClose
 } from "@/components/ui/sheet"
@@ -75,12 +77,16 @@ const Header = () => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                  <SheetHeader>
+                     <SheetTitle>
+                       <SheetClose asChild>
+                        <Link href="/" aria-label="بازگشت به صفحه اصلی">
+                          <Logo />
+                        </Link>
+                      </SheetClose>
+                     </SheetTitle>
+                  </SheetHeader>
                    <div className="flex flex-col gap-6 p-6">
-                     <SheetClose asChild>
-                      <Link href="/" aria-label="بازگشت به صفحه اصلی">
-                        <Logo />
-                      </Link>
-                    </SheetClose>
                     <NavContent />
                    </div>
                 </SheetContent>
