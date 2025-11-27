@@ -120,35 +120,26 @@ export default function AccountPage() {
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>اطلاعات شخصی</CardTitle>
-                <CardDescription>اطلاعات کاربری و تماس شما</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p>
-                    <span className="font-semibold">نام:</span> {user.name}
-                  </p>
-                  <p>
-                    <span className="font-semibold">ایمیل:</span> {user.email}
-                  </p>
-                  <p>
-                    <span className="font-semibold">شماره تماس:</span>{' '}
-                    {user.phone}
-                  </p>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                    <CardTitle>اطلاعات شخصی</CardTitle>
+                    <CardDescription>اطلاعات کاربری و تماس شما</CardDescription>
                 </div>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="mt-6">ویرایش اطلاعات</Button>
+                    <Button variant="outline" size="sm">
+                        <Edit className="ml-2 h-4 w-4" />
+                        ویرایش
+                    </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
+                    <DialogHeader className="p-6 pb-4">
                       <DialogTitle>ویرایش اطلاعات شخصی</DialogTitle>
                       <DialogDescription>
                         اطلاعات خود را در اینجا به‌روزرسانی کنید.
                       </DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 py-4 text-right">
+                    <div className="grid gap-4 py-4 px-6 text-right">
                       <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">
                           نام
@@ -182,11 +173,25 @@ export default function AccountPage() {
                         />
                       </div>
                     </div>
-                    <DialogFooter>
+                    <DialogFooter className="p-6 pt-4 border-t">
                       <Button type="submit">ذخیره تغییرات</Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <p>
+                    <span className="font-semibold">نام:</span> {user.name}
+                  </p>
+                  <p>
+                    <span className="font-semibold">ایمیل:</span> {user.email}
+                  </p>
+                  <p>
+                    <span className="font-semibold">شماره تماس:</span>{' '}
+                    {user.phone}
+                  </p>
+                </div>
               </CardContent>
             </Card>
 
@@ -205,13 +210,13 @@ export default function AccountPage() {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
+                    <DialogHeader className="p-6 pb-4">
                       <DialogTitle>افزودن آدرس جدید</DialogTitle>
                       <DialogDescription>
                         آدرس جدید خود را برای ارسال سفارشات وارد کنید.
                       </DialogDescription>
                     </DialogHeader>
-                    <div className="grid gap-4 py-4 text-right">
+                    <div className="grid gap-4 py-4 px-6 text-right">
                       <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="address-title" className="text-right">
                           عنوان
@@ -233,7 +238,7 @@ export default function AccountPage() {
                         />
                       </div>
                     </div>
-                    <DialogFooter>
+                    <DialogFooter className="p-6 pt-4 border-t">
                       <Button type="submit">ذخیره آدرس</Button>
                     </DialogFooter>
                   </DialogContent>
@@ -262,9 +267,31 @@ export default function AccountPage() {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="ghost" size="icon">
-                        <Edit className="h-4 w-4" />
-                      </Button>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                         <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader className="p-6 pb-4">
+                                <DialogTitle>ویرایش آدرس</DialogTitle>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4 px-6 text-right">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="address-title-edit" className="text-right">عنوان</Label>
+                                    <Input id="address-title-edit" defaultValue={addr.title} className="col-span-3"/>
+                                </div>
+                                <div className="grid grid-cols-4 items-start gap-4">
+                                    <Label htmlFor="address-details-edit" className="text-right pt-2">آدرس کامل</Label>
+                                    <Textarea id="address-details-edit" defaultValue={addr.address} className="col-span-3" />
+                                </div>
+                            </div>
+                            <DialogFooter className="p-6 pt-4 border-t">
+                                <Button type="submit">ذخیره تغییرات</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                       <Button
                         variant="ghost"
                         size="icon"
