@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { blogPosts } from '@/lib/data';
 import Link from 'next/link';
-import { ChevronRight, Upload } from 'lucide-react';
+import { ChevronRight, Upload, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export default function NewBlogPostPage() {
@@ -49,7 +49,13 @@ export default function NewBlogPostPage() {
                         <Input id="title" placeholder="مثال: هنر پخت برنج ایرانی" />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="content">محتوای اصلی</Label>
+                        <div className="flex items-center justify-between">
+                            <Label htmlFor="content">محتوای اصلی</Label>
+                            <Button variant="outline" size="sm">
+                                <Sparkles className="ml-2 h-4 w-4" />
+                                بهینه‌سازی با AI
+                            </Button>
+                        </div>
                         <Textarea id="content" placeholder="داستان خود را اینجا بنویسید..." rows={12} />
                     </div>
                 </CardContent>
@@ -147,4 +153,3 @@ export default function NewBlogPostPage() {
     </div>
   );
 }
-
