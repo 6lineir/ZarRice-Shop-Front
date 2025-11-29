@@ -39,7 +39,15 @@ const adminNavLinks = [
   },
   { href: '/admin/orders', label: 'سفارشات', icon: ListOrdered },
   { href: '/admin/customers', label: 'مشتریان', icon: Users },
-  { href: '/admin/blog', label: 'وبلاگ', icon: FileText },
+  { 
+    href: '/admin/blog', 
+    label: 'وبلاگ', 
+    icon: FileText,
+    subLinks: [
+        { href: '/admin/blog', label: 'همه پست‌ها' },
+        { href: '/admin/blog/new', label: 'افزودن جدید', icon: PlusCircle },
+    ]
+  },
   { href: '/admin/discounts', label: 'کدهای تخفیف', icon: TicketPercent },
   { href: '/admin/ai-tools', label: 'ابزارهای AI', icon: Sparkles },
   { href: '/admin/settings', label: 'تنظیمات', icon: Settings },

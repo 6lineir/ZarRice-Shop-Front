@@ -37,6 +37,7 @@ import {
 import { blogPosts } from '@/lib/data';
 import Image from 'next/image';
 import { placeholderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
 
 export default function AdminBlogPage() {
   return (
@@ -46,9 +47,11 @@ export default function AdminBlogPage() {
             <h1 className="text-2xl font-bold">مدیریت وبلاگ</h1>
             <p className="text-muted-foreground">پست‌های وبلاگ خود را ایجاد و مدیریت کنید.</p>
         </div>
-        <Button>
-            <PlusCircle className="ml-2 h-4 w-4" />
-            افزودن پست جدید
+        <Button asChild>
+            <Link href="/admin/blog/new">
+                <PlusCircle className="ml-2 h-4 w-4" />
+                افزودن پست جدید
+            </Link>
         </Button>
       </div>
       <Card>
@@ -119,9 +122,11 @@ export default function AdminBlogPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>عملیات</DropdownMenuLabel>
-                          <DropdownMenuItem>
-                            <Edit className="ml-2 h-4 w-4" />
-                            ویرایش
+                          <DropdownMenuItem asChild>
+                            <Link href="/admin/blog/new">
+                                <Edit className="ml-2 h-4 w-4" />
+                                ویرایش
+                            </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem className="text-destructive">
