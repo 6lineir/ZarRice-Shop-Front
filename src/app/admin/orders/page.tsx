@@ -35,20 +35,58 @@ import {
     PaginationNext,
     PaginationPrevious,
   } from "@/components/ui/pagination";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import type { Order, OrderStatus } from '@/lib/types';
 
 
 const initialOrders: Order[] = [
-    { id: 'ZR-1701', customer: { name: 'علی رضایی', address: 'تهران', phone: '123'}, items: [], date: '۱۴۰۲/۰۸/۰۳', status: 'تحویل داده شد', total: 759900 },
-    { id: 'ZR-1708', customer: { name: 'سارا محمدی', address: 'تهران', phone: '123'}, items: [], date: '۱۴۰۲/۰۸/۲۱', status: 'ارسال شده', total: 1100000, trackingCode: '12345678901234567890' },
-    { id: 'ZR-1715', customer: { name: 'مریم حسینی', address: 'تهران', phone: '123'}, items: [], date: '۱۴۰۲/۰۸/۲۹', status: 'در حال پردازش', total: 129900 },
-    { id: 'ZR-1702', customer: { name: 'رضا احمدی', address: 'تهران', phone: '123'}, items: [], date: '۱۴۰۲/۰۸/۰۴', status: 'لغو شده', total: 450000 },
-    { id: 'ZR-1709', customer: { name: 'فاطمه کریمی', address: 'تهران', phone: '123'}, items: [], date: '۱۴۰۲/۰۸/۲۲', status: 'تحویل داده شد', total: 250000 },
-    { id: 'ZR-1716', customer: { name: 'حسین جلالی', address: 'تهران', phone: '123'}, items: [], date: '۱۴۰۲/۰۸/۳۰', status: 'در حال پردازش', total: 890000 },
+    { 
+        id: 'ZR-1701', 
+        date: '۱۴۰۲/۰۸/۰۳', 
+        status: 'تحویل داده شد', 
+        total: 759900,
+        customer: { name: 'علی رضایی', address: 'تهران، خیابان آزادی، کوچه اول، پلاک ۲', phone: '09123456789' },
+        items: [
+            { name: 'برنج صدری دم‌سیاه', quantity: 1, price: 159900 },
+            { name: 'برنج طارم هاشمی', quantity: 5, price: 120000 },
+        ]
+    },
+    { 
+        id: 'ZR-1708', 
+        date: '۱۴۰۲/۰۸/۲۱', 
+        status: 'ارسال شده', 
+        total: 1100000,
+        trackingCode: '12345678901234567890',
+        customer: { name: 'سارا محمدی', address: 'اصفهان، خیابان چهارباغ، ساختمان پارس', phone: '09130000000' },
+        items: [
+            { name: 'برنج هاشمی کلاسیک (۱۰ کیلوگرم)', quantity: 1, price: 999900 },
+            { name: 'برنج دودی فریدونکنار (۱ کیلوگرم)', quantity: 1, price: 100100 },
+        ]
+    },
+    { 
+        id: 'ZR-1715', 
+        date: '۱۴۰۲/۰۸/۲۹', 
+        status: 'در حال پردازش', 
+        total: 129900,
+        customer: { name: 'مریم حسینی', address: 'شیراز، خیابان زند، کوچه پنجم', phone: '09170000000' },
+        items: [
+             { name: 'برنج طارم هاشمی سلطنتی (۱ کیلوگرم)', quantity: 1, price: 129900 },
+        ]
+    },
+    { 
+        id: 'ZR-1702', 
+        date: '۱۴۰۲/۰۸/۰۴', 
+        status: 'لغو شده', 
+        total: 450000,
+        customer: { name: 'رضا احمدی', address: 'مشهد، بلوار سجاد', phone: '09150000000' },
+        items: [
+             { name: 'برنج ندا گلستان (۵ کیلوگرم)', quantity: 1, price: 450000 },
+        ]
+    },
 ];
 
 const getStatusVariant = (status: string) => {
@@ -66,6 +104,7 @@ export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isStatusDialogOpen, setIsStatusDialogOpen] = useState(false);
+  const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
   const [newStatus, setNewStatus] = useState<OrderStatus | ''>('');
   const [trackingCode, setTrackingCode] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -75,6 +114,11 @@ export default function AdminOrdersPage() {
     setNewStatus(order.status);
     setTrackingCode(order.trackingCode || '');
     setIsStatusDialogOpen(true);
+  }
+
+  const handleOpenDetailsDialog = (order: Order) => {
+    setSelectedOrder(order);
+    setIsDetailsDialogOpen(true);
   }
 
   const handleSaveStatus = () => {
@@ -114,7 +158,7 @@ export default function AdminOrdersPage() {
               <TableRow>
                 <TableHead>شناسه سفارش</TableHead>
                 <TableHead>مشتری</TableHead>
-                <TableHead>تاریخ</TableHead>
+                <TableHead className="hidden md:table-cell">تاریخ</TableHead>
                 <TableHead>وضعیت</TableHead>
                 <TableHead className="text-left">مجموع</TableHead>
                 <TableHead>
@@ -127,7 +171,7 @@ export default function AdminOrdersPage() {
                   <TableRow key={order.id}>
                     <TableCell className="font-medium">{order.id}</TableCell>
                     <TableCell>{order.customer.name}</TableCell>
-                    <TableCell className="whitespace-nowrap">{order.date}</TableCell>
+                    <TableCell className="whitespace-nowrap hidden md:table-cell">{order.date}</TableCell>
                     <TableCell>
                         <Badge variant={getStatusVariant(order.status)}>
                             {order.status}
@@ -148,18 +192,18 @@ export default function AdminOrdersPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>عملیات</DropdownMenuLabel>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleOpenDetailsDialog(order)}>
                             <Eye className="ml-2 h-4 w-4" />
                             مشاهده جزئیات
                           </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleOpenStatusDialog(order)}>
+                             <Truck className="ml-2 h-4 w-4" />
+                            تغییر وضعیت
+                          </DropdownMenuItem>
+                           <DropdownMenuSeparator />
                           <DropdownMenuItem>
                             <Printer className="ml-2 h-4 w-4" />
                             چاپ فاکتور
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                           <DropdownMenuItem onClick={() => handleOpenStatusDialog(order)}>
-                             <Truck className="ml-2 h-4 w-4" />
-                            تغییر وضعیت
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -171,7 +215,7 @@ export default function AdminOrdersPage() {
         </CardContent>
          <CardFooter>
             <div className="text-xs text-muted-foreground">
-                نمایش <strong>1-6</strong> از <strong>{orders.length}</strong> سفارش
+                نمایش <strong>1-{orders.length}</strong> از <strong>{orders.length}</strong> سفارش
             </div>
             <Pagination className="ml-auto">
                 <PaginationContent>
@@ -236,6 +280,76 @@ export default function AdminOrdersPage() {
                     )}
                 </Button>
             </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
+        <DialogContent className="sm:max-w-2xl">
+            {selectedOrder && (
+                <>
+                <DialogHeader>
+                    <DialogTitle className="text-2xl mb-2">جزئیات سفارش {selectedOrder.id}</DialogTitle>
+                    <DialogDescription>
+                        تاریخ سفارش: {selectedOrder.date}
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="py-4 px-1 space-y-6 max-h-[70vh] overflow-y-auto">
+                    <div className="px-5 grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <h3 className="font-semibold mb-2">ارسال به:</h3>
+                            <address className="not-italic text-muted-foreground">
+                                {selectedOrder.customer.name}<br />
+                                {selectedOrder.customer.address}<br />
+                                {selectedOrder.customer.phone}
+                            </address>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold mb-2">وضعیت سفارش:</h3>
+                            <Badge variant={getStatusVariant(selectedOrder.status)}>{selectedOrder.status}</Badge>
+                        </div>
+                    </div>
+                    <Separator />
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>محصول</TableHead>
+                                <TableHead className="text-center">تعداد</TableHead>
+                                <TableHead className="text-left">قیمت واحد</TableHead>
+                                <TableHead className="text-left">جمع</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {selectedOrder.items.map((item, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell className="text-center">{item.quantity}</TableCell>
+                                    <TableCell className="text-left">{item.price.toLocaleString()} تومان</TableCell>
+                                    <TableCell className="text-left">{(item.price * item.quantity).toLocaleString()} تومان</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                    <Separator />
+                        <div className="px-5 space-y-2 text-sm pt-4">
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">جمع جزء:</span>
+                            <span>{selectedOrder.items.reduce((acc, i) => acc + i.price * i.quantity, 0).toLocaleString()} تومان</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">هزینه ارسال:</span>
+                            <span>{(selectedOrder.total - selectedOrder.items.reduce((acc, i) => acc + i.price * i.quantity, 0)).toLocaleString()} تومان</span>
+                        </div>
+                        <div className="flex justify-between font-bold text-base">
+                            <span>مجموع کل:</span>
+                            <span>{selectedOrder.total.toLocaleString()} تومان</span>
+                        </div>
+                    </div>
+                </div>
+                <DialogFooter className="border-t pt-4">
+                     <Button variant="outline" onClick={() => setIsDetailsDialogOpen(false)}>بستن</Button>
+                </DialogFooter>
+                </>
+            )}
         </DialogContent>
       </Dialog>
     </div>
