@@ -2,7 +2,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart, Files } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 
 import {
   Card,
@@ -86,9 +86,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <Button size="sm" onClick={handleAddToCart} className="w-full">
             <ShoppingCart className="ml-2 h-4 w-4" />
             افزودن 
-            </Button>
-            <Button size="sm" variant="outline" className="px-3">
-                <Files className="h-4 w-4" />
             </Button>
         </div>
       </CardFooter>
