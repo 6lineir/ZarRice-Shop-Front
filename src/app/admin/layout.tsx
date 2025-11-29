@@ -80,7 +80,7 @@ export default function AdminLayout({
                             <SidebarMenuSub>
                                 {link.subLinks.map((subLink) => (
                                     <SidebarMenuSubItem key={subLink.href}>
-                                        <Link href={subLink.href} passHref legacyBehavior>
+                                        <Link href={subLink.href}>
                                             <SidebarMenuSubButton asChild isActive={pathname === subLink.href}>
                                                 <>
                                                  {subLink.icon && <subLink.icon />}
