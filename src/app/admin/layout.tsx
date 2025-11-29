@@ -14,7 +14,8 @@ import {
   SidebarInset,
   SidebarMenuSub,
   SidebarMenuSubButton,
-  SidebarMenuSubItem
+  SidebarMenuSubItem,
+  SheetClose,
 } from '@/components/ui/sidebar';
 import { Home, ShoppingBag, ListOrdered, Users, LogOut, Settings, LayoutGrid, Sparkles, TicketPercent, FileText, PlusCircle } from 'lucide-react';
 import { Logo } from '@/components/logo';
@@ -79,10 +80,12 @@ export default function AdminLayout({
                             <SidebarMenuSub>
                                 {link.subLinks.map((subLink) => (
                                     <SidebarMenuSubItem key={subLink.href}>
-                                        <Link href={subLink.href}>
-                                            <SidebarMenuSubButton isActive={pathname === subLink.href}>
+                                        <Link href={subLink.href} passHref legacyBehavior>
+                                            <SidebarMenuSubButton asChild isActive={pathname === subLink.href}>
+                                                <>
                                                  {subLink.icon && <subLink.icon />}
                                                 {subLink.label}
+                                                </>
                                             </SidebarMenuSubButton>
                                         </Link>
                                     </SidebarMenuSubItem>
