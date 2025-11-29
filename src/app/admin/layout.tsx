@@ -82,10 +82,10 @@ export default function AdminLayout({
                                     <SidebarMenuSubItem key={subLink.href}>
                                         <Link href={subLink.href}>
                                             <SidebarMenuSubButton asChild isActive={pathname === subLink.href}>
-                                                <>
+                                                <span>
                                                  {subLink.icon && <subLink.icon />}
                                                 {subLink.label}
-                                                </>
+                                                </span>
                                             </SidebarMenuSubButton>
                                         </Link>
                                     </SidebarMenuSubItem>
@@ -125,15 +125,15 @@ export default function AdminLayout({
       </Sidebar>
       <SidebarInset>
         <header className="flex h-14 items-center justify-between border-b bg-background/95 px-4 backdrop-blur-sm md:hidden">
-          <div className="flex flex-1 items-center justify-end">
-            <SidebarTrigger />
-          </div>
+          <div className="flex flex-1 items-center justify-start" />
            <div className="flex flex-1 items-center justify-center">
              <Link href="/" aria-label="بازگشت به صفحه اصلی">
               <span className="font-headline text-xl font-bold">زر برنج</span>
             </Link>
            </div>
-           <div className="flex flex-1 items-center justify-start" />
+           <div className="flex flex-1 items-center justify-end">
+            <SidebarTrigger />
+          </div>
         </header>
         <main className="flex-1 p-4 sm:p-6">{children}</main>
       </SidebarInset>
