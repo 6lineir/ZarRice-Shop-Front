@@ -64,8 +64,8 @@ export default function AdminLayout({
           <SidebarMenu>
             {adminNavLinks.map((link) => (
                 link.subLinks ? (
-                <Collapsible key={link.href} asChild>
-                    <SidebarMenuItem>
+                <SidebarMenuItem key={link.href}>
+                    <Collapsible>
                         <CollapsibleTrigger asChild>
                         <SidebarMenuButton
                             isActive={pathname.startsWith(link.href)}
@@ -89,8 +89,8 @@ export default function AdminLayout({
                                 ))}
                             </SidebarMenuSub>
                         </CollapsibleContent>
-                    </SidebarMenuItem>
-                </Collapsible>
+                    </Collapsible>
+                </SidebarMenuItem>
                 ) : (
                 <SidebarMenuItem key={link.href}>
                     <Link href={link.href}>
@@ -122,7 +122,7 @@ export default function AdminLayout({
       </Sidebar>
       <SidebarInset>
         <header className="flex h-14 items-center justify-between border-b bg-background/95 px-4 backdrop-blur-sm md:hidden">
-          <div className="flex flex-1 items-center justify-start">
+          <div className="flex flex-1 items-center justify-end">
             <SidebarTrigger />
           </div>
            <div className="flex flex-1 items-center justify-center">
@@ -130,7 +130,7 @@ export default function AdminLayout({
               <span className="font-headline text-xl font-bold">زر برنج</span>
             </Link>
            </div>
-           <div className="flex flex-1 items-center justify-end" />
+           <div className="flex flex-1 items-center justify-start" />
         </header>
         <main className="flex-1 p-4 sm:p-6">{children}</main>
       </SidebarInset>
