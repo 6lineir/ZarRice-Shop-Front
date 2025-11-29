@@ -6,6 +6,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -61,7 +62,7 @@ export default function NewProductPage() {
                 <CardHeader>
                     <CardTitle>جزئیات محصول</CardTitle>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-4">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      <div className="space-y-2">
                         <Label htmlFor="cookingType">نوع پخت</Label>
                         <Input id="cookingType" placeholder="مثال: کته و آبکش" />
@@ -133,7 +134,7 @@ export default function NewProductPage() {
 
         </div>
 
-        <div className="lg:col-span-1 space-y-6 sticky top-24">
+        <div className="lg:col-span-1 space-y-6 lg:sticky top-24">
             <Card>
                 <CardHeader>
                     <CardTitle>انتشار</CardTitle>

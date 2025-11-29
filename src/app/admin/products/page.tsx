@@ -267,7 +267,7 @@ export default function AdminProductsPage() {
         </CardContent>
          <CardFooter>
             <div className="text-xs text-muted-foreground">
-                نمایش <strong>1-6</strong> از <strong>{products.length}</strong> محصول
+                نمایش <strong>1-{products.length}</strong> از <strong>{products.length}</strong> محصول
             </div>
             <Pagination className="ml-auto">
                 <PaginationContent>
