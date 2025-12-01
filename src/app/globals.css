@@ -88,6 +88,9 @@
 }
 
 @media print {
+  body.print-active {
+    background-color: white;
+  }
   body.print-active .non-printable {
     display: none;
   }
@@ -98,21 +101,26 @@
     left: 0;
     right: 0;
     width: 100%;
-    height: 100%;
+    height: auto;
     background: white;
     color: black;
   }
-   body.print-active .printable-content div,
-   body.print-active .printable-content span,
-   body.print-active .printable-content p,
-   body.print-active .printable-content h2,
-   body.print-active .printable-content h3,
-   body.print-active .printable-content address {
-     color: black !important;
+  body.print-active .printable-content * {
+      color: black !important;
+      background-color: transparent !important;
+  }
+  body.print-active .printable-content .text-primary {
+      color: hsl(var(--primary)) !important;
+  }
+  body.print-active .printable-content .bg-primary {
+      background-color: hsl(var(--primary)) !important;
+  }
+   body.print-active .printable-content .text-muted-foreground {
+       color: #666 !important;
    }
 
   @page {
-    size: auto;
+    size: A4;
     margin: 0;
   }
 }

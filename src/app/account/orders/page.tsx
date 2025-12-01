@@ -15,6 +15,7 @@ import html2canvas from 'html2canvas';
 import { Order, OrderStatus } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Logo } from '@/components/logo';
 
 
 const initialOrders: Order[] = [
@@ -69,37 +70,148 @@ const statusSteps: { status: OrderStatus, icon: React.ElementType, label: string
     { status: 'تحویل داده شد', icon: PackageCheck, label: 'تحویل داده شد' },
 ];
 
+const InvoiceContent = React.forwardRef<HTMLDivElement, { order: Order | null }>(({ order }, ref) => {
+    if (!order) return null;
+
+    const subtotal = order.items.reduce((acc: number, i: any) => acc + i.price * i.quantity, 0);
+    const shipping = order.total - subtotal;
+
+    return (
+        <div ref={ref} className="bg-background text-foreground p-8 md:p-10 font-body">
+            <div className="max-w-4xl mx-auto">
+                <header className="flex justify-between items-start mb-10">
+                    <div className="text-right">
+                        <Logo />
+                        <address className="not-italic text-sm text-muted-foreground mt-4">
+                            شرکت زر برنج<br />
+                            خیابان برنج ۱۲۳، دره طلایی<br />
+                            کالیفرنیا ۹۴۱۲۳<br />
+                            support@zarrice.com
+                        </address>
+                    </div>
+                    <div className="text-left">
+                        <h1 className="font-headline text-3xl md:text-4xl font-bold text-primary">فاکتور</h1>
+                        <p className="text-sm mt-2">شناسه سفارش: {order.id}</p>
+                        <p className="text-sm text-muted-foreground">تاریخ: {order.date}</p>
+                    </div>
+                </header>
+
+                <div className="grid md:grid-cols-2 gap-8 mb-10 text-sm">
+                     <Card className="p-4">
+                        <CardHeader className='p-2 pb-3'>
+                            <CardTitle className='text-base'>صورتحساب برای:</CardTitle>
+                        </CardHeader>
+                        <CardContent className='p-2'>
+                             <address className="not-italic text-muted-foreground">
+                                <strong>{order.customer.name}</strong><br />
+                                {order.customer.address}<br />
+                                {order.customer.phone}
+                            </address>
+                        </CardContent>
+                    </Card>
+                     <Card className="p-4">
+                        <CardHeader className='p-2 pb-3'>
+                            <CardTitle className='text-base'>وضعیت سفارش:</CardTitle>
+                        </CardHeader>
+                         <CardContent className='p-2'>
+                           <Badge variant={getStatusVariant(order.status)}>{order.status}</Badge>
+                         </CardContent>
+                    </Card>
+                </div>
+
+                <div className="overflow-x-auto">
+                    <Table className='text-sm'>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[50%]">محصول</TableHead>
+                                <TableHead className="text-center">تعداد</TableHead>
+                                <TableHead className="text-left">قیمت واحد</TableHead>
+                                <TableHead className="text-left">جمع کل</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {order.items.map((item: any, index) => (
+                                <TableRow key={index}>
+                                    <TableCell className="font-medium">{item.name}</TableCell>
+                                    <TableCell className="text-center">{item.quantity}</TableCell>
+                                    <TableCell className="text-left whitespace-nowrap">{item.price.toLocaleString()} تومان</TableCell>
+                                    <TableCell className="text-left whitespace-nowrap">{(item.price * item.quantity).toLocaleString()} تومان</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </div>
+
+                <div className="flex justify-end mt-8">
+                    <div className="w-full max-w-sm space-y-3 text-sm">
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">جمع جزء:</span>
+                            <span>{subtotal.toLocaleString()} تومان</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-muted-foreground">هزینه ارسال:</span>
+                            <span>{shipping.toLocaleString()} تومان</span>
+                        </div>
+                        <Separator />
+                        <div className="flex justify-between font-bold text-base">
+                            <span>مبلغ نهایی:</span>
+                            <span className='text-primary'>{order.total.toLocaleString()} تومان</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <footer className="text-center mt-16 border-t pt-6 text-xs text-muted-foreground">
+                    <p>از خرید شما سپاسگزاریم!</p>
+                    <p>در صورت وجود هرگونه سوال با ما در تماس باشید.</p>
+                </footer>
+            </div>
+        </div>
+    )
+});
+InvoiceContent.displayName = 'InvoiceContent';
+
+
 export default function OrdersPage() {
   const { toast } = useToast();
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isPrinting, setIsPrinting] = useState(false);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
-  const invoiceRef = useRef(null);
-  const dialogInvoiceRef = useRef(null);
+  const invoiceRef = useRef<HTMLDivElement>(null);
+  const dialogInvoiceRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownloadPdf = async () => {
-      if (!dialogInvoiceRef.current || !selectedOrder) return;
-      setIsDownloading(true);
-      try {
-        const canvas = await html2canvas(dialogInvoiceRef.current, { scale: 2 });
+    if (!dialogInvoiceRef.current || !selectedOrder) return;
+    setIsDownloading(true);
+    try {
+        const canvas = await html2canvas(dialogInvoiceRef.current, { 
+            scale: 2,
+            useCORS: true,
+            backgroundColor: window.getComputedStyle(document.body).getPropertyValue('--background').trim(),
+         });
         const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-            orientation: 'p',
-            unit: 'px',
-            format: [canvas.width, canvas.height]
-        });
-        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+        // Calculate PDF size to match canvas aspect ratio
+        const pdfWidth = 210; // A4 width in mm
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        const pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(`invoice-${selectedOrder.id}.pdf`);
-      } catch(e) {
-          console.error("Error generating PDF:", e);
-      } finally {
+    } catch(e) {
+        console.error("Error generating PDF:", e);
+        toast({
+            variant: "destructive",
+            title: "خطا در ساخت PDF",
+            description: "متاسفانه در تولید فایل PDF مشکلی پیش آمد."
+        })
+    } finally {
         setIsDownloading(false);
-      }
+    }
   };
 
   const handlePrint = () => {
+    if (!selectedOrder) return;
     setIsPrinting(true);
   };
 
@@ -114,8 +226,7 @@ export default function OrdersPage() {
     if (isPrinting) {
       setTimeout(() => {
         window.print();
-        setIsPrinting(false);
-      }, 100);
+      }, 100); 
     }
   }, [isPrinting]);
 
@@ -124,17 +235,18 @@ export default function OrdersPage() {
         setIsPrinting(false);
         document.body.classList.remove('print-active');
     };
+    const beforePrint = () => {
+      document.body.classList.add('print-active');
+    }
+
     window.addEventListener('afterprint', afterPrint);
-    return () => window.removeEventListener('afterprint', afterPrint);
+    window.addEventListener('beforeprint', beforePrint);
+
+    return () => {
+      window.removeEventListener('afterprint', afterPrint);
+      window.removeEventListener('beforeprint', beforePrint);
+    }
   }, []);
-  
-  useEffect(() => {
-      if(isPrinting) {
-          document.body.classList.add('print-active');
-      } else {
-          document.body.classList.remove('print-active');
-      }
-  }, [isPrinting]);
 
 
   const currentStatusIndex = selectedOrder ? statusSteps.findIndex(step => step.status === selectedOrder.status) : -1;
@@ -218,150 +330,32 @@ export default function OrdersPage() {
         </div>
       </div>
       
-        {selectedOrder && (
-          <div className="printable-content" ref={invoiceRef}>
-            <div className="p-8">
-                <div className="text-center mb-6">
-                    <h2 className="text-2xl font-bold mb-2">فاکتور سفارش {selectedOrder.id}</h2>
-                    <p className="text-sm text-gray-600">
-                        تاریخ سفارش: {selectedOrder.date}
-                    </p>
-                </div>
-                <div className="py-4 space-y-6">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                            <h3 className="font-semibold mb-2">ارسال به:</h3>
-                            <address className="not-italic text-gray-700">
-                                {selectedOrder.customer.name}<br />
-                                {selectedOrder.customer.address}<br />
-                                {selectedOrder.customer.phone}
-                            </address>
-                        </div>
-                        <div className='text-left'>
-                            <h3 className="font-semibold mb-2">وضعیت سفارش:</h3>
-                            <span className="px-2 py-1 text-xs rounded-full bg-gray-200 text-gray-800">{selectedOrder.status}</span>
-                        </div>
-                    </div>
-                    <Separator />
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>محصول</TableHead>
-                                <TableHead className="text-center">تعداد</TableHead>
-                                <TableHead className="text-left">قیمت واحد</TableHead>
-                                <TableHead className="text-left">جمع</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {selectedOrder.items.map((item: any) => (
-                                <TableRow key={item.name}>
-                                    <TableCell>{item.name}</TableCell>
-                                    <TableCell className="text-center">{item.quantity}</TableCell>
-                                    <TableCell className="text-left">{item.price.toLocaleString()} تومان</TableCell>
-                                    <TableCell className="text-left">{(item.price * item.quantity).toLocaleString()} تومان</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                    <Separator />
-                    <div className="space-y-2 text-sm pt-4">
-                        <div className="flex justify-between">
-                            <span className="text-gray-600">جمع جزء:</span>
-                            <span>{selectedOrder.items.reduce((acc: number, i: any) => acc + i.price * i.quantity, 0).toLocaleString()} تومان</span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-gray-600">هزینه ارسال:</span>
-                            <span>{(selectedOrder.total - selectedOrder.items.reduce((acc: number, i: any) => acc + i.price * i.quantity, 0)).toLocaleString()} تومان</span>
-                        </div>
-                        <div className="flex justify-between font-bold text-base">
-                            <span>مجموع کل:</span>
-                            <span>{selectedOrder.total.toLocaleString()} تومان</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-        )}
+      {/* Hidden, printable version */}
+      <div className="printable-content">
+          <InvoiceContent order={selectedOrder} ref={invoiceRef} />
+      </div>
 
+      {/* Dialog for viewing invoice */}
       <Dialog open={!!selectedOrder && !isPrinting && !isTrackingOpen} onOpenChange={(open) => !open && setSelectedOrder(null)}>
-        <DialogContent className="sm:max-w-3xl">
+        <DialogContent className="sm:max-w-4xl p-0">
             {selectedOrder && (
                 <>
-                <div ref={dialogInvoiceRef}>
-                    <DialogHeader className='p-6 pb-4'>
-                        <DialogTitle className="text-2xl mb-2">فاکتور سفارش {selectedOrder.id}</DialogTitle>
-                        <DialogDescription>
-                            تاریخ سفارش: {selectedOrder.date}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="px-6 py-4 space-y-6">
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div>
-                                <h3 className="font-semibold mb-2">ارسال به:</h3>
-                                <address className="not-italic text-muted-foreground">
-                                    {selectedOrder.customer.name}<br />
-                                    {selectedOrder.customer.address}<br />
-                                    {selectedOrder.customer.phone}
-                                </address>
-                            </div>
-                            <div>
-                                <h3 className="font-semibold mb-2">وضعیت سفارش:</h3>
-                                <Badge variant={getStatusVariant(selectedOrder.status)}>{selectedOrder.status}</Badge>
-                            </div>
-                        </div>
-                        <Separator />
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>محصول</TableHead>
-                                    <TableHead className="text-center">تعداد</TableHead>
-                                    <TableHead className="text-left">قیمت واحد</TableHead>
-                                    <TableHead className="text-left">جمع</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {selectedOrder.items.map((item: any) => (
-                                    <TableRow key={item.name}>
-                                        <TableCell>{item.name}</TableCell>
-                                        <TableCell className="text-center">{item.quantity}</TableCell>
-                                        <TableCell className="text-left">{item.price.toLocaleString()} تومان</TableCell>
-                                        <TableCell className="text-left">{(item.price * item.quantity).toLocaleString()} تومان</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                        <Separator />
-                            <div className="space-y-2 text-sm pt-4">
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">جمع جزء:</span>
-                                <span>{selectedOrder.items.reduce((acc: number, i: any) => acc + i.price * i.quantity, 0).toLocaleString()} تومان</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-muted-foreground">هزینه ارسال:</span>
-                                <span>{(selectedOrder.total - selectedOrder.items.reduce((acc: number, i: any) => acc + i.price * i.quantity, 0)).toLocaleString()} تومان</span>
-                            </div>
-                            <div className="flex justify-between font-bold text-base">
-                                <span>مجموع کل:</span>
-                                <span>{selectedOrder.total.toLocaleString()} تومان</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <DialogFooter className="border-t p-6 gap-2 sm:justify-between flex-row-reverse sm:space-x-reverse sm:space-x-2">
-                    <div className='flex gap-2 justify-end'>
-                        <Button variant="outline" onClick={handlePrint}>
-                            <Printer className="ml-2 h-4 w-4" />
-                            چاپ فاکتور
-                        </Button>
-                        <Button onClick={handleDownloadPdf} disabled={isDownloading}>
-                            {isDownloading ? (
-                                <Loader2 className="ml-2 h-4 w-4 animate-spin" />
-                            ) : (
-                                <FileDown className="ml-2 h-4 w-4" />
-                            )}
-                            دانلود PDF
-                        </Button>
-                    </div>
+                  <div className="max-h-[80vh] overflow-y-auto">
+                    <InvoiceContent order={selectedOrder} ref={dialogInvoiceRef} />
+                  </div>
+                  <DialogFooter className="border-t p-4 gap-2 flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-x-2">
+                    <Button onClick={handleDownloadPdf} disabled={isDownloading}>
+                        {isDownloading ? (
+                            <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                        ) : (
+                            <FileDown className="ml-2 h-4 w-4" />
+                        )}
+                        دانلود PDF
+                    </Button>
+                    <Button variant="outline" onClick={handlePrint}>
+                        <Printer className="ml-2 h-4 w-4" />
+                        چاپ فاکتور
+                    </Button>
                 </DialogFooter>
                 </>
             )}
@@ -428,3 +422,4 @@ export default function OrdersPage() {
     </div>
   );
 }
+
