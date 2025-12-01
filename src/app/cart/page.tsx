@@ -1,17 +1,48 @@
+
 'use client';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, XCircle, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+const MOCK_DISCOUNTS = [
+    { code: 'TABS20', type: 'percent', value: 20 },
+    { code: 'NOWRUZ1403', type: 'fixed', value: 50000 },
+];
+
 export default function CartPage() {
   const { items, updateItemQuantity, removeItem, clearCart, subtotal } = useCart();
+  const [couponCode, setCouponCode] = useState('');
+  const [discount, setDiscount] = useState({ amount: 0, code: '', error: '' });
+
   const shipping = items.length > 0 ? 50000 : 0;
-  const total = subtotal + shipping;
+  const total = subtotal + shipping - discount.amount;
+  
+  const handleApplyCoupon = () => {
+    const foundDiscount = MOCK_DISCOUNTS.find(d => d.code.toUpperCase() === couponCode.toUpperCase());
+    
+    if (foundDiscount) {
+      let discountAmount = 0;
+      if (foundDiscount.type === 'percent') {
+        discountAmount = (subtotal * foundDiscount.value) / 100;
+      } else {
+        discountAmount = foundDiscount.value;
+      }
+      setDiscount({ amount: discountAmount, code: foundDiscount.code, error: '' });
+    } else {
+      setDiscount({ amount: 0, code: '', error: 'کد تخفیف نامعتبر است.' });
+    }
+  };
+  
+  const handleRemoveCoupon = () => {
+      setCouponCode('');
+      setDiscount({ amount: 0, code: '', error: '' });
+  };
 
   return (
     <div className="bg-secondary">
@@ -66,26 +97,50 @@ export default function CartPage() {
                   <CardTitle>خلاصه سفارش</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                   <div className="flex items-center gap-2">
-                      <Input placeholder="کد تخفیف" className="flex-1" />
-                      <Button variant="secondary">اعمال</Button>
-                    </div>
+                   <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                            <Input 
+                                placeholder="کد تخفیف" 
+                                className="flex-1" 
+                                value={couponCode}
+                                onChange={(e) => {
+                                    setCouponCode(e.target.value);
+                                    if(discount.error) setDiscount({ ...discount, error: '' });
+                                }}
+                                disabled={!!discount.code}
+                            />
+                            <Button variant="secondary" onClick={handleApplyCoupon} disabled={!couponCode || !!discount.code}>اعمال</Button>
+                        </div>
+                        {discount.error && <p className="text-xs text-destructive flex items-center gap-1"><XCircle className="h-3 w-3" /> {discount.error}</p>}
+                        {discount.code && <p className="text-xs text-green-600 flex items-center gap-1"><CheckCircle className="h-3 w-3" /> کد {discount.code} اعمال شد.</p>}
+                   </div>
                    <Separator />
                   <div className="flex justify-between">
-                    <span>جمع کل</span>
+                    <span>جمع جزء</span>
                     <span>{subtotal.toLocaleString()} تومان</span>
                   </div>
                   <div className="flex justify-between">
                     <span>هزینه ارسال</span>
                     <span>{shipping > 0 ? `${shipping.toLocaleString()} تومان` : 'رایگان'}</span>
                   </div>
+                  {discount.amount > 0 && (
+                    <div className="flex justify-between text-destructive">
+                      <span>تخفیف ({discount.code})</span>
+                      <div className='flex items-center gap-1'>
+                        <span>- {discount.amount.toLocaleString()} تومان</span>
+                        <Button variant="ghost" size="icon" className="h-5 w-5 text-destructive" onClick={handleRemoveCoupon}>
+                            <XCircle className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                    <div className="flex justify-between text-muted-foreground">
                     <span>مالیات</span>
                     <span>محاسبه در پرداخت</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold text-lg">
-                    <span>مجموع</span>
+                    <span>مبلغ نهایی</span>
                     <span>{total.toLocaleString()} تومان</span>
                   </div>
                 </CardContent>
@@ -105,3 +160,4 @@ export default function CartPage() {
     </div>
   );
 }
+
