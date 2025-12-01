@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import PublicLayout from './(public)/layout';
 import { CartProvider } from '@/context/cart-context';
+import { AuthProvider } from '@/context/auth-context';
 
 const vazirmatn = Vazirmatn({ subsets: ['latin', 'arabic'], variable: '--font-vazirmatn' });
 
@@ -21,9 +22,11 @@ export default function RootLayout({
     <html lang="fa" dir="rtl" suppressHydrationWarning>
       <body className={`${vazirmatn.variable} font-body antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <CartProvider>
-            <PublicLayout>{children}</PublicLayout>
-          </CartProvider>
+          <AuthProvider>
+            <CartProvider>
+              <PublicLayout>{children}</PublicLayout>
+            </CartProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

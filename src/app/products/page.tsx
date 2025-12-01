@@ -18,6 +18,7 @@ import { placeholderImages } from '@/lib/placeholder-images';
 import type { Product, ProductCategory } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { apiFetch } from '@/lib/api';
 
 const initialProducts: Product[] = [
   {
@@ -185,9 +186,46 @@ export default function ProductsPage() {
   const [category, setCategory] = useState('all');
 
   useEffect(() => {
-    // In a real app, you would fetch this data from an API
-    setProducts(initialProducts);
-    setProductCategories(initialProductCategories);
+    // fetch products and categories from backend API
+    let mounted = true;
+    async function load() {
+      try {
+        const [prodResp, catResp] = await Promise.all([
+          apiFetch('/api/products/'),
+          apiFetch('/api/categories/'),
+        ]);
+        if (!mounted) return;
+        const mapped = prodResp.map((p: any) => ({
+          id: String(p.id),
+          name: p.title || p.name,
+          slug: p.slug,
+          category: p.category ? (typeof p.category === 'object' ? p.category.name : p.category) : '',
+          description: p.description || '',
+          weightOptions: p.metadata?.weightOptions || [{ weight: 'یک بسته', price: parseFloat(p.price || 0) }],
+          rating: p.metadata?.rating || 0,
+          reviewCount: p.metadata?.reviewCount || 0,
+          discount: p.metadata?.discount || 0,
+          images: (p.images || []).map((img: any) => ({ id: img.id || img.url, type: 'image' })),
+          stock: p.stock || 0,
+          createdAt: p.created_at || '',
+          cookingType: p.metadata?.cookingType || '',
+          aroma: p.metadata?.aroma || '',
+          texture: p.metadata?.texture || '',
+          origin: p.metadata?.origin || '',
+          reviews: p.metadata?.reviews || [],
+        }));
+        setProducts(mapped);
+        const cats = (catResp || []).map((c: any) => ({ id: String(c.id), name: c.name, description: c.description || '' }));
+        setProductCategories(cats.length ? cats : initialProductCategories);
+      } catch (err) {
+        // fallback to local initial data
+        console.error('Failed to load products from API, falling back to local data', err);
+        setProducts(initialProducts);
+        setProductCategories(initialProductCategories);
+      }
+    }
+    load();
+    return () => { mounted = false };
   }, []);
 
   useEffect(() => {

@@ -2,6 +2,10 @@
 'use client';
 import Link from 'next/link';
 import { useCart } from '@/hooks/use-cart';
+import { useAuth } from '@/context/auth-context';
+import { apiFetch } from '@/lib/api';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
@@ -15,9 +19,34 @@ import { placeholderImages } from '@/lib/placeholder-images';
 
 export default function CheckoutPage() {
   const { items, subtotal } = useCart();
+    const { user } = useAuth();
+    const router = useRouter();
+    const [loading, setLoading] = useState(false);
   const shipping = items.length > 0 ? 50000 : 0;
   const total = subtotal + shipping;
   const zarinpalLogo = placeholderImages.find(p => p.id === 'zarinpal-logo');
+
+    async function handleCheckout(e: React.FormEvent) {
+        e.preventDefault();
+        if (!user) {
+            router.push('/login');
+            return;
+        }
+        setLoading(true);
+        try {
+            // Initiate Zarinpal payment (backend will create order from cart if needed)
+            const resp = await apiFetch('/api/payments/zarinpal/initiate/', { method: 'POST', body: JSON.stringify({}) });
+            if (resp.redirect_url) {
+                window.location.href = resp.redirect_url;
+            } else {
+                console.error('No redirect URL from payment gateway', resp);
+            }
+        } catch (err) {
+            console.error('Checkout failed', err);
+        } finally {
+            setLoading(false);
+        }
+    }
 
   return (
     <div className="min-h-dvh bg-secondary">
@@ -123,9 +152,13 @@ export default function CheckoutPage() {
                     <span>{total.toLocaleString()} تومان</span>
                   </div>
                 </CardContent>
-                <CardFooter>
-                  <Button size="lg" className="w-full font-bold">پرداخت و ثبت نهایی سفارش</Button>
-                </CardFooter>
+                                <CardFooter>
+                                    <form onSubmit={handleCheckout} className="w-full">
+                                        <Button type="submit" size="lg" className="w-full font-bold" disabled={loading}>
+                                            {loading ? 'در حال پردازش...' : 'پرداخت و ثبت نهایی سفارش'}
+                                        </Button>
+                                    </form>
+                                </CardFooter>
               </Card>
             </div>
         </div>

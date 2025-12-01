@@ -23,6 +23,7 @@ import {
   UserCircle,
 } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
+import { apiFetch } from '@/lib/api';
 import {
   Accordion,
   AccordionContent,
@@ -211,14 +212,47 @@ export default function ProductPage() {
   const [isCartDialogOpen, setIsCartDialogOpen] = useState(false);
 
   useEffect(() => {
-    // In a real app, you would fetch this data from an API based on the slug
-    const foundProduct = initialProducts.find((p) => p.slug === params.slug);
-    if (foundProduct) {
-      setProduct(foundProduct);
-      setSelectedImage(foundProduct.images[0]);
-      setSelectedWeight(foundProduct.weightOptions[0]);
+    let mounted = true;
+    async function load() {
+      try {
+        const p = await apiFetch(`/api/products/${params.slug}/`);
+        if (!mounted) return;
+        const mapped: Product = {
+          id: String(p.id),
+          name: p.title || p.name,
+          slug: p.slug,
+          category: p.category ? (typeof p.category === 'object' ? p.category.name : p.category) : '',
+          description: p.description || '',
+          weightOptions: p.metadata?.weightOptions || [{ weight: 'یک بسته', price: parseFloat(p.price || 0) }],
+          rating: p.metadata?.rating || 0,
+          reviewCount: p.metadata?.reviewCount || 0,
+          discount: p.metadata?.discount || 0,
+          images: (p.images || []).map((img: any) => ({ id: img.id || img.url, type: 'image' })),
+          stock: p.stock || 0,
+          createdAt: p.created_at || '',
+          cookingType: p.metadata?.cookingType || '',
+          aroma: p.metadata?.aroma || '',
+          texture: p.metadata?.texture || '',
+          origin: p.metadata?.origin || '',
+          reviews: p.metadata?.reviews || [],
+        };
+        setProduct(mapped);
+        setSelectedImage(mapped.images[0]);
+        setSelectedWeight(mapped.weightOptions[0]);
+      } catch (err) {
+        console.error('Failed to load product from API, falling back to local', err);
+        const foundProduct = initialProducts.find((p) => p.slug === params.slug);
+        if (foundProduct) {
+          setProduct(foundProduct);
+          setSelectedImage(foundProduct.images[0]);
+          setSelectedWeight(foundProduct.weightOptions[0]);
+        }
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false);
+    load();
+    return () => { mounted = false };
   }, [params.slug]);
 
 

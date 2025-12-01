@@ -1,0 +1,12 @@
+Django>=4.2
+djangorestframework
+djangorestframework-simplejwt
+psycopg2-binary
+gunicorn
+django-cors-headers
+celery
+redis
+boto3
+python-dotenv
+dj-database-url
+requests
