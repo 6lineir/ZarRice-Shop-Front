@@ -13,10 +13,12 @@ import {
 } from "@/components/ui/select"
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { Search } from 'lucide-react';
+import { Search, Truck, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { placeholderImages } from '@/lib/placeholder-images';
 import type { Product } from '@/lib/types';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function ProductsPage() {
   const headerImage = placeholderImages.find((img) => img.id === 'products-header');
@@ -91,6 +93,20 @@ export default function ProductsPage() {
 
       <main className="py-12 md:py-20">
         <div className="container px-4">
+           <div className="mb-8 md:mb-12 bg-primary/5 border-2 border-dashed border-primary/20 rounded-xl p-6 text-center">
+            <div className="flex flex-col items-center justify-center">
+              <Truck className="h-10 w-10 text-primary mb-3" />
+              <h2 className="text-xl md:text-2xl font-bold font-headline text-primary-foreground/90">از شالیزار مستقیم به سفره شما</h2>
+              <p className="text-sm md:text-base text-muted-foreground mt-2 max-w-lg mx-auto">ما واسطه‌ها را حذف کرده‌ایم تا تازه‌ترین و باکیفیت‌ترین برنج را با بهترین قیمت به دست شما برسانیم.</p>
+              <Button variant="link" asChild className="mt-2">
+                <Link href="#products">
+                  کاوش در تازه‌ها
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+
           <Card className="mb-8 md:mb-12 shadow-sm sticky top-16 z-40 bg-background/95 backdrop-blur-sm">
             <CardContent className="p-3 md:p-4">
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-between items-center">
@@ -132,7 +148,7 @@ export default function ProductsPage() {
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+          <div id="products" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
