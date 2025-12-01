@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -340,7 +341,11 @@ export default function OrdersPage() {
         <DialogContent className="sm:max-w-4xl p-0">
             {selectedOrder && (
                 <>
-                  <div className="max-h-[80vh] overflow-y-auto">
+                  <DialogHeader className='p-6 pb-2'>
+                    <DialogTitle>فاکتور سفارش {selectedOrder.id}</DialogTitle>
+                    <DialogDescription>تاریخ سفارش: {selectedOrder.date}</DialogDescription>
+                  </DialogHeader>
+                  <div className="max-h-[70vh] overflow-y-auto">
                     <InvoiceContent order={selectedOrder} ref={dialogInvoiceRef} />
                   </div>
                   <DialogFooter className="border-t p-4 gap-2 flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-x-2">
@@ -423,3 +428,6 @@ export default function OrdersPage() {
   );
 }
 
+
+
+    
