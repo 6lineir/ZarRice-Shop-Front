@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -26,7 +26,6 @@ import {
 } from '@/components/ui/chart';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { products } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -34,9 +33,10 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Order, Product } from '@/lib/types';
 
 
-const salesData = [
+const initialSalesData = [
   { month: 'فروردین', sales: 186, revenue: 80 },
   { month: 'اردیبهشت', sales: 305, revenue: 200 },
   { month: 'خرداد', sales: 237, revenue: 120 },
@@ -64,13 +64,92 @@ const initialTasks = [
     { id: 'task5', label: 'برنامه‌ریزی کمپین تخفیف بعدی', completed: false },
 ]
 
-const recentOrders = [
-    { id: 'ZR-1708', customerName: 'سارا محمدی', email: 'sara.m@example.com', total: 1100000, status: 'ارسال شده' },
-    { id: 'ZR-1715', customerName: 'مریم حسینی', email: 'maryam.h@example.com', total: 129900, status: 'در حال پردازش' },
-    { id: 'ZR-1701', customerName: 'علی رضایی', email: 'ali.r@example.com', total: 759900, status: 'تحویل داده شد' },
-    { id: 'ZR-1716', customerName: 'حسین جلالی', email: 'hossein.j@example.com', total: 890000, status: 'در حال پردازش' },
-    { id: 'ZR-1709', customerName: 'فاطمه کریمی', email: 'fateme.k@example.com', total: 250000, status: 'تحویل داده شد' },
+const initialRecentOrders : (Order & {customer: {name: string, email: string}})[] = [
+    { id: 'ZR-1708', customer: {name: 'سارا محمدی', email: 'sara.m@example.com', address: '', phone:''}, total: 1100000, status: 'ارسال شده', date: '1403/02/12', items: [] },
+    { id: 'ZR-1715', customer: {name: 'مریم حسینی', email: 'maryam.h@example.com', address: '', phone:''}, total: 129900, status: 'در حال پردازش', date: '1403/02/12', items: [] },
+    { id: 'ZR-1701', customer: {name: 'علی رضایی', email: 'ali.r@example.com', address: '', phone:''}, total: 759900, status: 'تحویل داده شد', date: '1403/02/12', items: [] },
+    { id: 'ZR-1716', customer: {name: 'حسین جلالی', email: 'hossein.j@example.com', address: '', phone:''}, total: 890000, status: 'در حال پردازش', date: '1403/02/12', items: [] },
+    { id: 'ZR-1709', customer: {name: 'فاطمه کریمی', email: 'fateme.k@example.com', address: '', phone:''}, total: 250000, status: 'تحویل داده شد', date: '1403/02/12', items: [] },
 ]
+
+const initialProducts: Product[] = [
+  {
+    id: '1',
+    name: 'برنج طارم هاشمی سلطنتی',
+    slug: 'royal-tarom-hashemi-rice',
+    category: 'طارم',
+    description: '',
+    weightOptions: [],
+    rating: 4.8,
+    reviewCount: 125,
+    discount: 10,
+    images: [{id: 'product-tarom', type: 'image'}],
+    stock: 100,
+    createdAt: '2023-11-03T10:00:00Z',
+    cookingType: 'کته و آبکش',
+    aroma: 'بسیار معطر',
+    texture: 'نرم و پفکی',
+    origin: 'گیلان',
+    reviews: []
+  },
+  {
+    id: '2',
+    name: 'برنج صدری دم‌سیاه شاهانه',
+    slug: 'imperial-sadri-domsiah-rice',
+    category: 'صدری',
+    description: '',
+    weightOptions: [ ],
+    rating: 4.9,
+    reviewCount: 98,
+    discount: 0,
+    images: [{id: 'product-sadri', type: 'image'}],
+    stock: 75,
+    createdAt: '2023-11-02T10:00:00Z',
+    cookingType: 'آبکش',
+    aroma: 'استثنایی',
+    texture: 'بسیار سبک',
+    origin: 'آستانه اشرفیه',
+    reviews: []
+  },
+  {
+    id: '3',
+    name: 'برنج هاشمی کلاسیک',
+    slug: 'classic-hashemi-rice',
+    category: 'هاشمی',
+    description: '',
+    weightOptions: [],
+    rating: 4.7,
+    reviewCount: 210,
+    discount: 0,
+    images: [{id: 'product-hashemi', type: 'image'}],
+    stock: 200,
+    createdAt: '2023-11-01T10:00:00Z',
+    cookingType: 'کته و آبکش',
+    aroma: 'معطر',
+    texture: 'خوش‌پخت',
+    origin: 'گیلان',
+    reviews: []
+  },
+   {
+    id: '4',
+    name: 'برنج دودی فریدونکنار',
+    slug: 'fereydunkenar-smoked-rice',
+    category: 'فریدونکنار',
+    description: '',
+    weightOptions: [ ],
+    rating: 4.6,
+    reviewCount: 55,
+    discount: 15,
+    images: [{id: 'product-fereydunkenar', type: 'image'}],
+    stock: 50,
+    createdAt: '2023-10-30T10:00:00Z',
+    cookingType: 'کته',
+    aroma: 'دودی',
+    texture: 'کمی چسبناک',
+    origin: 'فریدونکنار',
+    reviews: []
+  },
+];
 
 const getStatusVariant = (status: string) => {
     switch (status) {
@@ -82,11 +161,24 @@ const getStatusVariant = (status: string) => {
     }
 }
 
-const bestSellingProducts = products.slice(0,4).map((p,i) => ({...p, sales: 210 - (i*30)}));
 
 export default function AdminDashboardPage() {
   const [tasks, setTasks] = useState(initialTasks);
   const [newTaskLabel, setNewTaskLabel] = useState('');
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [recentOrders, setRecentOrders] = useState<(Order & {customer: {name: string, email: string}})[]>([]);
+  const [salesData, setSalesData] = useState(initialSalesData);
+
+  useEffect(() => {
+    // In a real app, you would fetch this data from an API
+    setProducts(initialProducts);
+    setRecentOrders(initialRecentOrders);
+    setSalesData(initialSalesData);
+  }, []);
+
+  const bestSellingProducts = products.slice(0,4).map((p,i) => ({...p, sales: 210 - (i*30)}));
+
 
   const handleToggleTask = (taskId: string) => {
     setTasks(tasks.map(task => 
@@ -210,11 +302,11 @@ export default function AdminDashboardPage() {
             {recentOrders.map((order) => (
                 <div key={order.id} className="flex items-center gap-4">
                     <Avatar className="h-10 w-10">
-                        <AvatarFallback>{order.customerName.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>{order.customer.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div className='flex-1'>
-                        <p className="font-semibold">{order.customerName}</p>
-                        <p className="text-sm text-muted-foreground" dir="ltr">{order.email}</p>
+                        <p className="font-semibold">{order.customer.name}</p>
+                        <p className="text-sm text-muted-foreground" dir="ltr">{order.customer.email}</p>
                     </div>
                      <div className='text-right'>
                         <p className='font-bold whitespace-nowrap'>{order.total.toLocaleString()} تومان</p>
@@ -260,7 +352,7 @@ export default function AdminDashboardPage() {
                       <p className="text-sm text-muted-foreground">{product.category}</p>
                     </div>
                     <div className="text-right">
-                        <p className="font-bold">{product.sales}</p>
+                        <p className="font-bold">{product.reviewCount}</p>
                         <p className="text-xs text-muted-foreground">فروش</p>
                     </div>
                   </div>
@@ -279,13 +371,13 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent className="space-y-4">
              {recentOrders.slice(0, 5).map((customer) => (
-                <div key={customer.email} className="flex items-center gap-4">
+                <div key={customer.customer.email} className="flex items-center gap-4">
                     <Avatar className="h-10 w-10">
-                        <AvatarFallback>{customer.customerName.charAt(0)}</AvatarFallback>
+                        <AvatarFallback>{customer.customer.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <p className="font-semibold">{customer.customerName}</p>
-                        <p className="text-sm text-muted-foreground" dir="ltr">{customer.email}</p>
+                        <p className="font-semibold">{customer.customer.name}</p>
+                        <p className="text-sm text-muted-foreground" dir="ltr">{customer.customer.email}</p>
                     </div>
                 </div>
             ))}
@@ -321,5 +413,3 @@ export default function AdminDashboardPage() {
     </div>
   );
 }
-
-    

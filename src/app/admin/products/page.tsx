@@ -44,6 +44,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Product, ProductCategory } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
 
 
 const initialProducts: Product[] = [
@@ -63,6 +64,7 @@ const initialProducts: Product[] = [
     discount: 10,
     images: [{id: 'product-tarom', type: 'image'}],
     stock: 100,
+    createdAt: '2023-11-03T10:00:00Z',
     cookingType: 'کته و آبکش',
     aroma: 'بسیار معطر',
     texture: 'نرم و پفکی',
@@ -87,6 +89,7 @@ const initialProducts: Product[] = [
     discount: 0,
     images: [{id: 'product-sadri', type: 'image'}],
     stock: 75,
+    createdAt: '2023-11-02T10:00:00Z',
     cookingType: 'آبکش',
     aroma: 'استثنایی',
     texture: 'بسیار سبک',
@@ -111,6 +114,7 @@ const initialProducts: Product[] = [
     discount: 0,
     images: [{id: 'product-hashemi', type: 'image'}],
     stock: 200,
+    createdAt: '2023-11-01T10:00:00Z',
     cookingType: 'کته و آبکش',
     aroma: 'معطر',
     texture: 'خوش‌پخت',
@@ -124,7 +128,7 @@ const initialProducts: Product[] = [
     id: '4',
     name: 'برنج دودی فریدونکنار',
     slug: 'fereydunkenar-smoked-rice',
-    category: 'فریدونکنar',
+    category: 'فریدونکنار',
     description: 'یک تخصص منحصر به فرد از منطقه فریدونکنار، این برنج به آرامی روی تراشه‌های چوب دودی می‌شود و طعمی لطیف و خوشمزه به آن می‌بخشد که هر غذایی را متحول می‌کند. ایده‌آل برای غذاهای دریایی و مرغ.',
     weightOptions: [
       { weight: '۱ کیلوگرم', price: 189900 },
@@ -135,6 +139,7 @@ const initialProducts: Product[] = [
     discount: 15,
     images: [{id: 'product-fereydunkenar', type: 'image'}],
     stock: 50,
+    createdAt: '2023-10-30T10:00:00Z',
     cookingType: 'کته',
     aroma: 'دودی',
     texture: 'کمی چسبناک',
@@ -158,6 +163,7 @@ const initialProducts: Product[] = [
     discount: 0,
     images: [{id: 'product-gilan', type: 'image'}],
     stock: 80,
+    createdAt: '2023-10-29T10:00:00Z',
     cookingType: 'کته',
     aroma: 'شیرین و خاص',
     texture: 'کمی چسبناک',
@@ -182,6 +188,7 @@ const initialProducts: Product[] = [
     discount: 5,
     images: [{id: 'product-golestan', type: 'image'}],
     stock: 300,
+    createdAt: '2023-10-28T10:00:00Z',
     cookingType: 'کته و آبکش',
     aroma: 'متوسط',
     texture: 'معمولی',
@@ -200,129 +207,25 @@ const initialProductCategories: ProductCategory[] = [
   { name: 'گلستان', description: 'انتخابی قابل اعتماد برای وعده‌های روزانه با کیفیت ثابت.' },
 ];
 
-
-const ProductForm = ({ product, onSave, onCancel, productCategories }: { product?: any, onSave: (p: any) => void, onCancel: () => void, productCategories: ProductCategory[] }) => {
-    // A simple form state. In a real app, use react-hook-form.
-    const [formData, setFormData] = useState(product || {
-        name: '',
-        description: '',
-        category: '',
-        stock: 100,
-        weightOptions: [{ weight: '۱ کیلوگرم', price: 0 }]
-    });
-
-    const handleSave = () => {
-        onSave(formData);
-    }
-    
-    return (
-        <>
-            <DialogHeader>
-                <DialogTitle>{product ? 'ویرایش محصول' : 'افزودن محصول جدید'}</DialogTitle>
-                <DialogDescription>
-                    {product ? 'اطلاعات محصول را ویرایش کنید.' : 'فرم زیر را برای اضافه کردن محصول جدید پر کنید.'}
-                </DialogDescription>
-            </DialogHeader>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 py-4 max-h-[70vh] overflow-y-auto pr-2">
-                <div className="lg:col-span-2 space-y-6">
-                    <Card>
-                        <CardHeader><CardTitle>اطلاعات اصلی</CardTitle></CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="name">نام محصول</Label>
-                                <Input id="name" defaultValue={formData.name} />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="description">توضیحات</Label>
-                                <Textarea id="description" defaultValue={formData.description} rows={5} />
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader><CardTitle>قیمت‌گذاری و وزن</CardTitle></CardHeader>
-                        <CardContent className="space-y-4">
-                             {formData.weightOptions.map((opt:any, index: number) => (
-                                <div key={index} className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-                                    <div className="space-y-2">
-                                        <Label>وزن</Label>
-                                        <Input defaultValue={opt.weight} />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label>قیمت (تومان)</Label>
-                                        <Input defaultValue={opt.price} type="number" />
-                                    </div>
-                                    <Button variant="outline">حذف</Button>
-                                </div>
-                            ))}
-                            <Button variant="secondary">افزودن گزینه وزن</Button>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                <div className="lg:col-span-1 space-y-6">
-                    <Card>
-                        <CardHeader><CardTitle>دسته‌بندی و موجودی</CardTitle></CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="category">دسته‌بندی</Label>
-                                <Select defaultValue={formData.category}>
-                                    <SelectTrigger id="category"><SelectValue placeholder="انتخاب کنید" /></SelectTrigger>
-                                    <SelectContent>
-                                        {productCategories.map(cat => <SelectItem key={cat.name} value={cat.name}>{cat.name}</SelectItem>)}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="stock">موجودی انبار</Label>
-                                <Input id="stock" type="number" defaultValue={formData.stock} />
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader><CardTitle>تصویر محصول</CardTitle></CardHeader>
-                        <CardContent className="text-center">
-                            <div className="border-2 border-dashed border-muted rounded-lg p-6 cursor-pointer hover:bg-muted/50">
-                                <p>تصویر را بکشید یا کلیک کنید</p>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
-            
-            <DialogFooter>
-                <Button variant="outline" onClick={onCancel}>انصراف</Button>
-                <Button onClick={handleSave}>{product ? 'ذخیره تغییرات' : 'انتشار محصول'}</Button>
-            </DialogFooter>
-        </>
-    );
-};
-
-
 export default function AdminProductsPage() {
+  const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
   const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState(undefined);
-
+  
   useEffect(() => {
     // In a real app, you would fetch this data from an API
     setProducts(initialProducts);
     setProductCategories(initialProductCategories);
   }, []);
 
-  const handleEdit = (product: any) => {
-    setEditingProduct(product);
-    setIsDialogOpen(true);
-  }
-
-  const handleSaveProduct = (productData: any) => {
-    console.log("Saving product:", productData);
-    // Here you would typically call an API to save the product
-    setIsDialogOpen(false);
-  }
+  const handleDeleteProduct = (productId: string) => {
+    // Here you would typically call an API to delete the product
+    setProducts(prevProducts => prevProducts.filter(p => p.id !== productId));
+    toast({
+      title: "محصول حذف شد",
+      description: "محصول با موفقیت از لیست حذف گردید.",
+    });
+  };
   
   return (
     <div>
@@ -394,7 +297,7 @@ export default function AdminProductsPage() {
                       {product.stock}
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      ۱۴۰۲/۰۸/۱۲
+                      {new Date(product.createdAt).toLocaleDateString('fa-IR')}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -410,12 +313,14 @@ export default function AdminProductsPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>عملیات</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => handleEdit(product)}>
-                            <Edit className="ml-2 h-4 w-4" />
-                            ویرایش
+                          <DropdownMenuItem asChild>
+                            <Link href={`/admin/products/new?id=${product.id}`}>
+                              <Edit className="ml-2 h-4 w-4" />
+                              ویرایش
+                            </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-destructive">
+                          <DropdownMenuItem className="text-destructive" onClick={() => handleDeleteProduct(product.id)}>
                              <Trash2 className="ml-2 h-4 w-4" />
                             حذف
                           </DropdownMenuItem>
@@ -444,17 +349,6 @@ export default function AdminProductsPage() {
             </Pagination>
         </CardFooter>
       </Card>
-      
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="max-w-4xl">
-              <ProductForm 
-                product={editingProduct} 
-                onSave={handleSaveProduct}
-                onCancel={() => setIsDialogOpen(false)}
-                productCategories={productCategories}
-              />
-          </DialogContent>
-      </Dialog>
     </div>
   );
 }

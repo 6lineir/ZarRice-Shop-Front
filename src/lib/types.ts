@@ -1,4 +1,5 @@
 
+
 export type WeightOption = {
   weight: string;
   price: number;
@@ -27,6 +28,7 @@ export type Product = {
   discount: number;
   images: ProductImage[];
   stock: number;
+  createdAt: string;
   // New detailed properties
   cookingType: string;
   aroma: string;
@@ -36,6 +38,7 @@ export type Product = {
 };
 
 export type ProductCategory = {
+    id: string;
     name: string;
     description: string;
 }
@@ -49,6 +52,7 @@ export type BlogPost = {
   imageId: string;
   excerpt: string;
   content: string;
+  status: 'published' | 'draft';
 };
 
 export type CartItem = {
@@ -74,6 +78,7 @@ export type Order = {
     name: string;
     address: string;
     phone: string;
+    email?: string;
   };
   items: {
     name: string;
@@ -81,3 +86,33 @@ export type Order = {
     price: number;
   }[];
 };
+
+export type DiscountCode = {
+    id: string;
+    code: string;
+    type: 'درصدی' | 'مبلغ ثابت';
+    value: number;
+    usageLimit: number | null;
+    used: number;
+    status: 'فعال' | 'منقضی شده';
+    expiryDate: string | null;
+}
+
+export type UserProfile = {
+    name: string;
+    email: string;
+    phone: string;
+
+    addresses: {
+        id: string;
+        title: string;
+        recipientName: string;
+        phone: string;
+        address: string;
+        isDefault: boolean;
+    }[];
+    orderStats: {
+        totalOrders: number;
+        totalSpent: string;
+    }
+}

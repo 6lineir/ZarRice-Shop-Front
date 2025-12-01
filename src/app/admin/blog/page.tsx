@@ -39,13 +39,15 @@ import Image from 'next/image';
 import { placeholderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import type { BlogPost } from '@/lib/types';
+import { useToast } from '@/hooks/use-toast';
 
 const initialBlogPosts: BlogPost[] = [
   {
     id: '1',
     title: 'هنر پخت برنج ایرانی: تسلط بر ته‌دیگ',
     slug: 'art-of-persian-rice-mastering-tahdig',
-    date: '۲۶ اکتبر ۲۰۲۳',
+    status: 'published',
+    date: '۲۰۲۳-۱۰-۲۶T۱۰:۰۰:۰۰Z',
     author: 'ادمین',
     imageId: 'blog-cooking',
     excerpt: 'رازهای پخت "ته‌دیگ" عالی، پوسته طلایی و ترد در کف قابلمه برنج ایرانی را کشف کنید. راهنمای گام به گام ما شما را به یک استاد ته‌دیگ تبدیل خواهد کرد.',
@@ -55,7 +57,8 @@ const initialBlogPosts: BlogPost[] = [
     id: '2',
     title: 'از شالیزار تا بشقاب: سفر برنج هاشمی',
     slug: 'from-paddy-to-plate-journey-of-hashemi-rice',
-    date: '۱۵ اکتبر ۲۰۲۳',
+    status: 'published',
+    date: '۲۰۲۳-۱۰-۱۵T۱۰:۰۰:۰۰Z',
     author: 'ادمین',
     imageId: 'blog-cultivation',
     excerpt: 'سفر باورنکردنی برنج هاشمی ما را کشف کنید، از شالیزارهای سرسبز شمال ایران تا میز ناهارخوری شما. با روش‌های کشاورزی سنتی که آن را بسیار خاص می‌کند، آشنا شوید.',
@@ -65,7 +68,8 @@ const initialBlogPosts: BlogPost[] = [
     id: '3',
     title: 'نگهداری برنج ممتاز شما: راهنمای تازگی',
     slug: 'storing-premium-rice-guide-to-freshness',
-    date: '۳۰ سپتامبر ۲۰۲۳',
+    status: 'draft',
+    date: '۲۰۲۳-۰۹-۳۰T۱۰:۰۰:۰۰Z',
     author: 'ادمین',
     imageId: 'blog-storage',
     excerpt: 'شما در بهترین برنج ایرانی سرمایه‌گذاری کرده‌اید. اکنون یاد بگیرید که چگونه آن را به درستی نگهداری کنید تا عطر و طعم استثنایی آن برای ماه‌ها حفظ شود. آسان‌تر از آن چیزی است که فکر می‌کنید!',
@@ -75,12 +79,25 @@ const initialBlogPosts: BlogPost[] = [
 
 
 export default function AdminBlogPage() {
+  const { toast } = useToast();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
 
   useEffect(() => {
     // In a real app, you would fetch this data from an API
     setBlogPosts(initialBlogPosts);
   }, []);
+  
+  const handleDeletePost = (postId: string) => {
+    setBlogPosts(prevPosts => prevPosts.filter(p => p.id !== postId));
+    toast({
+        title: "پست حذف شد",
+        description: "پست وبلاگ با موفقیت حذف گردید.",
+    });
+  }
+
+  const getStatusVariant = (status: 'published' | 'draft') => {
+      return status === 'published' ? 'default' : 'secondary';
+  }
 
   return (
     <div>
@@ -100,7 +117,7 @@ export default function AdminBlogPage() {
         <CardHeader>
             <CardTitle>لیست پست‌ها</CardTitle>
             <CardDescription>
-                مجموعاً {blogPosts.length} پست در وبلاگ شما منتشر شده است.
+                مجموعاً {blogPosts.length} پست در وبلاگ شما موجود است.
             </CardDescription>
         </CardHeader>
         <CardContent>
@@ -140,15 +157,15 @@ export default function AdminBlogPage() {
                     </TableCell>
                     <TableCell className="font-medium">{post.title}</TableCell>
                     <TableCell>
-                      <Badge variant={'default'}>
-                        منتشر شده
+                      <Badge variant={getStatusVariant(post.status)}>
+                        {post.status === 'published' ? 'منتشر شده' : 'پیش‌نویس'}
                       </Badge>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
                       {post.author}
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      {post.date}
+                      {new Date(post.date).toLocaleDateString('fa-IR')}
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -165,13 +182,13 @@ export default function AdminBlogPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>عملیات</DropdownMenuLabel>
                           <DropdownMenuItem asChild>
-                            <Link href="/admin/blog/new">
+                            <Link href={`/admin/blog/new?id=${post.id}`}>
                                 <Edit className="ml-2 h-4 w-4" />
                                 ویرایش
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-destructive">
+                          <DropdownMenuItem className="text-destructive" onClick={() => handleDeletePost(post.id)}>
                              <Trash2 className="ml-2 h-4 w-4" />
                             حذف
                           </DropdownMenuItem>
