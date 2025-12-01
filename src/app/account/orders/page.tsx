@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -19,7 +18,7 @@ import { cn } from '@/lib/utils';
 import { Logo } from '@/components/logo';
 
 
-const initialOrders: Order[] = [
+const initialOrdersData: Order[] = [
     { 
         id: 'ZR-1701', 
         date: '۱۴۰۲/۰۸/۰۳', 
@@ -48,7 +47,7 @@ const initialOrders: Order[] = [
         date: '۱۴۰۲/۰۸/۲۹', 
         status: 'در حال پردازش', 
         total: 129900,
-        customer: { name: 'علی رضایی', address: 'تهران، خیابان آزادی، کوچه اول، پلاک ۲', phone: '09123456789' },
+        customer: { name: 'علی رضایی', address: 'تهران، خیابان آزادی، کوچه اول- پلاک ۲', phone: '09123456789' },
         items: [
              { name: 'برنج طارم هاشمی سلطنتی (۱ کیلوگرم)', quantity: 1, price: 129900 },
         ]
@@ -85,7 +84,7 @@ const InvoiceContent = React.forwardRef<HTMLDivElement, { order: Order | null }>
                         <Logo />
                         <address className="not-italic text-sm text-muted-foreground mt-4">
                             شرکت زر برنج<br />
-                            خیابان برنج ۱۲۳، دره طلایی<br />
+                            خیابان برنج ۱۲۳- دره طلایی<br />
                             کالیفرنیا ۹۴۱۲۳<br />
                             support@zarrice.com
                         </address>
@@ -174,13 +173,18 @@ InvoiceContent.displayName = 'InvoiceContent';
 
 export default function OrdersPage() {
   const { toast } = useToast();
-  const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isPrinting, setIsPrinting] = useState(false);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const invoiceRef = useRef<HTMLDivElement>(null);
   const dialogInvoiceRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  useEffect(() => {
+    // TODO: Fetch orders from your API
+    setOrders(initialOrdersData);
+  }, []);
 
   const handleDownloadPdf = async () => {
     if (!dialogInvoiceRef.current || !selectedOrder) return;
@@ -427,7 +431,3 @@ export default function OrdersPage() {
     </div>
   );
 }
-
-
-
-    
