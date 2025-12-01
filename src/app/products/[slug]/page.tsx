@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, use, useMemo } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { products } from '@/lib/data';
 import { placeholderImages } from '@/lib/placeholder-images';
@@ -18,9 +18,9 @@ import {
   MapPin,
   Flame,
   ChefHat,
-  Star,
-  UserCircle,
   PlayCircle,
+  ArrowRight,
+  UserCircle,
 } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
 import {
@@ -29,6 +29,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Card, CardContent } from '@/components/ui/card';
 import ProductCard from '@/components/product-card';
 import {
@@ -49,6 +59,7 @@ type ProductPageProps = {
 };
 
 export default function ProductPage({ params }: ProductPageProps) {
+  const router = useRouter();
   const resolvedParams = use(params);
   const product = products.find((p) => p.slug === resolvedParams.slug);
 
@@ -61,7 +72,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     product.weightOptions[0]
   );
   const [quantity, setQuantity] = useState(1);
-  const [addedToCart, setAddedToCart] = useState(false);
+  const [isCartDialogOpen, setIsCartDialogOpen] = useState(false);
 
   const { addItem } = useCart();
   
@@ -78,8 +89,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       quantity: quantity,
     };
     addItem(itemToAdd);
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000);
+    setIsCartDialogOpen(true);
   };
 
   const productDetails = [
@@ -94,6 +104,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   , []);
 
   return (
+    <>
     <div className="container py-8 md:py-16 px-4">
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div className="space-y-4 sticky top-24 h-max">
@@ -235,19 +246,9 @@ export default function ProductPage({ params }: ProductPageProps) {
               size="lg"
               className="w-full font-bold text-lg"
               onClick={handleAddToCart}
-              disabled={addedToCart}
             >
-              {addedToCart ? (
-                <>
-                  <CheckCircle className="ml-2 h-5 w-5" />
-                  به سبد خرید اضافه شد!
-                </>
-              ) : (
-                <>
-                  <ShoppingCart className="ml-2 h-5 w-5" />
-                  افزودن به سبد خرید
-                </>
-              )}
+              <ShoppingCart className="ml-2 h-5 w-5" />
+              افزودن به سبد خرید
             </Button>
           </div>
         </div>
@@ -310,5 +311,30 @@ export default function ProductPage({ params }: ProductPageProps) {
         </div>
 
     </div>
+    <AlertDialog open={isCartDialogOpen} onOpenChange={setIsCartDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+                <CheckCircle className="h-6 w-6 text-green-500" />
+                محصول به سبد خرید اضافه شد!
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {`"${product.name}" (${selectedWeight.weight}) با موفقیت به سبد خرید شما اضافه شد. چه کاری می‌خواهید انجام دهید؟`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="sm:justify-start flex-row-reverse sm:flex-row-reverse mt-4 gap-2">
+            <AlertDialogAction onClick={() => router.push('/cart')}>
+              <ShoppingCart className="ml-2 h-4 w-4" />
+              مشاهده سبد خرید
+            </AlertDialogAction>
+            <AlertDialogCancel>
+              ادامه خرید
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
+
+    
