@@ -19,7 +19,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { blogPosts } from '@/lib/data';
 import Link from 'next/link';
 import { ChevronRight, Upload, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';

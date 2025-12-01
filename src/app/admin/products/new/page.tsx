@@ -1,5 +1,6 @@
 
 'use client';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -19,11 +20,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { productCategories } from '@/lib/data';
 import Link from 'next/link';
 import { ChevronRight, PlusCircle, Trash2, Upload } from 'lucide-react';
+import type { ProductCategory } from '@/lib/types';
+
+const initialProductCategories: ProductCategory[] = [
+  { name: 'طارم', description: 'به خاطر عطر دل‌انگیز و بافت پفکی شهرت دارد.' },
+  { name: 'صدری', description: 'یک نوع اشرافی با عطری استثنایی.' },
+  { name: 'هاشمی', description: 'یک نوع محبوب و دوست‌داشتنی که تعادل فوق‌العاده‌ای ارائه می‌دهد.' },
+  { name: 'فریدونکنار', description: 'برنج دودی با طعمی لطیف و خوشمزه.' },
+  { name: 'گیلان', description: 'یک برنج دانه‌کوتاه با عطری مشخصاً شیرین.' },
+  { name: 'گلستان', description: 'انتخابی قابل اعتماد برای وعده‌های روزانه با کیفیت ثابت.' },
+];
 
 export default function NewProductPage() {
+  const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
+
+  useEffect(() => {
+    // In a real app, you would fetch this data from an API
+    setProductCategories(initialProductCategories);
+  }, []);
+
   return (
     <div className="space-y-6">
         <div className="flex items-center gap-2">

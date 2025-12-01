@@ -1,5 +1,6 @@
 
 'use client';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -26,9 +27,26 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { productCategories } from '@/lib/data';
+import type { ProductCategory } from '@/lib/types';
+
+
+const initialProductCategories: ProductCategory[] = [
+  { name: 'طارم', description: 'به خاطر عطر دل‌انگیز و بافت پفکی شهرت دارد.' },
+  { name: 'صدری', description: 'یک نوع اشرافی با عطری استثنایی.' },
+  { name: 'هاشمی', description: 'یک نوع محبوب و دوست‌داشتنی که تعادل فوق‌العاده‌ای ارائه می‌دهد.' },
+  { name: 'فریدونکنار', description: 'برنج دودی با طعمی لطیف و خوشمزه.' },
+  { name: 'گیلان', description: 'یک برنج دانه‌کوتاه با عطری مشخصاً شیرین.' },
+  { name: 'گلستان', description: 'انتخابی قابل اعتماد برای وعده‌های روزانه با کیفیت ثابت.' },
+];
 
 export default function AdminCategoriesPage() {
+  const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
+
+  useEffect(() => {
+    // In a real app, you would fetch this data from an API
+    setProductCategories(initialProductCategories);
+  }, []);
+  
   return (
     <div className="grid gap-6 md:grid-cols-5">
       <div className="md:col-span-3">

@@ -1,17 +1,128 @@
+
+'use client';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Star } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { placeholderImages } from '@/lib/placeholder-images';
-import { products, blogPosts } from '@/lib/data';
 import ProductCard from '@/components/product-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { Product, BlogPost } from '@/lib/types';
+
+
+const initialProducts: Product[] = [
+  {
+    id: '1',
+    name: 'برنج طارم هاشمی سلطنتی',
+    slug: 'royal-tarom-hashemi-rice',
+    category: 'طارم',
+    description: 'یک برنج دانه‌بلند ممتاز از شالیزارهای سرسبز شمال ایران. طارم هاشمی به خاطر عطر دل‌انگیز و بافت پفکی هنگام پخت شهرت دارد و گزینه‌ای محبوب برای غذاهای مجلسی است.',
+    weightOptions: [
+      { weight: '۱ کیلوگرم', price: 129900 },
+      { weight: '۵ کیلوگرم', price: 599900 },
+      { weight: '۱۰ کیلوگرم', price: 1100000 },
+    ],
+    rating: 4.8,
+    reviewCount: 125,
+    discount: 10,
+    images: [{id: 'product-tarom', type: 'image'}],
+    stock: 100,
+    cookingType: 'کته و آبکش',
+    aroma: 'بسیار معطر',
+    texture: 'نرم و پفکی',
+    origin: 'گیلان',
+    reviews: [
+        { author: 'مریم رضایی', rating: 5, comment: 'عطر و طعم این برنج فوق‌العاده‌ست! کاملا مجلسی و باکیفیت.' },
+        { author: 'علی احمدی', rating: 4, comment: 'برنج خوبیه ولی انتظار داشتم یکم بیشتر قد بکشه.' },
+    ]
+  },
+  {
+    id: '2',
+    name: 'برنج صدری دم‌سیاه شاهانه',
+    slug: 'imperial-sadri-domsiah-rice',
+    category: 'صدری',
+    description: 'برنج صدری دم‌سیاه که به برنج "دم سیاه" معروف است، یک نوع اشرافی با عطری استثنایی و دانه‌ای کشیده و زیبا است. این برنج سبک و جدا از هم پخته می‌شود و برای همراهی با خورش‌ها عالی است.',
+    weightOptions: [
+      { weight: '۱ کیلوگرم', price: 159900 },
+      { weight: '۵ کیلوگرم', price: 759900 },
+    ],
+    rating: 4.9,
+    reviewCount: 98,
+    discount: 0,
+    images: [{id: 'product-sadri', type: 'image'}],
+    stock: 75,
+    cookingType: 'آبکش',
+    aroma: 'استثنایی',
+    texture: 'بسیار سبک',
+    origin: 'آستانه اشرفیه',
+    reviews: [
+        { author: 'سارا کریمی', rating: 5, comment: 'بهترین برنجی که تا حالا امتحان کردم. قد کشیدنش بی‌نظیره.' },
+    ]
+  },
+  {
+    id: '3',
+    name: 'برنج هاشمی کلاسیک',
+    slug: 'classic-hashemi-rice',
+    category: 'هاشمی',
+    description: 'یک نوع محبوب و دوست‌داشتنی، برنج هاشمی تعادل فوق‌العاده‌ای از طعم، عطر و بافت را ارائه می‌دهد. این یک انتخاب همه‌کاره برای وعده‌های غذایی روزمره و مناسبت‌های خاص است.',
+    weightOptions: [
+      { weight: '۱ کیلوگرم', price: 109900 },
+      { weight: '۵ کیلوگرم', price: 529900 },
+      { weight: '۱۰ کیلوگرم', price: 999900 },
+    ],
+    rating: 4.7,
+    reviewCount: 210,
+    discount: 0,
+    images: [{id: 'product-hashemi', type: 'image'}],
+    stock: 200,
+    cookingType: 'کته و آبکش',
+    aroma: 'معطر',
+    texture: 'خوش‌پخت',
+    origin: 'گیلان',
+    reviews: [
+        { author: 'حسین جلالی', rating: 5, comment: 'برای مصرف روزانه عالیه. قیمت و کیفیتش متناسبه.' },
+        { author: 'فاطمه نوری', rating: 4, comment: 'برنج خوب و خوش خوراکیه.' },
+    ]
+  },
+];
+
+const initialBlogPosts: BlogPost[] = [
+  {
+    id: '1',
+    title: 'هنر پخت برنج ایرانی: تسلط بر ته‌دیگ',
+    slug: 'art-of-persian-rice-mastering-tahdig',
+    date: '۲۶ اکتبر ۲۰۲۳',
+    author: 'ادمین',
+    imageId: 'blog-cooking',
+    excerpt: 'رازهای پخت "ته‌دیگ" عالی، پوسته طلایی و ترد در کف قابلمه برنج ایرانی را کشف کنید. راهنمای گام به گام ما شما را به یک استاد ته‌دیگ تبدیل خواهد کرد.',
+    content: '<p>رازهای پخت "ته‌دیگ" عالی، پوسته طلایی و ترد در کف قابلمه برنج ایرانی را کشف کنید. راهنمای گام به گام ما شما را به یک استاد ته‌دیگ تبدیل خواهد کرد.</p><p>ابتدا برنج مناسب را انتخاب کنید. یک نوع دانه‌بلند مانند طارم یا هاشمی بهترین نتیجه را می‌دهد. برنج را آبکش کنید، سپس کف قابلمه خود را با یک لایه سخاوتمendانه روغن و ماست یا سیب‌زمینی آماده کنید. در نهایت، روی حرارت کم بپزید تا یک پوسته معطر تشکیل شود. صبر کلید موفقیت است!</p>',
+  },
+  {
+    id: '2',
+    title: 'از شالیزار تا بشقاب: سفر برنج هاشمی',
+    slug: 'from-paddy-to-plate-journey-of-hashemi-rice',
+    date: '۱۵ اکتبر ۲۰۲۳',
+    author: 'ادمین',
+    imageId: 'blog-cultivation',
+    excerpt: 'سفر باورنکردنی برنج هاشمی ما را کشف کنید، از شالیزارهای سرسبز شمال ایران تا میز ناهارخوری شما. با روش‌های کشاورزی سنتی که آن را بسیار خاص می‌کند، آشنا شوید.',
+    content: '<p>سفر باورنکردنی برنج هاشمی ما را کشف کنید، از شالیزارهای سرسبز شمال ایران تا میز ناهارخوری شما. با روش‌های کشاورزی سنتی که آن را بسیار خاص می‌کند، آشنا شوید.</p><p>کشاورزان ما از تکنیک‌هایی استفاده می‌کنند که از نسل‌ها قبل به ارث رسیده است و به آبیاری طبیعی از کوه‌های البرز متکی هستند. برنج با دست برداشت شده و با دقت آسیاب می‌شود تا عطر لطیف و ارزش غذایی آن حفظ شود.</p>',
+  },
+];
 
 export default function Home() {
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [latestPosts, setLatestPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    // In a real app, you would fetch this data from an API
+    setFeaturedProducts(initialProducts.slice(0, 3));
+    setLatestPosts(initialBlogPosts.slice(0, 2));
+  }, []);
+  
   const heroImage = placeholderImages.find((img) => img.id === 'hero-background');
-  const featuredProducts = products.slice(0, 3);
-  const latestPosts = blogPosts.slice(0, 2);
 
   return (
     <div className="flex flex-col">

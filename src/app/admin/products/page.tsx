@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Card,
@@ -19,7 +19,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { products, productCategories } from '@/lib/data';
 import Image from 'next/image';
 import { placeholderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
@@ -44,9 +43,165 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import type { Product, ProductCategory } from '@/lib/types';
 
 
-const ProductForm = ({ product, onSave, onCancel }: { product?: any, onSave: (p: any) => void, onCancel: () => void }) => {
+const initialProducts: Product[] = [
+  {
+    id: '1',
+    name: 'برنج طارم هاشمی سلطنتی',
+    slug: 'royal-tarom-hashemi-rice',
+    category: 'طارم',
+    description: 'یک برنج دانه‌بلند ممتاز از شالیزارهای سرسبز شمال ایران. طارم هاشمی به خاطر عطر دل‌انگیز و بافت پفکی هنگام پخت شهرت دارد و گزینه‌ای محبوب برای غذاهای مجلسی است.',
+    weightOptions: [
+      { weight: '۱ کیلوگرم', price: 129900 },
+      { weight: '۵ کیلوگرم', price: 599900 },
+      { weight: '۱۰ کیلوگرم', price: 1100000 },
+    ],
+    rating: 4.8,
+    reviewCount: 125,
+    discount: 10,
+    images: [{id: 'product-tarom', type: 'image'}],
+    stock: 100,
+    cookingType: 'کته و آبکش',
+    aroma: 'بسیار معطر',
+    texture: 'نرم و پفکی',
+    origin: 'گیلان',
+    reviews: [
+        { author: 'مریم رضایی', rating: 5, comment: 'عطر و طعم این برنج فوق‌العاده‌ست! کاملا مجلسی و باکیفیت.' },
+        { author: 'علی احمدی', rating: 4, comment: 'برنج خوبیه ولی انتظار داشتم یکم بیشتر قد بکشه.' },
+    ]
+  },
+  {
+    id: '2',
+    name: 'برنج صدری دم‌سیاه شاهانه',
+    slug: 'imperial-sadri-domsiah-rice',
+    category: 'صدری',
+    description: 'برنج صدری دم‌سیاه که به برنج "دم سیاه" معروف است، یک نوع اشرافی با عطری استثنایی و دانه‌ای کشیده و زیبا است. این برنج سبک و جدا از هم پخته می‌شود و برای همراهی با خورش‌ها عالی است.',
+    weightOptions: [
+      { weight: '۱ کیلوگرم', price: 159900 },
+      { weight: '۵ کیلوگرم', price: 759900 },
+    ],
+    rating: 4.9,
+    reviewCount: 98,
+    discount: 0,
+    images: [{id: 'product-sadri', type: 'image'}],
+    stock: 75,
+    cookingType: 'آبکش',
+    aroma: 'استثنایی',
+    texture: 'بسیار سبک',
+    origin: 'آستانه اشرفیه',
+    reviews: [
+        { author: 'سارا کریمی', rating: 5, comment: 'بهترین برنجی که تا حالا امتحان کردم. قد کشیدنش بی‌نظیره.' },
+    ]
+  },
+  {
+    id: '3',
+    name: 'برنج هاشمی کلاسیک',
+    slug: 'classic-hashemi-rice',
+    category: 'هاشمی',
+    description: 'یک نوع محبوب و دوست‌داشتنی، برنج هاشمی تعادل فوق‌العاده‌ای از طعم، عطر و بافت را ارائه می‌دهد. این یک انتخاب همه‌کاره برای وعده‌های غذایی روزمره و مناسبت‌های خاص است.',
+    weightOptions: [
+      { weight: '۱ کیلوگرم', price: 109900 },
+      { weight: '۵ کیلوگرم', price: 529900 },
+      { weight: '۱۰ کیلوگرم', price: 999900 },
+    ],
+    rating: 4.7,
+    reviewCount: 210,
+    discount: 0,
+    images: [{id: 'product-hashemi', type: 'image'}],
+    stock: 200,
+    cookingType: 'کته و آبکش',
+    aroma: 'معطر',
+    texture: 'خوش‌پخت',
+    origin: 'گیلان',
+    reviews: [
+        { author: 'حسین جلالی', rating: 5, comment: 'برای مصرف روزانه عالیه. قیمت و کیفیتش متناسبه.' },
+        { author: 'فاطمه نوری', rating: 4, comment: 'برنج خوب و خوش خوراکیه.' },
+    ]
+  },
+  {
+    id: '4',
+    name: 'برنج دودی فریدونکنار',
+    slug: 'fereydunkenar-smoked-rice',
+    category: 'فریدونکنar',
+    description: 'یک تخصص منحصر به فرد از منطقه فریدونکنار، این برنج به آرامی روی تراشه‌های چوب دودی می‌شود و طعمی لطیف و خوشمزه به آن می‌بخشد که هر غذایی را متحول می‌کند. ایده‌آل برای غذاهای دریایی و مرغ.',
+    weightOptions: [
+      { weight: '۱ کیلوگرم', price: 189900 },
+      { weight: '۲.۵ کیلوگرم', price: 459900 },
+    ],
+    rating: 4.6,
+    reviewCount: 55,
+    discount: 15,
+    images: [{id: 'product-fereydunkenar', type: 'image'}],
+    stock: 50,
+    cookingType: 'کته',
+    aroma: 'دودی',
+    texture: 'کمی چسبناک',
+    origin: 'فریدونکنار',
+    reviews: [
+        { author: 'رضا قاسمی', rating: 5, comment: 'طعم دودیش فوق‌العاده‌ست. برای غذاهای خاص مثل ماهی عالیه.' },
+    ]
+  },
+  {
+    id: '5',
+    name: 'برنج عنبربو گیلان',
+    slug: 'gilan-amber-boo-rice',
+    category: 'گیلان',
+    description: 'از استان سرسبز گیلان، برنج عنبربو (Ambar-Boo) می‌آید، یک برنج دانه‌کوتاه با عطری مشخصاً شیرین و بافتی کمی چسبناک. عالی برای غذاهای سنتی شمال ایران.',
+    weightOptions: [
+      { weight: '۱ کیلوگرم', price: 149900 },
+      { weight: '۵ کیلوگرم', price: 700000 },
+    ],
+    rating: 4.8,
+    reviewCount: 72,
+    discount: 0,
+    images: [{id: 'product-gilan', type: 'image'}],
+    stock: 80,
+    cookingType: 'کته',
+    aroma: 'شیرین و خاص',
+    texture: 'کمی چسبناک',
+    origin: 'گیلان',
+    reviews: [
+        { author: 'زهرا موسوی', rating: 5, comment: 'عطر این برنج آدم رو مست میکنه! برای کته عالیه.' },
+    ]
+  },
+  {
+    id: '6',
+    name: 'برنج ندا گلستان',
+    slug: 'golestan-neda-rice',
+    category: 'گلستان',
+    description: 'یک نوع پرمحصول و مقاوم که به یکی از اصلی‌ترین مواد غذایی در خانه‌های ایرانی تبدیل شده است. برنج ندا به کیفیت ثابت و خواص پخت خوبش معروف است و انتخابی قابل اعتماد برای وعده‌های روزانه است.',
+    weightOptions: [
+      { weight: '۵ کیلوگرم', price: 459900 },
+      { weight: '۱۰ کیلوگرم', price: 850000 },
+      { weight: '۲۰ کیلوگرم', price: 1600000 },
+    ],
+    rating: 4.5,
+    reviewCount: 150,
+    discount: 5,
+    images: [{id: 'product-golestan', type: 'image'}],
+    stock: 300,
+    cookingType: 'کته و آبکش',
+    aroma: 'متوسط',
+    texture: 'معمولی',
+    origin: 'گلستان',
+    reviews: [
+        { author: 'محمد اکبری', rating: 4, comment: 'یه برنج اقتصادی و خوب برای دم دستی.' },
+    ]
+  },
+];
+const initialProductCategories: ProductCategory[] = [
+  { name: 'طارم', description: 'به خاطر عطر دل‌انگیز و بافت پفکی شهرت دارد.' },
+  { name: 'صدری', description: 'یک نوع اشرافی با عطری استثنایی.' },
+  { name: 'هاشمی', description: 'یک نوع محبوب و دوست‌داشتنی که تعادل فوق‌العاده‌ای ارائه می‌دهد.' },
+  { name: 'فریدونکنار', description: 'برنج دودی با طعمی لطیف و خوشمزه.' },
+  { name: 'گیلان', description: 'یک برنج دانه‌کوتاه با عطری مشخصاً شیرین.' },
+  { name: 'گلستان', description: 'انتخابی قابل اعتماد برای وعده‌های روزانه با کیفیت ثابت.' },
+];
+
+
+const ProductForm = ({ product, onSave, onCancel, productCategories }: { product?: any, onSave: (p: any) => void, onCancel: () => void, productCategories: ProductCategory[] }) => {
     // A simple form state. In a real app, use react-hook-form.
     const [formData, setFormData] = useState(product || {
         name: '',
@@ -147,8 +302,16 @@ const ProductForm = ({ product, onSave, onCancel }: { product?: any, onSave: (p:
 
 
 export default function AdminProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [productCategories, setProductCategories] = useState<ProductCategory[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(undefined);
+
+  useEffect(() => {
+    // In a real app, you would fetch this data from an API
+    setProducts(initialProducts);
+    setProductCategories(initialProductCategories);
+  }, []);
 
   const handleEdit = (product: any) => {
     setEditingProduct(product);
@@ -288,6 +451,7 @@ export default function AdminProductsPage() {
                 product={editingProduct} 
                 onSave={handleSaveProduct}
                 onCancel={() => setIsDialogOpen(false)}
+                productCategories={productCategories}
               />
           </DialogContent>
       </Dialog>
