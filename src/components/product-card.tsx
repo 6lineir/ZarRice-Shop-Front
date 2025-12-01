@@ -83,9 +83,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <span className="text-sm font-normal text-muted-foreground">/{product.weightOptions[0].weight}</span>
         </div>
         <div className='flex gap-2 w-full'>
-            <Button size="sm" onClick={handleAddToCart} className="w-full">
-            <ShoppingCart className="ml-2 h-4 w-4" />
-            افزودن 
+            <Button size="sm" asChild className="w-full">
+              <Link href={`/products/${product.slug}`}>
+                مشاهده و انتخاب
+              </Link>
             </Button>
         </div>
       </CardFooter>
