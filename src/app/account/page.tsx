@@ -42,12 +42,16 @@ export default function AccountPage() {
       {
         id: 1,
         title: 'خانه',
+        recipientName: 'علی رضایی',
+        phone: '09123456789',
         address: 'تهران، خیابان آزادی، کوچه اول، پلاک ۲، واحد ۳',
         isDefault: true,
       },
       {
         id: 2,
         title: 'محل کار',
+        recipientName: 'علی رضایی',
+        phone: '09121112233',
         address: 'تهران، میدان انقلاب، ساختمان ایران، طبقه ۴، واحد ۱۲',
         isDefault: false,
       },
@@ -217,24 +221,33 @@ export default function AccountPage() {
                       </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4 py-4 px-6 text-right">
-                      <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="address-title" className="text-right">
-                          عنوان
-                        </Label>
+                      <div className="space-y-2">
+                        <Label htmlFor="address-title">عنوان</Label>
                         <Input
                           id="address-title"
                           placeholder="مثلا: خانه"
-                          className="col-span-3"
                         />
                       </div>
-                      <div className="grid grid-cols-4 items-start gap-4">
-                        <Label htmlFor="address-details" className="text-right pt-2">
-                          آدرس کامل
-                        </Label>
+                       <div className="space-y-2">
+                        <Label htmlFor="recipient-name">نام گیرنده</Label>
+                        <Input
+                          id="recipient-name"
+                          placeholder="نام کامل گیرنده"
+                        />
+                      </div>
+                       <div className="space-y-2">
+                        <Label htmlFor="recipient-phone">شماره تماس</Label>
+                        <Input
+                          id="recipient-phone"
+                          placeholder="09123456789"
+                          dir="ltr"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="address-details">آدرس کامل</Label>
                         <Textarea
                           id="address-details"
                           placeholder="استان، شهر، خیابان..."
-                          className="col-span-3"
                         />
                       </div>
                     </div>
@@ -262,6 +275,9 @@ export default function AccountPage() {
                           )}
                         </p>
                         <p className="text-sm text-muted-foreground">
+                          {addr.recipientName} | {addr.phone}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
                           {addr.address}
                         </p>
                       </div>
@@ -279,13 +295,21 @@ export default function AccountPage() {
                                 <DialogDescription>آدرس انتخاب شده را ویرایش کنید.</DialogDescription>
                             </DialogHeader>
                             <div className="grid gap-4 py-4 px-6 text-right">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="address-title-edit" className="text-right">عنوان</Label>
-                                    <Input id="address-title-edit" defaultValue={addr.title} className="col-span-3"/>
+                                <div className="space-y-2">
+                                    <Label htmlFor="address-title-edit">عنوان</Label>
+                                    <Input id="address-title-edit" defaultValue={addr.title} />
                                 </div>
-                                <div className="grid grid-cols-4 items-start gap-4">
-                                    <Label htmlFor="address-details-edit" className="text-right pt-2">آدرس کامل</Label>
-                                    <Textarea id="address-details-edit" defaultValue={addr.address} className="col-span-3" />
+                                <div className="space-y-2">
+                                    <Label htmlFor="recipient-name-edit">نام گیرنده</Label>
+                                    <Input id="recipient-name-edit" defaultValue={addr.recipientName} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="recipient-phone-edit">شماره تماس</Label>
+                                    <Input id="recipient-phone-edit" defaultValue={addr.phone} dir="ltr" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="address-details-edit">آدرس کامل</Label>
+                                    <Textarea id="address-details-edit" defaultValue={addr.address} />
                                 </div>
                             </div>
                             <DialogFooter className="p-6 pt-4 border-t">
